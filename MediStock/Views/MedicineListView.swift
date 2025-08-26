@@ -19,7 +19,9 @@ struct MedicineListView: View {
         }
         .navigationBarTitle(aisle)
         .onAppear {
-            print(viewModel.medicines)
+            Task {
+               await viewModel.fetchMedicines()
+            }
         }
     }
 }

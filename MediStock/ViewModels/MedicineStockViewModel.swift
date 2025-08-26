@@ -9,23 +9,23 @@ class MedicineStockViewModel: ObservableObject {
         }.sorted()
     }
     @Published var history: [HistoryEntry] = []
+    
+    @Published var filterText: String = ""
+    @Published var sortOption: SortOption = .none
     private let repository = FirestoreRepository()
 
-    func fetchMedicines() async {
+    func fetchMedicines(fetchNext: Bool = false) async {
         do {
-            self.medicines = try await repository.fetchMedicines()
+            let fetchedMedicines = try await repository.fetchMedicines(sortedBy: sortOption, matching: filterText, nextItems: fetchNext)
+            if fetchNext == true {
+                for medicine in fetchedMedicines {
+                    self.medicines.append(medicine)
+                }
+            } else {
+                self.medicines = fetchedMedicines
+            }
         } catch {
             print("Failed to fetch medicines: \(error)")
-        }
-    }
-
-    func addRandomMedicine(user: String) async {
-        let medicine = Medicine(name: "Medicine \(Int.random(in: 1...100))", stock: Int.random(in: 1...100), aisle: "Aisle \(Int.random(in: 1...10))")
-        do {
-            try await repository.addMedicine(medicine)
-             await addHistory(action: "Added \(medicine.name)", user: user, medicineId: medicine.id, details: "Added new medicine")
-        } catch let error {
-            print("Error adding document: \(error)")
         }
     }
 

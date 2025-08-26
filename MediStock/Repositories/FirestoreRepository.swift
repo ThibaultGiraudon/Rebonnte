@@ -10,9 +10,30 @@ import Firebase
 
 class FirestoreRepository {
     private let db = Firestore.firestore()
+    private var lastDocument: DocumentSnapshot?
+    private let pageSize = 20
     
-    func fetchMedicines() async throws -> [Medicine] {
-        return try await fetch("medicines")
+    func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine] {
+        var query: Query = db.collection("medicines").limit(to: pageSize).order(by: sort.value)
+        
+        if !name.isEmpty {
+            query = query.whereField("name", isEqualTo: name)
+        }
+        
+        if nextItems == true, let lastDocument {
+            query = query.start(afterDocument: lastDocument)
+        }
+        
+        let snapshot = try await query.getDocuments()
+        
+        let documents = snapshot.documents
+        let items = documents.compactMap {
+            try? $0.data(as: Medicine.self)
+        }
+        
+        self.lastDocument = documents.last
+        
+        return items
     }
     
     func addMedicine(_ medicine: Medicine) async throws {
@@ -46,16 +67,5 @@ class FirestoreRepository {
     
     func addHistory(_ history: HistoryEntry) async throws {
         try await db.collection("history").document(history.id).setData(history.data())
-    }
-    
-    private func fetch<T: Codable>(_ collection: String) async throws -> [T] {
-        let snapshot = try await db.collection(collection).getDocuments()
-        
-        let documents = snapshot.documents
-        let items = documents.compactMap {
-            try? $0.data(as: T.self)
-        }
-        
-        return items
     }
 }
