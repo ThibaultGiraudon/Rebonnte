@@ -9,20 +9,24 @@ import Foundation
 import FirebaseAuth
 
 class AuthRepository {
-//    private let auth = Auth.auth()
-    var handle: AuthStateDidChangeListenerHandle?
+    @Published var currentUser: User? = nil
+    private var handle: AuthStateDidChangeListenerHandle?
 
-    func listen() -> User? {
-        var loggedUser: User? = nil
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            if let user = user {
-                loggedUser = User(uid: user.uid, email: user.email)
-            }
-        }
-                
-        return loggedUser
+    init() {
+        listen()
     }
 
+    private func listen() {
+        handle = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
+            guard let self = self else { return }
+            if let user = user {
+                self.currentUser = User(uid: user.uid, email: user.email)
+            } else {
+                self.currentUser = nil
+            }
+        }
+    }
+    
     func signUp(email: String, password: String) async throws -> User {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         

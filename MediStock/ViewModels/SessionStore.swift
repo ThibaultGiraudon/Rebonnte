@@ -3,10 +3,14 @@ import Foundation
 @MainActor
 class SessionStore: ObservableObject {
     @Published var session: User?
-    private let authRepository = AuthRepository()
+    private var authRepository: AuthRepository
     
-    func listen() async {
-        self.session =  authRepository.listen()
+    init(repository: AuthRepository = .init()) {
+        self.authRepository = repository
+        
+        repository.$currentUser
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$session)
     }
 
     func signUp(email: String, password: String) async {

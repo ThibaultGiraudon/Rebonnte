@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MedicineDetailView: View {
     @State var medicine: Medicine
-    @ObservedObject var viewModel = MedicineStockViewModel()
+    @ObservedObject var viewModel: MedicineStockViewModel
     @EnvironmentObject var session: SessionStore
 
     var body: some View {
@@ -28,14 +28,21 @@ struct MedicineDetailView: View {
             .padding(.vertical)
         }
         .navigationBarTitle("Medicine Details", displayMode: .inline)
-        .onAppear {
-            Task {
-                await viewModel.fetchHistory(for: medicine)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Save") {
+                    Task {
+                        print(viewModel.medicines)
+                        await viewModel.updateMedicine(medicine, user: session.session?.email ?? "")
+                    }
+                }
             }
         }
-        .onChange(of: medicine) { _, _ in
+        .onAppear {
             Task {
-                await viewModel.updateMedicine(medicine, user: session.session?.uid ?? "")
+                print(viewModel.medicines)
+                await viewModel.fetchHistory(for: medicine)
+                print(viewModel.medicines)
             }
         }
     }
@@ -47,11 +54,11 @@ extension MedicineDetailView {
             Text("Name")
                 .font(.headline)
             TextField("Name", text: $medicine.name)
-                .onSubmit {
-                    Task {
-                        await viewModel.updateMedicine(medicine, user: session.session?.uid ?? "")
-                    }
-                }
+//                .onSubmit {
+//                    Task {
+//                        await viewModel.updateMedicine(medicine, user: session.session?.email ?? "")
+//                    }
+//                }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding(.bottom, 10)
         }
@@ -64,27 +71,29 @@ extension MedicineDetailView {
                 .font(.headline)
             HStack {
                 Button {
-                    Task {
-                       await viewModel.decreaseStock(medicine, user: session.session?.uid ?? "")
-                    }
+//                    Task {
+//                       await viewModel.decreaseStock(medicine, user: session.session?.email ?? "")
+//                    }
+                    medicine.stock -= 1
                 } label: {
                     Image(systemName: "minus.circle")
                         .font(.title)
                         .foregroundColor(.red)
                 }
                 TextField("Stock", value: $medicine.stock, formatter: NumberFormatter())
-                    .onSubmit {
-                        Task {
-                            await viewModel.updateMedicine(medicine, user: session.session?.uid ?? "")
-                        }
-                    }
+//                    .onSubmit {
+//                        Task {
+//                            await viewModel.updateMedicine(medicine, user: session.session?.email ?? "")
+//                        }
+//                    }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
                 .frame(width: 100)
                 Button {
-                    Task {
-                       await viewModel.increaseStock(medicine, user: session.session?.uid ?? "")
-                    }
+//                    Task {
+//                       await viewModel.increaseStock(medicine, user: session.session?.email ?? "")
+//                    }
+                    medicine.stock += 1
                 } label: {
                     Image(systemName: "plus.circle")
                         .font(.title)
@@ -101,11 +110,11 @@ extension MedicineDetailView {
             Text("Aisle")
                 .font(.headline)
             TextField("Aisle", text: $medicine.aisle)
-            .onSubmit {
-                Task {
-                    await viewModel.updateMedicine(medicine, user: session.session?.uid ?? "")
-                }
-            }
+//            .onSubmit {
+//                Task {
+//                    await viewModel.updateMedicine(medicine, user: session.session?.uid ?? "")
+//                }
+//            }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding(.bottom, 10)
         }

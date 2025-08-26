@@ -38,43 +38,40 @@ class MedicineStockViewModel: ObservableObject {
         }
     }
 
-    func increaseStock(_ medicine: Medicine, user: String) async {
-        await updateStock(medicine, by: 1, user: user)
-    }
-
-    func decreaseStock(_ medicine: Medicine, user: String) async {
-        await updateStock(medicine, by: -1, user: user)
-    }
-
-    private func updateStock(_ medicine: Medicine, by amount: Int, user: String) async {
-        let newStock = medicine.stock + amount
-        do {
-            try await repository.updateStock(for: medicine.id, amount: newStock)
-            
-            if let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) {
-                self.medicines[index].stock = newStock
-            }
-            
-            await self.addHistory(
-                action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
-                user: user,
-                medicineId: medicine.id,
-                details: "Stock changed from \(medicine.stock - amount) to \(newStock)"
-            )
-        } catch {
-            print("Failed to update stock: \(error)")
-        }
-    }
-
     func updateMedicine(_ medicine: Medicine, user: String) async {
         do {
-            try await repository.updateMedicine(medicine)
             
-            await addHistory(action: "Updated \(medicine.name)", user: user, medicineId: medicine.id, details: "Updated medicine details")
-            if let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) {
-                self.medicines[index] = medicine
+            print(medicine.id)
+            print(medicines)
+            
+            guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
+                print("Failed to retrieve medicine")
+                return
             }
-        } catch let error {
+            
+            try await repository.updateMedicine(medicine)
+
+            let currentMedicine = self.medicines[index]
+            let amount = medicine.stock - currentMedicine.stock
+            if amount != 0 {
+                await self.addHistory(
+                    action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
+                    user: user,
+                    medicineId: medicine.id,
+                    details: "Stock changed from \(currentMedicine.stock) to \(medicine.stock)"
+                )
+            }
+            
+            if currentMedicine.aisle != medicine.aisle {
+                await addHistory(action: "Updated \(medicine.name)", user: user, medicineId: medicine.id, details: "Changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)")
+            }
+            
+            if currentMedicine.name != medicine.name {
+                await addHistory(action: "Updated \(medicine.name)", user: user, medicineId: medicine.id, details: "Changed name from \(currentMedicine.name) to \(medicine.name)")
+            }
+
+            self.medicines[index] = medicine
+        } catch {
             print("Error updating document: \(error)")
         }
     }
@@ -83,14 +80,16 @@ class MedicineStockViewModel: ObservableObject {
         let history = HistoryEntry(medicineId: medicineId, user: user, action: action, details: details)
         do {
             try await repository.addHistory(history)
-        } catch let error {
+            self.history.append(history)
+            self.history.sort(by: { $0.timestamp > $1.timestamp })
+        } catch {
             print("Error adding history: \(error)")
         }
     }
 
     func fetchHistory(for medicine: Medicine) async {
         do {
-            self.history = try await repository.fetchHistory(for: medicine)
+            self.history = try await repository.fetchHistory(for: medicine).sorted(by: { $0.timestamp > $1.timestamp})
         } catch {
             print("Failed to fetch history: \(error)")
         }

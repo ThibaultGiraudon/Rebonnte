@@ -11,11 +11,6 @@ struct ContentView: View {
                 LoginView()
             }
         }
-        .onAppear {
-            Task {
-               await session.listen()
-            }
-        }
     }
 }
 

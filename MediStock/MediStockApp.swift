@@ -10,9 +10,9 @@ import SwiftUI
 @main
 struct MediStockApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    var sessionStore = SessionStore()
-    
+
     var body: some Scene {
+        lazy var sessionStore = SessionStore()
         WindowGroup {
             ContentView()
                 .environmentObject(sessionStore)

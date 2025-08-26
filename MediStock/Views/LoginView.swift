@@ -10,6 +10,8 @@ struct LoginView: View {
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()

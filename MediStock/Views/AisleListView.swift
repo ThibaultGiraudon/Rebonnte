@@ -7,7 +7,7 @@ struct AisleListView: View {
         NavigationView {
             List {
                 ForEach(viewModel.aisles, id: \.self) { aisle in
-                    NavigationLink(destination: MedicineListView(aisle: aisle)) {
+                    NavigationLink(destination: MedicineListView(viewModel: viewModel, aisle: aisle)) {
                         Text(aisle)
                     }
                 }
