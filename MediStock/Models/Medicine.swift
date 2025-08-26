@@ -2,13 +2,12 @@ import Foundation
 import FirebaseFirestoreSwift
 
 struct Medicine: Identifiable, Codable, Equatable {
-    @DocumentID var id: String?
+    var id = UUID().uuidString
     var name: String
     var stock: Int
     var aisle: String
 
-    init(id: String? = nil, name: String, stock: Int, aisle: String) {
-        self.id = id
+    init(name: String, stock: Int, aisle: String) {
         self.name = name
         self.stock = stock
         self.aisle = aisle
@@ -19,5 +18,16 @@ struct Medicine: Identifiable, Codable, Equatable {
                lhs.name == rhs.name &&
                lhs.stock == rhs.stock &&
                lhs.aisle == rhs.aisle
+    }
+    
+    func data() -> [String: Any] {
+        let data: [String: Any] = [
+            "id": self.id,
+            "name": name,
+            "stock": stock,
+            "aisle": aisle
+        ]
+        
+        return data
     }
 }

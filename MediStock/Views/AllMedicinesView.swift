@@ -40,15 +40,23 @@ struct AllMedicinesView: View {
                     }
                 }
                 .navigationBarTitle("All Medicines")
-                .navigationBarItems(trailing: Button(action: {
-                    viewModel.addRandomMedicine(user: "test_user") // Remplacez par l'utilisateur actuel
-                }) {
-                    Image(systemName: "plus")
+                .toolbar(content: {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            Task {
+                                await viewModel.addRandomMedicine(user: "test_user")
+                            }
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
                 })
             }
         }
         .onAppear {
-            viewModel.fetchMedicines()
+            Task {
+                await viewModel.fetchMedicines()
+            }
         }
     }
     
