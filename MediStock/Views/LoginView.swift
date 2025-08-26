@@ -13,14 +13,18 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-            Button(action: {
-                session.signIn(email: email, password: password)
-            }) {
+            Button {
+                Task {
+                   await session.signIn(email: email, password: password)
+                }
+            } label: {
                 Text("Login")
             }
-            Button(action: {
-                session.signUp(email: email, password: password)
-            }) {
+            Button {
+                Task {
+                   await session.signUp(email: email, password: password)
+                }
+            } label: {
                 Text("Sign Up")
             }
         }

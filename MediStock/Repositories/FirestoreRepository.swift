@@ -34,7 +34,6 @@ class FirestoreRepository {
     }
     
     func fetchHistory(for medicine: Medicine) async throws -> [HistoryEntry] {
-        print("medicine id: \(medicine.id)")
         let snapshots = db.collection("history").whereField("medicineId", isEqualTo: medicine.id)
         
         let snapshot = try await snapshots.getDocuments()
@@ -42,7 +41,6 @@ class FirestoreRepository {
             try? $0.data(as: HistoryEntry.self)
         }
         
-        print("History items: \(items)")
         return items
     }
     
@@ -58,7 +56,6 @@ class FirestoreRepository {
             try? $0.data(as: T.self)
         }
         
-        print("items: \(items)")
         return items
     }
 }

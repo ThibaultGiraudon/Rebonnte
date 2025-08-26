@@ -27,7 +27,6 @@
 		53E0D8E22C065FFE00DE1134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */; };
 		CE8409B62E5D9A77000FA60A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B52E5D9A77000FA60A /* .gitignore */; };
 		CE8409B82E5D9ACF000FA60A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */; };
-		CE8409BD2E5DA80C000FA60A /* FirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8409BC2E5DA80C000FA60A /* FirestoreRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,13 +59,13 @@
 		53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE8409B52E5D9A77000FA60A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CE8409BC2E5DA80C000FA60A /* FirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE8409B92E5DA769000FA60A /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		CE8409BA2E5DA774000FA60A /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 		CE8409BB2E5DA784000FA60A /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		CE8409BE2E5DB9F7000FA60A /* Repositories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Repositories; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +136,7 @@
 				CE8409B92E5DA769000FA60A /* Models */,
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
 				53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */,
-				CE8409BC2E5DA80C000FA60A /* FirestoreRepository.swift */,
+				CE8409BE2E5DB9F7000FA60A /* Repositories */,
 			);
 			path = MediStock;
 			sourceTree = "<group>";
@@ -186,6 +185,7 @@
 				CE8409B92E5DA769000FA60A /* Models */,
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
 				CE8409BB2E5DA784000FA60A /* Views */,
+				CE8409BE2E5DB9F7000FA60A /* Repositories */,
 			);
 			name = MediStock;
 			packageProductDependencies = (
@@ -321,7 +321,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				53E0D8E22C065FFE00DE1134 /* AppDelegate.swift in Sources */,
-				CE8409BD2E5DA80C000FA60A /* FirestoreRepository.swift in Sources */,
 				53E0D8972C06084700DE1134 /* MediStockApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

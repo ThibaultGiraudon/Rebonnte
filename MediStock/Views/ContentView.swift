@@ -12,7 +12,9 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            session.listen()
+            Task {
+               await session.listen()
+            }
         }
     }
 }
