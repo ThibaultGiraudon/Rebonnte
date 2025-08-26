@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AisleListView: View {
     @ObservedObject var viewModel = MedicineStockViewModel()
+    @State private var showAddMedicine = false
 
     var body: some View {
         NavigationView {
@@ -16,9 +17,7 @@ struct AisleListView: View {
             .toolbar(content: {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        Task {
-                            await viewModel.addRandomMedicine(user: "test_user")
-                        }
+                        showAddMedicine = true
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -27,6 +26,11 @@ struct AisleListView: View {
             .onAppear {
                 Task {
                     await viewModel.fetchMedicines()
+                }
+            }
+            .sheet(isPresented: $showAddMedicine) {
+                NavigationStack {
+                    AddMedicineView()
                 }
             }
         }

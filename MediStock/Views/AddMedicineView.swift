@@ -8,8 +8,37 @@
 import SwiftUI
 
 struct AddMedicineView: View {
+    @StateObject var viewModel = AddMedicineViewModel()
+    
+    @Environment(\.dismiss) var dismiss
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Section {
+                TextField("Medicine name", text: $viewModel.name)
+                TextField("Aisle name", text: $viewModel.aisle)
+            }
+            Section {
+                TextField("Stock", value: $viewModel.stock, format: .number)
+            }
+        }
+        .navigationTitle("Add medicine")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Add") {
+                    Task {
+                       await viewModel.addMedicine()
+                    }
+                }
+                .disabled(viewModel.shouldDisabled)
+            }
+        }
     }
 }
 

@@ -21,11 +21,6 @@ struct MedicineListView: View {
         .onAppear {
             print(viewModel.medicines)
         }
-//        .onAppear {
-//            Task {
-//                await viewModel.fetchMedicines()
-//            }
-//        }
     }
 }
 

@@ -4,7 +4,8 @@ struct AllMedicinesView: View {
     @ObservedObject var viewModel = MedicineStockViewModel()
     @State private var filterText: String = ""
     @State private var sortOption: SortOption = .none
-
+    @State private var showAddMedicine: Bool = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -43,9 +44,7 @@ struct AllMedicinesView: View {
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            Task {
-                                await viewModel.addRandomMedicine(user: "test_user")
-                            }
+                            showAddMedicine = true
                         } label: {
                             Image(systemName: "plus")
                         }
