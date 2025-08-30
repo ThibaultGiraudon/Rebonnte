@@ -1,31 +1,53 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var session: SessionStore
+    @StateObject var medicinesVM = MedicineStockViewModel()
+    @StateObject var addMedicinesVM = AddMedicineViewModel()
+    
+    @State private var activeError: String?
+    
     var body: some View {
-        TabView {
-            AisleListView()
-                .tabItem {
-                    Image(systemName: "list.dash")
-                    Text("Aisles")
+        VStack {
+            if let error = activeError {
+                ErrorView(error: error) {
+                    Task {
+                        await medicinesVM.fetchMedicines()
+                        activeError = nil
+                    }
                 }
-
-            AllMedicinesView()
-                .tabItem {
-                    Image(systemName: "square.grid.2x2")
-                    Text("All Medicines")
+            } else {
+                TabView {
+                    AisleListView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
+                        .tabItem {
+                            Image(systemName: "list.dash")
+                            Text("Aisles")
+                        }
+                    
+                    AllMedicinesView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
+                        .tabItem {
+                            Image(systemName: "square.grid.2x2")
+                            Text("All Medicines")
+                        }
+                    
+                    ProfileView()
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Profile")
+                        }
                 }
-            
-            ProfileView()
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
+            }
         }
+        .onReceive(session.$error) { if let err = $0 { activeError = err} }
+        .onReceive(medicinesVM.$error) { if let err = $0 { activeError = err} }
+        .onReceive(addMedicinesVM.$error) { if let err = $0 { activeError = err} }
     }
 }
 
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
+        let session = SessionStore()
         MainTabView()
+            .environmentObject(session)
     }
 }

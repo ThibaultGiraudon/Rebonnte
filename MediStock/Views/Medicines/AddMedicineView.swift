@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct AddMedicineView: View {
-    @StateObject var viewModel = AddMedicineViewModel()
+    @StateObject var addMedicinesVM: AddMedicineViewModel
     @EnvironmentObject var session: SessionStore
     @Environment(\.dismiss) var dismiss
     var body: some View {
         Form {
             Section {
-                TextField("Medicine name", text: $viewModel.name)
-                TextField("Aisle name", text: $viewModel.aisle)
+                TextField("Medicine name", text: $addMedicinesVM.name)
+                TextField("Aisle name", text: $addMedicinesVM.aisle)
             }
             Section {
-                TextField("Stock", value: $viewModel.stock, format: .number)
+                TextField("Stock", value: $addMedicinesVM.stock, format: .number)
             }
         }
         .navigationTitle("Add medicine")
@@ -33,10 +33,11 @@ struct AddMedicineView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {
                     Task {
-                        await viewModel.addMedicine(user: session.session?.email ?? "")
+                        await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
+                        dismiss()
                     }
                 }
-                .disabled(viewModel.shouldDisabled)
+                .disabled(addMedicinesVM.shouldDisabled)
             }
         }
     }
@@ -44,6 +45,6 @@ struct AddMedicineView: View {
 
 #Preview {
     let session = SessionStore()
-    AddMedicineView()
+    AddMedicineView(addMedicinesVM: AddMedicineViewModel())
         .environmentObject(session)
 }

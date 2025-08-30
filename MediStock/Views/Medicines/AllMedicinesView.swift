@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct AllMedicinesView: View {
-    @ObservedObject var viewModel = MedicineStockViewModel()
+    @ObservedObject var medicinesVM: MedicineStockViewModel
+    @ObservedObject var addMedicinesVM: AddMedicineViewModel
     @State private var showAddMedicine: Bool = false
     
     var body: some View {
@@ -9,60 +10,60 @@ struct AllMedicinesView: View {
             VStack {
                 // Filtrage et Tri
                 HStack {
-                    TextField("Filter by name", text: $viewModel.filterText)
+                    TextField("Filter by name", text: $medicinesVM.filterText)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.leading, 10)
                         .onSubmit {
                             Task {
-                                await viewModel.fetchMedicines()
+                                await medicinesVM.fetchMedicines()
                             }
                         }
                     
                     Spacer()
 
-                    Picker("Sort by", selection: $viewModel.sortOption) {
+                    Picker("Sort by", selection: $medicinesVM.sortOption) {
                         Text("None").tag(SortOption.none)
                         Text("Name").tag(SortOption.name)
                         Text("Stock").tag(SortOption.stock)
                     }
                     .pickerStyle(MenuPickerStyle())
                     .padding(.trailing, 10)
-                    .onChange(of: viewModel.sortOption) {
+                    .onChange(of: medicinesVM.sortOption) {
                         Task {
-                            await viewModel.fetchMedicines()
+                            await medicinesVM.fetchMedicines()
                         }
                     }
                 }
                 .padding(.top, 10)
                 
                 // Liste des Médicaments
-                MedicineListView(viewModel: viewModel)
-                .navigationBarTitle("All Medicines")
-                .toolbar(content: {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            showAddMedicine = true
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                    }
-                })
+                MedicineListView(medicinesVM: medicinesVM)
             }
         }
+        .navigationBarTitle("All Medicines")
         .onAppear {
             Task {
-                await viewModel.fetchMedicines()
+                await medicinesVM.fetchMedicines()
             }
         }
         .sheet(isPresented: $showAddMedicine, onDismiss: {
             Task {
-                await viewModel.fetchMedicines()
+                await medicinesVM.fetchMedicines()
             }
         }) {
             NavigationStack {
-                AddMedicineView()
+                AddMedicineView(addMedicinesVM: addMedicinesVM)
             }
         }
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showAddMedicine = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        })
         
     }
 }
@@ -88,6 +89,6 @@ enum SortOption: String, CaseIterable, Identifiable, Equatable {
 
 struct AllMedicinesView_Previews: PreviewProvider {
     static var previews: some View {
-        AllMedicinesView()
+        AllMedicinesView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
     }
 }

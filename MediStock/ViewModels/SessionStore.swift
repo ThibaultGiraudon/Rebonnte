@@ -14,52 +14,59 @@ class SessionStore: ObservableObject {
     private var storageRepository: StorageRepository = .init()
 
     func signUp(email: String, password: String) async {
+        self.error = nil
         do {
             self.uid = try await authRepository.signUp(email: email, password: password)
             guard let uid else {
-                print("An error occured while signing up user")
+                self.error = "signing up"
                 return
             }
             let user = User(uid: uid, email: email, fullname: "New user")
             try await firestoreRepository.addUser(user)
             self.session = user
         } catch {
-            print("An error occured while signing up user: \(error)")
+            self.error = "signing up"
         }
     }
 
     func signIn(email: String, password: String) async {
+        self.error = nil
         do {
             self.uid = try await authRepository.signIn(email: email, password: password)
             self.session = await self.fetchUser(with: self.uid)
         } catch {
-            print("An error occured while signing in user: \(error)")
+            self.error = "signing in"
         }
     }
 
     func signOut() {
+        self.error = nil
         do {
             try authRepository.signOut()
             self.session = nil
             self.uid = nil
-        } catch let error {
-            print("Error signing out: \(error.localizedDescription)")
+        } catch {
+            self.error = "signing out"
         }
     }
     
     func fetchUser(with uid: String?) async -> User? {
-        guard let uid = uid else { return nil }
+        self.error = nil
+        guard let uid = uid else {
+            self.error = "User not logged in"
+            return nil
+        }
                 
         do {
-            print("try fetching user")
             return try await firestoreRepository.fetchUser(with: uid)
         } catch {
-            print("Error fetching user: \(error)")
+            self.error = "fetching user's personnal information"
             return nil
         }
     }
     
     func updateUser(fullname: String) async {
+        self.error = nil
         guard var user = session else {
             self.error = "User not logged in"
             return

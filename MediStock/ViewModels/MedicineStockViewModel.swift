@@ -4,17 +4,19 @@ import Foundation
 class MedicineStockViewModel: ObservableObject {
     @Published var medicines: [Medicine] = []
     var aisles: [String] {
-        medicines.map {
-            $0.aisle
-        }.sorted()
+        Array(Set(medicines.map { $0.aisle })).sorted()
     }
     @Published var history: [HistoryEntry] = []
     
     @Published var filterText: String = ""
     @Published var sortOption: SortOption = .none
+    
+    @Published var error: String? = nil
+    
     private let repository = FirestoreRepository()
 
     func fetchMedicines(fetchNext: Bool = false) async {
+        self.error = nil
         do {
             let fetchedMedicines = try await repository.fetchMedicines(sortedBy: sortOption, matching: filterText, nextItems: fetchNext)
             if fetchNext == true {
@@ -25,25 +27,23 @@ class MedicineStockViewModel: ObservableObject {
                 self.medicines = fetchedMedicines
             }
         } catch {
-            print("Failed to fetch medicines: \(error)")
+            self.error = "fetching medicines"
         }
     }
 
     func deleteMedicines(at offsets: IndexSet) async {
+        self.error = nil
         let medicinesToDelete = offsets.map { medicines[$0] }
         do {
             try await repository.deleteMedcines(medicinesToDelete)
         } catch {
-            print("Failed to delete medicines: \(error)")
+            self.error = "deleting medicines"
         }
     }
 
     func updateMedicine(_ medicine: Medicine, user: String) async {
+        self.error = nil
         do {
-            
-            print(medicine.id)
-            print(medicines)
-            
             guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
                 print("Failed to retrieve medicine")
                 return
@@ -85,18 +85,19 @@ class MedicineStockViewModel: ObservableObject {
 
             self.medicines[index] = medicine
         } catch {
-            print("Error updating document: \(error)")
+            self.error = "updating medicines"
         }
     }
 
     private func addHistory(action: String, user: String, medicineId: String, details: String, currentStock: Int) async {
+        self.error = nil
         let history = HistoryEntry(medicineId: medicineId, user: user, action: action, details: details, currentStock: currentStock)
         do {
             try await repository.addHistory(history)
             self.history.append(history)
             self.history.sort(by: { $0.timestamp > $1.timestamp })
         } catch {
-            print("Error adding history: \(error)")
+            self.error = "adding change to history"
         }
     }
 

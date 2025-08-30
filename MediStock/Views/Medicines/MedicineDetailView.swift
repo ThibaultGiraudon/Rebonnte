@@ -3,7 +3,7 @@ import Charts
 
 struct MedicineDetailView: View {
     @State var medicine: Medicine
-    @ObservedObject var viewModel: MedicineStockViewModel
+    @ObservedObject var medicinesVM: MedicineStockViewModel
     @EnvironmentObject var session: SessionStore
 
     var body: some View {
@@ -33,15 +33,15 @@ struct MedicineDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
                     Task {
-                        print(viewModel.medicines)
-                        await viewModel.updateMedicine(medicine, user: session.session?.email ?? "")
+                        print(medicinesVM.medicines)
+                        await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
                     }
                 }
             }
         }
         .onAppear {
             Task {
-//                await viewModel.fetchHistory(for: medicine)
+                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
@@ -101,7 +101,7 @@ extension MedicineDetailView {
 
     private var historySection: some View {
         VStack(alignment: .leading) {
-            let history = viewModel.history.filter { $0.medicineId == medicine.id }
+            let history = medicinesVM.history.filter { $0.medicineId == medicine.id }
             Text("History")
                 .font(.headline)
                 .padding(.top, 20)
@@ -115,7 +115,7 @@ extension MedicineDetailView {
                 }
             }
             
-            ForEach(viewModel.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
+            ForEach(medicinesVM.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
                     Text(entry.action)
                         .font(.headline)
@@ -150,6 +150,6 @@ struct MedicineDetailView_Previews: PreviewProvider {
             .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 10", details: "Stock change from 38 to 28", currentStock: 28),
             .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 28 to 25", currentStock: 25),
         ]
-         return MedicineDetailView(medicine: sampleMedicine, viewModel: sampleViewModel).environmentObject(SessionStore())
+         return MedicineDetailView(medicine: sampleMedicine, medicinesVM: sampleViewModel).environmentObject(SessionStore())
     }
 }

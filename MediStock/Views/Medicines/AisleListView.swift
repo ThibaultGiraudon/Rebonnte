@@ -1,15 +1,16 @@
 import SwiftUI
 
 struct AisleListView: View {
-    @ObservedObject var viewModel = MedicineStockViewModel()
+    @ObservedObject var medicinesVM: MedicineStockViewModel
+    @ObservedObject var addMedicinesVM: AddMedicineViewModel
     @State private var showAddMedicine = false
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.aisles, id: \.self) { aisle in
+                ForEach(medicinesVM.aisles, id: \.self) { aisle in
                     NavigationLink{
-                        MedicineListView(viewModel: viewModel, aisle: aisle)
+                        MedicineListView(medicinesVM: medicinesVM, aisle: aisle)
                             .navigationTitle(aisle)
                     } label: {
                         Text(aisle)
@@ -28,12 +29,12 @@ struct AisleListView: View {
             })
             .onAppear {
                 Task {
-                    await viewModel.fetchMedicines()
+                    await medicinesVM.fetchMedicines()
                 }
             }
             .sheet(isPresented: $showAddMedicine) {
                 NavigationStack {
-                    AddMedicineView()
+                    AddMedicineView(addMedicinesVM: addMedicinesVM)
                 }
             }
         }
@@ -42,6 +43,6 @@ struct AisleListView: View {
 
 struct AisleListView_Previews: PreviewProvider {
     static var previews: some View {
-        AisleListView()
+        AisleListView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
     }
 }
