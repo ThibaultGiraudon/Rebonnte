@@ -58,16 +58,29 @@ class MedicineStockViewModel: ObservableObject {
                     action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "Stock changed from \(currentMedicine.stock) to \(medicine.stock)"
+                    details: "Stock changed from \(currentMedicine.stock) to \(medicine.stock)",
+                    currentStock: medicine.stock
                 )
             }
             
             if currentMedicine.aisle != medicine.aisle {
-                await addHistory(action: "Updated \(medicine.name)", user: user, medicineId: medicine.id, details: "Changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)")
+                await addHistory(
+                    action: "Updated \(medicine.name)",
+                    user: user,
+                    medicineId: medicine.id,
+                    details: "Changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
+                    currentStock: medicine.stock
+                )
             }
             
             if currentMedicine.name != medicine.name {
-                await addHistory(action: "Updated \(medicine.name)", user: user, medicineId: medicine.id, details: "Changed name from \(currentMedicine.name) to \(medicine.name)")
+                await addHistory(
+                    action: "Updated \(medicine.name)",
+                    user: user,
+                    medicineId: medicine.id,
+                    details: "Changed name from \(currentMedicine.name) to \(medicine.name)",
+                    currentStock: medicine.stock
+                )
             }
 
             self.medicines[index] = medicine
@@ -76,8 +89,8 @@ class MedicineStockViewModel: ObservableObject {
         }
     }
 
-    private func addHistory(action: String, user: String, medicineId: String, details: String) async {
-        let history = HistoryEntry(medicineId: medicineId, user: user, action: action, details: details)
+    private func addHistory(action: String, user: String, medicineId: String, details: String, currentStock: Int) async {
+        let history = HistoryEntry(medicineId: medicineId, user: user, action: action, details: details, currentStock: currentStock)
         do {
             try await repository.addHistory(history)
             self.history.append(history)

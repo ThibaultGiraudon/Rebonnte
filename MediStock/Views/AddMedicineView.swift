@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddMedicineView: View {
     @StateObject var viewModel = AddMedicineViewModel()
-    
+    @EnvironmentObject var session: SessionStore
     @Environment(\.dismiss) var dismiss
     var body: some View {
         Form {
@@ -33,7 +33,7 @@ struct AddMedicineView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {
                     Task {
-                       await viewModel.addMedicine()
+                        await viewModel.addMedicine(user: session.session?.email ?? "")
                     }
                 }
                 .disabled(viewModel.shouldDisabled)
@@ -43,5 +43,7 @@ struct AddMedicineView: View {
 }
 
 #Preview {
+    let session = SessionStore()
     AddMedicineView()
+        .environmentObject(session)
 }

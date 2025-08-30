@@ -8,13 +8,15 @@ struct HistoryEntry: Identifiable, Codable {
     var action: String
     var details: String
     var timestamp: Date
+    var currentStock: Int
 
-    init(medicineId: String, user: String, action: String, details: String, timestamp: Date = Date()) {
+    init(medicineId: String, user: String, action: String, details: String, timestamp: Date = Date(), currentStock: Int) {
         self.medicineId = medicineId
         self.user = user
         self.action = action
         self.details = details
         self.timestamp = timestamp
+        self.currentStock = currentStock
     }
     
     func data() -> [String: Any] {
@@ -24,7 +26,8 @@ struct HistoryEntry: Identifiable, Codable {
             "user": self.user,
             "action": self.action,
             "details": self.details,
-            "timestamp": self.timestamp
+            "timestamp": self.timestamp,
+            "currentStock": self.currentStock
         ]
         
         return data
