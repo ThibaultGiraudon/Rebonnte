@@ -101,7 +101,7 @@ extension MedicineDetailView {
 
     private var historySection: some View {
         VStack(alignment: .leading) {
-            var history = viewModel.history.filter { $0.medicineId == medicine.id }
+            let history = viewModel.history.filter { $0.medicineId == medicine.id }
             Text("History")
                 .font(.headline)
                 .padding(.top, 20)

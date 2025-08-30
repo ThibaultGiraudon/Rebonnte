@@ -8,7 +8,10 @@ struct AisleListView: View {
         NavigationView {
             List {
                 ForEach(viewModel.aisles, id: \.self) { aisle in
-                    NavigationLink(destination: MedicineListView(viewModel: viewModel, aisle: aisle)) {
+                    NavigationLink{
+                        MedicineListView(viewModel: viewModel, aisle: aisle)
+                            .navigationTitle(aisle)
+                    } label: {
                         Text(aisle)
                     }
                 }
