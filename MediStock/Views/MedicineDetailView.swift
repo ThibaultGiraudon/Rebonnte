@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct MedicineDetailView: View {
     @State var medicine: Medicine
@@ -40,9 +41,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-                print(viewModel.medicines)
-                await viewModel.fetchHistory(for: medicine)
-                print(viewModel.medicines)
+//                await viewModel.fetchHistory(for: medicine)
             }
         }
     }
@@ -102,9 +101,20 @@ extension MedicineDetailView {
 
     private var historySection: some View {
         VStack(alignment: .leading) {
+            var history = viewModel.history.filter { $0.medicineId == medicine.id }
             Text("History")
                 .font(.headline)
                 .padding(.top, 20)
+            
+            Chart {
+                ForEach(0..<history.count, id: \.self) { index in
+                    LineMark(
+                        x: .value("Date", history[index].timestamp),
+                        y: .value("Stock", history[index].currentStock)
+                        )
+                }
+            }
+            
             ForEach(viewModel.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
                     Text(entry.action)
@@ -128,8 +138,18 @@ extension MedicineDetailView {
 
 struct MedicineDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleMedicine = Medicine(name: "Sample", stock: 10, aisle: "Aisle 1")
+        let sampleMedicine = Medicine(id: "12", name: "Sample", stock: 25, aisle: "Aisle 1")
         let sampleViewModel = MedicineStockViewModel()
-        MedicineDetailView(medicine: sampleMedicine, viewModel: sampleViewModel).environmentObject(SessionStore())
+        sampleViewModel.history = [
+            .init(medicineId: "12", user: "user@test.com", action: "Add new medicine", details: "user@test.com adds Sample with initial stock of 10", currentStock: 10),
+            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 2", details: "Stock change from 10 to 12", currentStock: 12),
+            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 12 to 15", currentStock: 15),
+            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 6", details: "Stock change from 15 to 21", currentStock: 21),
+            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 2", details: "Stock change from 21 to 19", currentStock: 19),
+            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 19", details: "Stock change from 19 to 38", currentStock: 38),
+            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 10", details: "Stock change from 38 to 28", currentStock: 28),
+            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 28 to 25", currentStock: 25),
+        ]
+         return MedicineDetailView(medicine: sampleMedicine, viewModel: sampleViewModel).environmentObject(SessionStore())
     }
 }
