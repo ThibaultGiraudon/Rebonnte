@@ -68,4 +68,18 @@ class FirestoreRepository {
     func addHistory(_ history: HistoryEntry) async throws {
         try await db.collection("history").document(history.id).setData(history.data())
     }
+    
+    func fetchUser(with uid: String) async throws -> User? {
+        let document = try await db.collection("users").document(uid).getDocument()
+        print(document.data() ?? "No data")
+        return User(document.data(), id: document.documentID)
+    }
+    
+    func addUser(_ user: User) async throws {
+        try await db.collection("users").document(user.uid).setData(user.data())
+    }
+    
+    func updateUser(_ user: User) async throws {
+        try await db.collection("users").document(user.uid).setData(user.data())
+    }
 }

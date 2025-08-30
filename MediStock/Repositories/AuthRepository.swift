@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 
 class AuthRepository {
-    @Published var currentUser: User? = nil
+    @Published var currentUserUID: String? = nil
     private var handle: AuthStateDidChangeListenerHandle?
 
     init() {
@@ -20,23 +20,23 @@ class AuthRepository {
         handle = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
             guard let self = self else { return }
             if let user = user {
-                self.currentUser = User(uid: user.uid, email: user.email)
+                self.currentUserUID = user.uid
             } else {
-                self.currentUser = nil
+                self.currentUserUID = nil
             }
         }
     }
     
-    func signUp(email: String, password: String) async throws -> User {
+    func signUp(email: String, password: String) async throws -> String {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         
-        return User(uid: result.user.uid, email: result.user.email)
+        return result.user.uid
     }
 
-    func signIn(email: String, password: String) async throws -> User {
+    func signIn(email: String, password: String) async throws -> String {
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
         
-        return User(uid: result.user.uid, email: result.user.email)
+        return result.user.uid
     }
 
     func signOut() throws {

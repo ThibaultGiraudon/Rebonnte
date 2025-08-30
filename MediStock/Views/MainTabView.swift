@@ -14,6 +14,12 @@ struct MainTabView: View {
                     Image(systemName: "square.grid.2x2")
                     Text("All Medicines")
                 }
+            
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Profile")
+                }
         }
     }
 }

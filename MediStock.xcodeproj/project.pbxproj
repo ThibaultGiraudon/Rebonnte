@@ -25,6 +25,7 @@
 		53E0D8D42C06092E00DE1134 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 53E0D8D32C06092E00DE1134 /* FirebaseFirestoreCombine-Community */; };
 		53E0D8D62C06092E00DE1134 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53E0D8D52C06092E00DE1134 /* FirebaseFirestoreSwift */; };
 		53E0D8E22C065FFE00DE1134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */; };
+		CE4EEB6A2E5F410100A9B606 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE4EEB692E5F410100A9B606 /* FirebaseStorage */; };
 		CE8409B62E5D9A77000FA60A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B52E5D9A77000FA60A /* .gitignore */; };
 		CE8409B82E5D9ACF000FA60A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 				53E0D8C22C06092E00DE1134 /* FirebaseAnalytics in Frameworks */,
 				53E0D8D42C06092E00DE1134 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				53E0D8C42C06092E00DE1134 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				CE4EEB6A2E5F410100A9B606 /* FirebaseStorage in Frameworks */,
 				53E0D8D62C06092E00DE1134 /* FirebaseFirestoreSwift in Frameworks */,
 				53E0D8CC2C06092E00DE1134 /* FirebaseCrashlytics in Frameworks */,
 				53E0D8D22C06092E00DE1134 /* FirebaseFirestore in Frameworks */,
@@ -112,6 +114,7 @@
 				53E0D8952C06084700DE1134 /* MediStock */,
 				53E0D8A62C06084900DE1134 /* MediStockTests */,
 				53E0D8B02C06084900DE1134 /* MediStockUITests */,
+				CE4EEB682E5F410100A9B606 /* Frameworks */,
 				53E0D8942C06084700DE1134 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -166,6 +169,13 @@
 			path = MediStockUITests;
 			sourceTree = "<group>";
 		};
+		CE4EEB682E5F410100A9B606 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -200,6 +210,7 @@
 				53E0D8D12C06092E00DE1134 /* FirebaseFirestore */,
 				53E0D8D32C06092E00DE1134 /* FirebaseFirestoreCombine-Community */,
 				53E0D8D52C06092E00DE1134 /* FirebaseFirestoreSwift */,
+				CE4EEB692E5F410100A9B606 /* FirebaseStorage */,
 			);
 			productName = MediStock;
 			productReference = 53E0D8932C06084700DE1134 /* MediStock.app */;
@@ -710,6 +721,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 53E0D8C02C06092E00DE1134 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		CE4EEB692E5F410100A9B606 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53E0D8C02C06092E00DE1134 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
