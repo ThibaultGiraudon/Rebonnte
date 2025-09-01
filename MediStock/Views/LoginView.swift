@@ -22,6 +22,7 @@ struct LoginView: View {
             } label: {
                 Text("Login")
             }
+            .disabled(email.isEmpty || password.isEmpty)
             Button {
                 Task {
                    await session.signUp(email: email, password: password)
@@ -29,8 +30,22 @@ struct LoginView: View {
             } label: {
                 Text("Sign Up")
             }
+            .disabled(email.isEmpty || password.isEmpty)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+        .overlay(alignment: .bottom, content: {
+            if let error = session.error {
+                Text(error)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .foregroundStyle(.white)
+                    .accessibilityHidden(true)
+                    .onAppear {
+                        UIAccessibility.post(notification: .announcement, argument: error)
+                    }
+            }
+        })
     }
 }
 

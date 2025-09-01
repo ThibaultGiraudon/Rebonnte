@@ -6,39 +6,37 @@ struct AllMedicinesView: View {
     @State private var showAddMedicine: Bool = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                // Filtrage et Tri
-                HStack {
-                    TextField("Filter by name", text: $medicinesVM.filterText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.leading, 10)
-                        .onSubmit {
-                            Task {
-                                await medicinesVM.fetchMedicines()
-                            }
-                        }
-                    
-                    Spacer()
-
-                    Picker("Sort by", selection: $medicinesVM.sortOption) {
-                        Text("None").tag(SortOption.none)
-                        Text("Name").tag(SortOption.name)
-                        Text("Stock").tag(SortOption.stock)
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.trailing, 10)
-                    .onChange(of: medicinesVM.sortOption) {
+        VStack {
+            // Filtrage et Tri
+            HStack {
+                TextField("Filter by name", text: $medicinesVM.filterText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.leading, 10)
+                    .onSubmit {
                         Task {
                             await medicinesVM.fetchMedicines()
                         }
                     }
-                }
-                .padding(.top, 10)
                 
-                // Liste des Médicaments
-                MedicineListView(medicinesVM: medicinesVM)
+                Spacer()
+
+                Picker("Sort by", selection: $medicinesVM.sortOption) {
+                    Text("None").tag(SortOption.none)
+                    Text("Name").tag(SortOption.name)
+                    Text("Stock").tag(SortOption.stock)
+                }
+                .pickerStyle(MenuPickerStyle())
+                .padding(.trailing, 10)
+                .onChange(of: medicinesVM.sortOption) {
+                    Task {
+                        await medicinesVM.fetchMedicines()
+                    }
+                }
             }
+            .padding(.top, 10)
+            
+            // Liste des Médicaments
+            MedicineListView(medicinesVM: medicinesVM)
         }
         .navigationBarTitle("All Medicines")
         .onAppear {
@@ -89,6 +87,8 @@ enum SortOption: String, CaseIterable, Identifiable, Equatable {
 
 struct AllMedicinesView_Previews: PreviewProvider {
     static var previews: some View {
-        AllMedicinesView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
+        NavigationStack {
+            AllMedicinesView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
+        }
     }
 }

@@ -7,33 +7,34 @@ struct MedicineDetailView: View {
     @EnvironmentObject var session: SessionStore
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading) {
+            List {
                 // Title
-                Text(medicine.name)
-                    .font(.largeTitle)
-                    .padding(.top, 20)
-
-                // Medicine Name
-                medicineNameSection
+                Section {
+                    TextField("Name", text: $medicine.name)
+                        .font(.largeTitle)
+                }
 
                 // Medicine Stock
-                medicineStockSection
-
-                // Medicine Aisle
-                medicineAisleSection
+                Section("Stock") {
+                    medicineStockSection
+                }
+                Section("Location") {
+                    // Medicine Aisle
+                    TextField("Aisle", text: $medicine.aisle)
+                }
 
                 // History Section
-                historySection
+                Section("History") {
+                    historySection
+                }
             }
-            .padding(.vertical)
         }
         .navigationBarTitle("Medicine Details", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
                     Task {
-                        print(medicinesVM.medicines)
                         await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
                     }
                 }
@@ -41,28 +42,16 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-                await medicinesVM.fetchHistory(for: medicine)
+//                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
 }
 
 extension MedicineDetailView {
-    private var medicineNameSection: some View {
-        VStack(alignment: .leading) {
-            Text("Name")
-                .font(.headline)
-            TextField("Name", text: $medicine.name)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding(.bottom, 10)
-        }
-        .padding(.horizontal)
-    }
 
     private var medicineStockSection: some View {
         VStack(alignment: .leading) {
-            Text("Stock")
-                .font(.headline)
             HStack {
                 Button {
                     medicine.stock -= 1
@@ -71,6 +60,7 @@ extension MedicineDetailView {
                         .font(.title)
                         .foregroundColor(.red)
                 }
+                .buttonStyle(.plain)
                 TextField("Stock", value: $medicine.stock, formatter: NumberFormatter())
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
@@ -82,49 +72,52 @@ extension MedicineDetailView {
                         .font(.title)
                         .foregroundColor(.green)
                 }
+                .buttonStyle(.plain)
             }
-            .padding(.bottom, 10)
         }
-        .padding(.horizontal)
-    }
-
-    private var medicineAisleSection: some View {
-        VStack(alignment: .leading) {
-            Text("Aisle")
-                .font(.headline)
-            TextField("Aisle", text: $medicine.aisle)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding(.bottom, 10)
-        }
-        .padding(.horizontal)
     }
 
     private var historySection: some View {
-        VStack(alignment: .leading) {
-            let history = medicinesVM.history.filter { $0.medicineId == medicine.id }
-            Text("History")
-                .font(.headline)
-                .padding(.top, 20)
+        
+        let linearGradient = LinearGradient(gradient: .init(colors: [Color.lightBlue.opacity(0.8), Color.lightBlue.opacity(0)]), startPoint: .top, endPoint: .bottom)
+        
+        let history = medicinesVM.history.filter { $0.medicineId == medicine.id }
+
+        return VStack(alignment: .leading) {
             
             Chart {
                 ForEach(0..<history.count, id: \.self) { index in
                     LineMark(
-                        x: .value("Date", history[index].timestamp),
+                        x: .value("", index + 1),
                         y: .value("Stock", history[index].currentStock)
                         )
                 }
+                .interpolationMethod(.cardinal)
+                .symbol(by: .value("Stock", "stock"))
+                
+                ForEach(0..<history.count, id: \.self) { index in
+                    AreaMark(
+                        x: .value("", index + 1),
+                        y: .value("Stock", history[index].currentStock)
+                        )
+                }
+                .interpolationMethod(.cardinal)
+                .foregroundStyle(linearGradient)
             }
-            
+            .chartLegend(.hidden)
+            .chartXAxis(.hidden)
+            .aspectRatio(1, contentMode: .fit)
+            .padding(.vertical)
+                        
             ForEach(medicinesVM.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                        Text(entry.user)
+                        Spacer()
+                        Text(entry.timestamp.formatted())
+                    }
                     Text(entry.action)
                         .font(.headline)
-                    Text("User: \(entry.user)")
-                        .font(.subheadline)
-                    Text("Date: \(entry.timestamp.formatted())")
-                        .font(.subheadline)
-                    Text("Details: \(entry.details)")
-                        .font(.subheadline)
                 }
                 .padding()
                 .background(Color(.systemGray6))
@@ -132,7 +125,6 @@ extension MedicineDetailView {
                 .padding(.bottom, 5)
             }
         }
-        .padding(.horizontal)
     }
 }
 

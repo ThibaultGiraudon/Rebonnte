@@ -4,7 +4,7 @@ struct ContentView: View {
     @EnvironmentObject var session: SessionStore
 
     var body: some View {
-        Group {
+        NavigationStack {
             if session.session != nil {
                 MainTabView()
             } else {

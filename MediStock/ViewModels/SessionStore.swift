@@ -16,26 +16,32 @@ class SessionStore: ObservableObject {
     func signUp(email: String, password: String) async {
         self.error = nil
         do {
-            self.uid = try await authRepository.signUp(email: email, password: password)
+            let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+            print("-\(email)-")
+            print("-\(trimmedEmail)-")
+            self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
             guard let uid else {
-                self.error = "signing up"
+                self.error = "An error occured, please try again."
                 return
             }
             let user = User(uid: uid, email: email, fullname: "New user")
             try await firestoreRepository.addUser(user)
             self.session = user
         } catch {
-            self.error = "signing up"
+            self.error = authRepository.identifyError(error)
         }
     }
 
     func signIn(email: String, password: String) async {
         self.error = nil
         do {
-            self.uid = try await authRepository.signIn(email: email, password: password)
+            let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+            print("-\(email)-")
+            print("-\(trimmedEmail)-")
+            self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
             self.session = await self.fetchUser(with: self.uid)
         } catch {
-            self.error = "signing in"
+            self.error = authRepository.identifyError(error)
         }
     }
 
