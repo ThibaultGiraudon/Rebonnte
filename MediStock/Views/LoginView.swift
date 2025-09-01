@@ -5,32 +5,45 @@ struct LoginView: View {
     @State private var password = ""
     @EnvironmentObject var session: SessionStore
 
+    var shouldDisable: Bool {
+        email.isEmpty || password.isEmpty
+    }
+    
     var body: some View {
         VStack {
+            
+            Spacer()
+            
+            Image("icon")
+                .resizable()
+                .scaledToFit()
+            
+            Spacer()
+            
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            Button {
+            
+            CustomButton(title: "Sign In", color: .lightBlue) {
                 Task {
                    await session.signIn(email: email, password: password)
                 }
-            } label: {
-                Text("Login")
             }
-            .disabled(email.isEmpty || password.isEmpty)
-            Button {
+            .opacity(shouldDisable ? 0.6 : 1)
+            .disabled(shouldDisable)
+            .padding(.top)
+            CustomButton(title: "Create an account", color: .darkBlue) {
                 Task {
                    await session.signUp(email: email, password: password)
                 }
-            } label: {
-                Text("Sign Up")
             }
-            .disabled(email.isEmpty || password.isEmpty)
+            .opacity(shouldDisable ? 0.8 : 1)
+            .disabled(shouldDisable)
+            Spacer()
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
@@ -46,6 +59,28 @@ struct LoginView: View {
                     }
             }
         })
+    }
+}
+
+struct CustomButton: View {
+    var title: String
+    var color: Color
+    var completion: () -> Void
+    var body: some View {
+        Button {
+            completion()
+        } label: {
+            Text(title)
+                .foregroundStyle(.white)
+                .font(.title)
+                .frame(maxWidth: .infinity)
+                .padding(10)
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(color)
+                }
+                .padding(.horizontal, 20)
+        }
     }
 }
 
