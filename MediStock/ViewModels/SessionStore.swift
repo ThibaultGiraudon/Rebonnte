@@ -13,7 +13,7 @@ class SessionStore: ObservableObject {
     private var firestoreRepository: FirestoreRepository = .init()
     private var storageRepository: StorageRepository = .init()
 
-    func signUp(email: String, password: String) async {
+    func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -24,7 +24,7 @@ class SessionStore: ObservableObject {
                 self.error = "An error occured, please try again."
                 return
             }
-            let user = User(uid: uid, email: email, fullname: "New user")
+            let user = User(uid: uid, email: email, fullname: "fullname")
             try await firestoreRepository.addUser(user)
             self.session = user
         } catch {

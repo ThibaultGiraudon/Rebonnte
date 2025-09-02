@@ -20,12 +20,10 @@ struct LoginView: View {
             
             Spacer()
             
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            CustomTextField(label: "Email", text: $email, prompt: "Enter email")
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            CustomSecureField(label: "Password", text: $password, prompt: "Enter password")
             
             CustomButton(title: "Sign In", color: .lightBlue) {
                 Task {
@@ -37,7 +35,8 @@ struct LoginView: View {
             .padding(.top)
             CustomButton(title: "Create an account", color: .darkBlue) {
                 Task {
-                   await session.signUp(email: email, password: password)
+//                    await session.signUp(email: email, password: password)
+                    // TODO: add navlink
                 }
             }
             .opacity(shouldDisable ? 0.8 : 1)
@@ -79,7 +78,6 @@ struct CustomButton: View {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(color)
                 }
-                .padding(.horizontal, 20)
         }
     }
 }
