@@ -3,7 +3,9 @@ import SwiftUI
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
+    
     @EnvironmentObject var session: SessionStore
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var shouldDisable: Bool {
         email.isEmpty || password.isEmpty
@@ -23,6 +25,7 @@ struct LoginView: View {
             CustomTextField(label: "Email", text: $email, prompt: "Enter email")
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
+            
             CustomSecureField(label: "Password", text: $password, prompt: "Enter password")
             
             CustomButton(title: "Sign In", color: .lightBlue) {
@@ -33,14 +36,11 @@ struct LoginView: View {
             .opacity(shouldDisable ? 0.6 : 1)
             .disabled(shouldDisable)
             .padding(.top)
+            
             CustomButton(title: "Create an account", color: .darkBlue) {
-                Task {
-//                    await session.signUp(email: email, password: password)
-                    // TODO: add navlink
-                }
+                coordinator.goToRegister()
             }
-            .opacity(shouldDisable ? 0.8 : 1)
-            .disabled(shouldDisable)
+            
             Spacer()
             Spacer()
         }
@@ -71,7 +71,7 @@ struct CustomButton: View {
         } label: {
             Text(title)
                 .foregroundStyle(.white)
-                .font(.title)
+                .font(.title2)
                 .frame(maxWidth: .infinity)
                 .padding(10)
                 .background {

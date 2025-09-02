@@ -3,21 +3,23 @@ import SwiftUI
 struct AisleListView: View {
     @ObservedObject var medicinesVM: MedicineStockViewModel
     @ObservedObject var addMedicinesVM: AddMedicineViewModel
+    
     @State private var showAddMedicine = false
+    
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
         List {
             ForEach(medicinesVM.aisles, id: \.self) { aisle in
-                NavigationLink{
-                    MedicineListView(medicinesVM: medicinesVM, aisle: aisle)
-                        .navigationTitle(aisle)
+                Button {
+                    coordinator.goToMedicinesList(for: aisle)
                 } label: {
                     Text(aisle)
                 }
             }
         }
-        .navigationBarTitle("Aisles")
-        .toolbar(content: {
+        .navigationTitle("Aisles")
+        .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showAddMedicine = true
@@ -25,7 +27,7 @@ struct AisleListView: View {
                     Image(systemName: "plus")
                 }
             }
-        })
+        }
         .onAppear {
             Task {
                 await medicinesVM.fetchMedicines()

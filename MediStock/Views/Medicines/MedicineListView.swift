@@ -3,11 +3,13 @@ import SwiftUI
 struct MedicineListView: View {
     @ObservedObject var medicinesVM: MedicineStockViewModel
     var aisle: String = ""
+    
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
         List {
             ForEach(medicinesVM.medicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }, id: \.id) { medicine in
-                NavigationLink(destination: MedicineDetailView(medicine: medicine, medicinesVM: medicinesVM)) {
+                Button(action: { coordinator.goToDetail(for: medicine) }) {
                     VStack(alignment: .leading) {
                         Text(medicine.name)
                             .font(.headline)

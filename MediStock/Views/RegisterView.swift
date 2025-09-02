@@ -13,6 +13,7 @@ struct RegisterView: View {
     @State private var password: String = ""
     
     @EnvironmentObject var session: SessionStore
+    @EnvironmentObject var coordinator: AppCoordinator
     
     var shouldDisabled: Bool {
         fullname.isEmpty || email.isEmpty || password.isEmpty
@@ -41,6 +42,9 @@ struct RegisterView: View {
             CustomButton(title: "Create", color: .lightBlue) {
                 Task {
                     await session.signUp(fullname: fullname, email: email, password: password)
+                    if session.error == nil {
+                        coordinator.dismiss()
+                    }
                 }
             }
             .opacity(shouldDisabled ? 0.6 : 1)

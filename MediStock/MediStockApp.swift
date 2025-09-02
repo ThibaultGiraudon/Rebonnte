@@ -13,9 +13,11 @@ struct MediStockApp: App {
 
     var body: some Scene {
         lazy var sessionStore = SessionStore()
+        lazy var coordinator = AppCoordinator()
         WindowGroup {
             ContentView()
                 .environmentObject(sessionStore)
+                .environmentObject(coordinator)
         }
     }
 }

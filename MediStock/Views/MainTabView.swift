@@ -1,11 +1,29 @@
 import SwiftUI
 
+enum TabItem: String, CaseIterable {
+    case aisles
+    case medicines
+    case profile
+    
+    var icon: String {
+        switch self {
+        case .aisles:
+            "list.bullet.circle"
+        case .medicines:
+            "square.grid.2x2"
+        case .profile:
+            "person.fill"
+        }
+    }
+}
+
 struct MainTabView: View {
     @EnvironmentObject var session: SessionStore
     @StateObject var medicinesVM = MedicineStockViewModel()
     @StateObject var addMedicinesVM = AddMedicineViewModel()
     
     @State private var activeError: String?
+    @State private var selectedTab: TabItem = .aisles
     
     var body: some View {
         VStack {
@@ -17,25 +35,33 @@ struct MainTabView: View {
                     }
                 }
             } else {
-                TabView {
+                switch selectedTab {
+                case .aisles:
                     AisleListView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
-                        .tabItem {
-                            Image(systemName: "list.dash")
-                            Text("Aisles")
-                        }
-                    
+                case .medicines:
                     AllMedicinesView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
-                        .tabItem {
-                            Image(systemName: "square.grid.2x2")
-                            Text("All Medicines")
-                        }
-                    
+                case .profile:
                     ProfileView()
-                        .tabItem {
-                            Image(systemName: "person.fill")
-                            Text("Profile")
-                        }
                 }
+                
+                HStack(spacing: 33) {
+                    ForEach(TabItem.allCases, id: \.self) { tab in
+                        VStack {
+                            Image(systemName: tab.icon)
+                                .font(.title)
+                            Text(tab.rawValue)
+                        }
+                        .foregroundStyle(selectedTab == tab ? .lightBlue : .white)
+                        .onTapGesture {
+                            selectedTab = tab
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityIdentifier(tab.rawValue)
+                        .accessibilityLabel(tab.rawValue)
+                        .accessibilityHint(selectedTab == tab ? "" : "Double-tap to open \(tab.rawValue) view")
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
         }
         .onReceive(session.$error) { if let err = $0 { activeError = err} }

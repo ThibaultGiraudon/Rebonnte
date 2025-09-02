@@ -19,7 +19,7 @@ struct AllMedicinesView: View {
                     }
                 
                 Spacer()
-
+                
                 Picker("Sort by", selection: $medicinesVM.sortOption) {
                     Text("None").tag(SortOption.none)
                     Text("Name").tag(SortOption.name)
@@ -38,7 +38,16 @@ struct AllMedicinesView: View {
             // Liste des Médicaments
             MedicineListView(medicinesVM: medicinesVM)
         }
-        .navigationBarTitle("All Medicines")
+        .navigationTitle("All Medicines")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showAddMedicine = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
         .onAppear {
             Task {
                 await medicinesVM.fetchMedicines()
@@ -53,15 +62,6 @@ struct AllMedicinesView: View {
                 AddMedicineView(addMedicinesVM: addMedicinesVM)
             }
         }
-        .toolbar(content: {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showAddMedicine = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-        })
         
     }
 }

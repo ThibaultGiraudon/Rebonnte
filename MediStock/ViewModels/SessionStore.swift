@@ -2,12 +2,19 @@ import Foundation
 import Combine
 import SwiftUI
 
+enum AuthenticationState: Hashable {
+    case signingIn
+    case signedIn
+    case signedOut
+}
+
 @MainActor
 class SessionStore: ObservableObject {
     @Published var session: User?
     @Published private(set) var uid: String?
     @Published var isLoading: Bool = false
     @Published var error: String?
+    @Published var authenticationState: AuthenticationState = .signedOut
     
     private var authRepository: AuthRepository = .init()
     private var firestoreRepository: FirestoreRepository = .init()
@@ -16,17 +23,17 @@ class SessionStore: ObservableObject {
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
         do {
+            self.authenticationState = .signingIn
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-            print("-\(email)-")
-            print("-\(trimmedEmail)-")
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
             guard let uid else {
                 self.error = "An error occured, please try again."
                 return
             }
-            let user = User(uid: uid, email: email, fullname: "fullname")
+            let user = User(uid: uid, email: email, fullname: fullname)
             try await firestoreRepository.addUser(user)
             self.session = user
+            self.authenticationState = .signedIn
         } catch {
             self.error = authRepository.identifyError(error)
         }
@@ -35,11 +42,13 @@ class SessionStore: ObservableObject {
     func signIn(email: String, password: String) async {
         self.error = nil
         do {
+            self.authenticationState = .signingIn
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             print("-\(email)-")
             print("-\(trimmedEmail)-")
             self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
             self.session = await self.fetchUser(with: self.uid)
+            self.authenticationState = .signedIn
         } catch {
             self.error = authRepository.identifyError(error)
         }
@@ -51,6 +60,7 @@ class SessionStore: ObservableObject {
             try authRepository.signOut()
             self.session = nil
             self.uid = nil
+            self.authenticationState = .signedOut
         } catch {
             self.error = "signing out"
         }
