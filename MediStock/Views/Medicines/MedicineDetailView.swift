@@ -48,7 +48,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-//                await medicinesVM.fetchHistory(for: medicine)
+                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
@@ -88,14 +88,16 @@ extension MedicineDetailView {
         let linearGradient = LinearGradient(gradient: .init(colors: [Color.lightBlue.opacity(0.8), Color.lightBlue.opacity(0)]), startPoint: .top, endPoint: .bottom)
         
         let history = medicinesVM.history.filter { $0.medicineId == medicine.id }
+        
+        let sortedHistory = history.sorted(by: { $0.timestamp < $1.timestamp})
 
         return VStack(alignment: .leading) {
             if history.count > 1 {
                 Chart {
-                    ForEach(0..<history.count, id: \.self) { index in
+                    ForEach(0..<sortedHistory.count, id: \.self) { index in
                         LineMark(
                             x: .value("", index + 1),
-                            y: .value("Stock", history[index].currentStock)
+                            y: .value("Stock", sortedHistory[index].currentStock)
                         )
                     }
                     .interpolationMethod(.cardinal)
@@ -104,7 +106,7 @@ extension MedicineDetailView {
                     ForEach(0..<history.count, id: \.self) { index in
                         AreaMark(
                             x: .value("", index + 1),
-                            y: .value("Stock", history[index].currentStock)
+                            y: .value("Stock", sortedHistory[index].currentStock)
                         )
                     }
                     .interpolationMethod(.cardinal)
@@ -116,7 +118,7 @@ extension MedicineDetailView {
                 .padding(.vertical)
             }
             
-            ForEach(medicinesVM.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
+            ForEach(history, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
                         Text(entry.user)

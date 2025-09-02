@@ -23,7 +23,6 @@ class SessionStore: ObservableObject {
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
         do {
-            self.authenticationState = .signingIn
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
             guard let uid else {
@@ -42,7 +41,6 @@ class SessionStore: ObservableObject {
     func signIn(email: String, password: String) async {
         self.error = nil
         do {
-            self.authenticationState = .signingIn
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
             self.session = await self.fetchUser(with: self.uid)

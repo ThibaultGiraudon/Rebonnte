@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class AddMedicineViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var aisle: String = ""
