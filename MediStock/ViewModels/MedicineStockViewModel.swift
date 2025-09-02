@@ -13,7 +13,7 @@ class MedicineStockViewModel: ObservableObject {
     
     @Published var error: String? = nil
     
-    private let repository = FirestoreRepositoryInterface
+    private let repository: FirestoreRepositoryInterface
     
     init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
         self.repository = repository
