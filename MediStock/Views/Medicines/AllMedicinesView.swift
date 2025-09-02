@@ -25,6 +25,7 @@ struct AllMedicinesView: View {
                     Text("Name").tag(SortOption.name)
                     Text("Stock").tag(SortOption.stock)
                 }
+                .tint(.primaryText)
                 .pickerStyle(MenuPickerStyle())
                 .padding(.trailing, 10)
                 .onChange(of: medicinesVM.sortOption) {
@@ -45,6 +46,7 @@ struct AllMedicinesView: View {
                     showAddMedicine = true
                 } label: {
                     Image(systemName: "plus")
+                        .foregroundStyle(.primaryText)
                 }
             }
         }

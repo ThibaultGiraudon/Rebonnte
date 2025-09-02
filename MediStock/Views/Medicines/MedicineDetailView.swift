@@ -30,6 +30,12 @@ struct MedicineDetailView: View {
                 }
             }
         }
+        .listRowBackground(Color.customPrimary)
+        .scrollContentBackground(.hidden)
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
         .navigationBarTitle("Medicine Details", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -42,7 +48,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-//                await medicinesVM.fetchHistory(for: medicine)
+                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }

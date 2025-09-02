@@ -114,7 +114,7 @@ struct ProfileView: View {
                 .frame(maxWidth: .infinity)
                 .padding(10)
                 .background {
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 10)
                         .fill(color)
                 }
                 .padding(.horizontal, 20)

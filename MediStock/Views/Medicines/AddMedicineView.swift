@@ -21,6 +21,12 @@ struct AddMedicineView: View {
                 TextField("Stock", value: $addMedicinesVM.stock, format: .number)
             }
         }
+        .listRowBackground(Color.customPrimary)
+        .scrollContentBackground(.hidden)
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
         .navigationTitle("Add medicine")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -45,6 +51,8 @@ struct AddMedicineView: View {
 
 #Preview {
     let session = SessionStore()
-    AddMedicineView(addMedicinesVM: AddMedicineViewModel())
-        .environmentObject(session)
+    NavigationStack {
+        AddMedicineView(addMedicinesVM: AddMedicineViewModel())
+            .environmentObject(session)
+    }
 }

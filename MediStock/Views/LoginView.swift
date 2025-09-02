@@ -45,6 +45,11 @@ struct LoginView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .foregroundStyle(.primaryText)
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
         .padding()
         .overlay(alignment: .bottom, content: {
             if let error = session.error {

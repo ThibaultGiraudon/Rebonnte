@@ -15,8 +15,15 @@ struct AisleListView: View {
                     coordinator.goToMedicinesList(for: aisle)
                 } label: {
                     Text(aisle)
+                        .foregroundStyle(.primaryText)
                 }
             }
+        }
+        .listRowBackground(Color.customPrimary)
+        .scrollContentBackground(.hidden)
+        .background {
+            Color.background
+                .ignoresSafeArea()
         }
         .navigationTitle("Aisles")
         .toolbar {
@@ -45,6 +52,7 @@ struct AisleListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             AisleListView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
+                .environmentObject(AppCoordinator())
         }
     }
 }

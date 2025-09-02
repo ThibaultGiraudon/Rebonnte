@@ -55,6 +55,11 @@ struct RegisterView: View {
             Spacer()
         }
         .padding()
+        .foregroundStyle(.primaryText)
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
         .overlay(alignment: .bottom) {
             if let error = session.error {
                 Text(error)

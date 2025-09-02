@@ -15,11 +15,12 @@ struct ErrorView: View {
         VStack {
             Group {
                 Image(systemName: "exclamationmark")
+                    .foregroundStyle(.customPrimary)
                     .font(.largeTitle)
                     .padding(20)
                     .background {
                         Circle()
-                            .fill(.gray)
+                            .fill(.primaryText)
                     }
                     .padding(.bottom, 24)
             
@@ -49,6 +50,11 @@ struct ErrorView: View {
             .accessibilityHint("Double-tap to try again")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .foregroundStyle(.primaryText)
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
     }
 }
 

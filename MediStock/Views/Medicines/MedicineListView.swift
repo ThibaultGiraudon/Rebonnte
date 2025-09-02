@@ -16,6 +16,7 @@ struct MedicineListView: View {
                         Text("Stock: \(medicine.stock)")
                             .font(.subheadline)
                     }
+                    .foregroundStyle(.primaryText)
                 }
                 .onAppear {
                     if medicine == medicinesVM.medicines.last {
@@ -30,6 +31,12 @@ struct MedicineListView: View {
                     await medicinesVM.deleteMedicines(at: indexes)
                 }
             }
+        }
+        .listRowBackground(Color.customPrimary)
+        .scrollContentBackground(.hidden)
+        .background {
+            Color.background
+                .ignoresSafeArea()
         }
         .onAppear {
             Task {
