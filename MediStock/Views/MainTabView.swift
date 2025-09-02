@@ -51,7 +51,7 @@ struct MainTabView: View {
                                 .font(.title)
                             Text(tab.rawValue)
                         }
-                        .foregroundStyle(selectedTab == tab ? .lightBlue : .white)
+                        .foregroundStyle(selectedTab == tab ? .lightBlue : .primaryText)
                         .onTapGesture {
                             selectedTab = tab
                         }
@@ -67,6 +67,10 @@ struct MainTabView: View {
         .onReceive(session.$error) { if let err = $0 { activeError = err} }
         .onReceive(medicinesVM.$error) { if let err = $0 { activeError = err} }
         .onReceive(addMedicinesVM.$error) { if let err = $0 { activeError = err} }
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
     }
 }
 

@@ -48,7 +48,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-                await medicinesVM.fetchHistory(for: medicine)
+//                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
@@ -90,31 +90,32 @@ extension MedicineDetailView {
         let history = medicinesVM.history.filter { $0.medicineId == medicine.id }
 
         return VStack(alignment: .leading) {
-            
-            Chart {
-                ForEach(0..<history.count, id: \.self) { index in
-                    LineMark(
-                        x: .value("", index + 1),
-                        y: .value("Stock", history[index].currentStock)
+            if history.count > 1 {
+                Chart {
+                    ForEach(0..<history.count, id: \.self) { index in
+                        LineMark(
+                            x: .value("", index + 1),
+                            y: .value("Stock", history[index].currentStock)
                         )
-                }
-                .interpolationMethod(.cardinal)
-                .symbol(by: .value("Stock", "stock"))
-                
-                ForEach(0..<history.count, id: \.self) { index in
-                    AreaMark(
-                        x: .value("", index + 1),
-                        y: .value("Stock", history[index].currentStock)
+                    }
+                    .interpolationMethod(.cardinal)
+                    .symbol(by: .value("Stock", "stock"))
+                    
+                    ForEach(0..<history.count, id: \.self) { index in
+                        AreaMark(
+                            x: .value("", index + 1),
+                            y: .value("Stock", history[index].currentStock)
                         )
+                    }
+                    .interpolationMethod(.cardinal)
+                    .foregroundStyle(linearGradient)
                 }
-                .interpolationMethod(.cardinal)
-                .foregroundStyle(linearGradient)
+                .chartLegend(.hidden)
+                .chartXAxis(.hidden)
+                .aspectRatio(1, contentMode: .fit)
+                .padding(.vertical)
             }
-            .chartLegend(.hidden)
-            .chartXAxis(.hidden)
-            .aspectRatio(1, contentMode: .fit)
-            .padding(.vertical)
-                        
+            
             ForEach(medicinesVM.history.filter { $0.medicineId == medicine.id }, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
@@ -140,13 +141,13 @@ struct MedicineDetailView_Previews: PreviewProvider {
         let sampleViewModel = MedicineStockViewModel()
         sampleViewModel.history = [
             .init(medicineId: "12", user: "user@test.com", action: "Add new medicine", details: "user@test.com adds Sample with initial stock of 10", currentStock: 10),
-            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 2", details: "Stock change from 10 to 12", currentStock: 12),
-            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 12 to 15", currentStock: 15),
-            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 6", details: "Stock change from 15 to 21", currentStock: 21),
-            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 2", details: "Stock change from 21 to 19", currentStock: 19),
-            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 19", details: "Stock change from 19 to 38", currentStock: 38),
-            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 10", details: "Stock change from 38 to 28", currentStock: 28),
-            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 28 to 25", currentStock: 25),
+//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 2", details: "Stock change from 10 to 12", currentStock: 12),
+//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 12 to 15", currentStock: 15),
+//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 6", details: "Stock change from 15 to 21", currentStock: 21),
+//            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 2", details: "Stock change from 21 to 19", currentStock: 19),
+//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 19", details: "Stock change from 19 to 38", currentStock: 38),
+//            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 10", details: "Stock change from 38 to 28", currentStock: 28),
+//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 28 to 25", currentStock: 25),
         ]
          return MedicineDetailView(medicine: sampleMedicine, medicinesVM: sampleViewModel).environmentObject(SessionStore())
     }

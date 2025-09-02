@@ -39,6 +39,10 @@ struct AllMedicinesView: View {
             // Liste des Médicaments
             MedicineListView(medicinesVM: medicinesVM)
         }
+        .background {
+            Color.customPrimary
+                .ignoresSafeArea()
+        }
         .navigationTitle("All Medicines")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
