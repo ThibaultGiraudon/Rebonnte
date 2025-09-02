@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-class FirestoreRepository {
+class FirestoreRepository: FirestoreRepositoryInterface {
     private let db = Firestore.firestore()
     private var lastDocument: DocumentSnapshot?
     private let pageSize = 20

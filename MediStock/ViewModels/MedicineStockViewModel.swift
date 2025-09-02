@@ -13,7 +13,11 @@ class MedicineStockViewModel: ObservableObject {
     
     @Published var error: String? = nil
     
-    private let repository = FirestoreRepository()
+    private let repository = FirestoreRepositoryInterface
+    
+    init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
+        self.repository = repository
+    }
 
     func fetchMedicines(fetchNext: Bool = false) async {
         self.error = nil

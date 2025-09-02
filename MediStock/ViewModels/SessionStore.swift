@@ -16,9 +16,19 @@ class SessionStore: ObservableObject {
     @Published var error: String?
     @Published var authenticationState: AuthenticationState = .signedOut
     
-    private var authRepository: AuthRepository = .init()
-    private var firestoreRepository: FirestoreRepository = .init()
-    private var storageRepository: StorageRepository = .init()
+    private var authRepository: AuthRepositoryInterface
+    private var firestoreRepository: FirestoreRepositoryInterface
+    private var storageRepository: StorageRepositoryInterface
+    
+    init(
+        authRepository: AuthRepositoryInterface = AuthRepository(),
+        firestoreRepository: FirestoreRepositoryInterface = FirestoreRepository(),
+        storageRepository: StorageRepositoryInterface = StorageRepository()
+    ) {
+        self.authRepository = authRepository
+        self.firestoreRepository = firestoreRepository
+        self.storageRepository = storageRepository
+    }
 
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
