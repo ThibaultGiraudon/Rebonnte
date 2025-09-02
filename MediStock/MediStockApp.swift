@@ -18,6 +18,7 @@ struct MediStockApp: App {
             ContentView()
                 .environmentObject(sessionStore)
                 .environmentObject(coordinator)
+                .dynamicTypeSize(.xSmall ... .accessibility3)
         }
     }
 }

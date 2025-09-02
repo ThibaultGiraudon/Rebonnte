@@ -51,7 +51,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-                await medicinesVM.fetchHistory(for: medicine)
+//                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
@@ -132,11 +132,9 @@ extension MedicineDetailView {
             
             ForEach(history, id: \.id) { entry in
                 VStack(alignment: .leading, spacing: 5) {
-                    HStack {
-                        Text(entry.user)
-                        Spacer()
-                        Text(entry.timestamp.formatted())
-                    }
+                    Text(entry.user)
+                    Text(entry.timestamp.formatted())
+                        .font(.footnote)
                     Text(entry.action)
                         .font(.headline)
                 }
