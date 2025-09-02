@@ -112,6 +112,7 @@
 				CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */,
 				CE8409B52E5D9A77000FA60A /* .gitignore */,
 				53E0D8952C06084700DE1134 /* MediStock */,
+				53E0D89A2C06084900DE1134 /* Assets.xcassets */,
 				53E0D8A62C06084900DE1134 /* MediStockTests */,
 				53E0D8B02C06084900DE1134 /* MediStockUITests */,
 				CE4EEB682E5F410100A9B606 /* Frameworks */,
@@ -132,14 +133,13 @@
 		53E0D8952C06084700DE1134 /* MediStock */ = {
 			isa = PBXGroup;
 			children = (
+				53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */,
 				53E0D8962C06084700DE1134 /* MediStockApp.swift */,
 				CE8409BB2E5DA784000FA60A /* Views */,
-				53E0D89A2C06084900DE1134 /* Assets.xcassets */,
-				53E0D89C2C06084900DE1134 /* Preview Content */,
 				CE8409B92E5DA769000FA60A /* Models */,
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
-				53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */,
 				CE8409BE2E5DB9F7000FA60A /* Repositories */,
+				53E0D89C2C06084900DE1134 /* Preview Content */,
 			);
 			path = MediStock;
 			sourceTree = "<group>";
