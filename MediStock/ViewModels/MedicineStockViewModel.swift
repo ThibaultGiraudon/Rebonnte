@@ -58,7 +58,7 @@ class MedicineStockViewModel: ObservableObject {
                     action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "Stock changed from \(currentMedicine.stock) to \(medicine.stock)",
+                    details: "\(user) changed stock from \(currentMedicine.stock) to \(medicine.stock)",
                     currentStock: medicine.stock
                 )
             }
@@ -68,7 +68,7 @@ class MedicineStockViewModel: ObservableObject {
                     action: "Updated \(medicine.name)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "Changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
+                    details: "\(user) changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
                     currentStock: medicine.stock
                 )
             }
@@ -78,7 +78,7 @@ class MedicineStockViewModel: ObservableObject {
                     action: "Updated \(medicine.name)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "Changed name from \(currentMedicine.name) to \(medicine.name)",
+                    details: "\(user) changed name from \(currentMedicine.name) to \(medicine.name)",
                     currentStock: medicine.stock
                 )
             }

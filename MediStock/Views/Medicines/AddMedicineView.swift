@@ -34,6 +34,9 @@ struct AddMedicineView: View {
                 Button("Cancel") {
                     dismiss()
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Cancel button")
+                .accessibilityHint("Double-tap to cancel action")
             }
             
             ToolbarItem(placement: .topBarTrailing) {
@@ -44,6 +47,9 @@ struct AddMedicineView: View {
                     }
                 }
                 .disabled(addMedicinesVM.shouldDisabled)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Add button")
+                .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
             }
         }
     }

@@ -19,6 +19,7 @@ struct LoginView: View {
             Image("icon")
                 .resizable()
                 .scaledToFit()
+                .accessibilityHidden(true)
             
             Spacer()
             
@@ -36,10 +37,16 @@ struct LoginView: View {
             .opacity(shouldDisable ? 0.6 : 1)
             .disabled(shouldDisable)
             .padding(.top)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Sign in button")
+            .accessibilityHint(shouldDisable ? "Button disabled, fill in all fields" : "Double-tap to sign in")
             
             CustomButton(title: "Create an account", color: .darkBlue) {
                 coordinator.goToRegister()
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Create an account button")
+            .accessibilityHint("Double-tap to go to create an account page")
             
             Spacer()
             Spacer()

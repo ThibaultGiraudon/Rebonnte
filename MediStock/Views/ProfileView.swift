@@ -9,11 +9,15 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-    @State private var email: String = "thibault.giraudon@gmail.com"
-    @State private var fullname: String = "Thibault Giraudon"
+    @State private var email: String = ""
+    @State private var fullname: String = ""
     @State private var selectedItem: PhotosPickerItem?
     @State private var showPhotosPicker: Bool = false
     @State private var isImageLoading: Bool = false
+    
+    var shouldDisabled: Bool {
+        fullname.isEmpty
+    }
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.colorScheme) private var colorScheme
@@ -73,6 +77,11 @@ struct ProfileView: View {
                     }
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityValue("Profile's picture")
+            .accessibilityLabel("Import from galery button")
+            .accessibilityHint("Double-tap to import a new picture from galery")
+            
             TextField("Name", text: $fullname)
                 .multilineTextAlignment(.center)
                 .font(.system(size: 36))
@@ -85,9 +94,17 @@ struct ProfileView: View {
                     await session.updateUser(fullname: fullname)
                 }
             }
+            .disabled(shouldDisabled)
+            .opacity(shouldDisabled ? 0.6 : 1)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Save button")
+            .accessibilityHint(shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to save changes")
             customButton("Log Out", color: .darkBlue) {
                 session.signOut()
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Log out button")
+            .accessibilityHint("Double-tap to log out")
             .padding(.vertical, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -96,6 +113,7 @@ struct ProfileView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
+                .accessibilityHidden(true)
         }
         .onAppear {
             self.email = session.session?.email ?? "email@email.com"

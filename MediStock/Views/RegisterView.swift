@@ -50,6 +50,9 @@ struct RegisterView: View {
             .opacity(shouldDisabled ? 0.6 : 1)
             .disabled(shouldDisabled)
             .padding(.top)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Create an account button")
+            .accessibilityHint(shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to create an account")
             
             Spacer()
             Spacer()
@@ -82,6 +85,7 @@ struct CustomTextField: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(label)
+                .accessibilityHidden(true)
             TextField(prompt, text: $text)
                 .padding(10)
                 .background {

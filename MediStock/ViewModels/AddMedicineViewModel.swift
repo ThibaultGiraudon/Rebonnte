@@ -16,7 +16,7 @@ class AddMedicineViewModel: ObservableObject {
     @Published var error: String? = nil
     
     var shouldDisabled: Bool {
-        guard let stock = stock else { return false }
+        guard let stock = stock else { return true }
         return name.isEmpty || aisle.isEmpty || stock < 0
     }
     
@@ -33,7 +33,7 @@ class AddMedicineViewModel: ObservableObject {
             await addHistory(action: "Add new medicine",
                                  user: user,
                                  medicineId: newMedicine.id,
-                                 details: "\(user) add new medicine: \(newMedicine.name) with initial stock of \(stock)",
+                                 details: "\(user) add \(newMedicine.name) with initial stock of \(stock)",
                                  currentStock: stock)
         } catch {
             self.error = "adding new medicines"

@@ -17,6 +17,9 @@ struct AisleListView: View {
                     Text(aisle)
                         .foregroundStyle(.primaryText)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(aisle) button")
+                .accessibilityHint("Double-tap to see aisle's detail")
             }
         }
         .listRowBackground(Color.customPrimary)
@@ -33,6 +36,9 @@ struct AisleListView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Add button")
+                .accessibilityHint("Double-tap to add new medicine")
             }
         }
         .onAppear {

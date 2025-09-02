@@ -44,6 +44,9 @@ struct MedicineDetailView: View {
                         await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Save button")
+                .accessibilityHint("Double-tap to save changes")
             }
         }
         .onAppear {
@@ -67,10 +70,15 @@ extension MedicineDetailView {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(.plain)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Minus button")
+                .accessibilityHint("Double-tap to substract one to the stock")
+                
                 TextField("Stock", value: $medicine.stock, formatter: NumberFormatter())
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
                 .frame(width: 100)
+                
                 Button {
                     medicine.stock += 1
                 } label: {
@@ -79,6 +87,9 @@ extension MedicineDetailView {
                         .foregroundColor(.green)
                 }
                 .buttonStyle(.plain)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Plus button")
+                .accessibilityHint("Double-tap to add one to the stock")
             }
         }
     }
@@ -116,6 +127,7 @@ extension MedicineDetailView {
                 .chartXAxis(.hidden)
                 .aspectRatio(1, contentMode: .fit)
                 .padding(.vertical)
+                .accessibilityElement(children: .ignore)
             }
             
             ForEach(history, id: \.id) { entry in
@@ -132,6 +144,8 @@ extension MedicineDetailView {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.bottom, 5)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(entry.details) at \(entry.timestamp)")
             }
         }
     }

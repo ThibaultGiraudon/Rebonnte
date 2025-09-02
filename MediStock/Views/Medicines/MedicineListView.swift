@@ -17,6 +17,9 @@ struct MedicineListView: View {
                             .font(.subheadline)
                     }
                     .foregroundStyle(.primaryText)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(medicine.name), stock of \(medicine.stock)")
+                    .accessibilityHint("Double-tap to see medicine's detail")
                 }
                 .onAppear {
                     if medicine == medicinesVM.medicines.last {
