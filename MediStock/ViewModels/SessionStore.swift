@@ -44,8 +44,6 @@ class SessionStore: ObservableObject {
         do {
             self.authenticationState = .signingIn
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-            print("-\(email)-")
-            print("-\(trimmedEmail)-")
             self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
             self.session = await self.fetchUser(with: self.uid)
             self.authenticationState = .signedIn

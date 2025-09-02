@@ -88,7 +88,7 @@ struct ProfileView: View {
             customButton("Log Out", color: .darkBlue) {
                 session.signOut()
             }
-            .padding(.top, 10)
+            .padding(.vertical, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
