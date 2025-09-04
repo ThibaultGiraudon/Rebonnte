@@ -21,6 +21,9 @@ jobs:
       - name: Select Xcode Version
         run: sudo xcode-select --switch /Applications/Xcode_16.4.app
 
+      - name: Show All Swift Packages
+        run: cat MediStock.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
         with:
