@@ -9,17 +9,17 @@ import Foundation
 @testable import MediStock
 
 class AuthRepositoryFake: AuthRepositoryInterface {
-    var uid: String?
+    var uid: String = ""
     var errorString: String = ""
     var error: Error?
-    func signUp(email: String, password: String) async throws -> String? {
+    func signUp(email: String, password: String) async throws -> String {
         if let error {
             throw error
         }
         return uid
     }
     
-    func signIn(email: String, password: String) async throws -> String? {
+    func signIn(email: String, password: String) async throws -> String {
         if let error {
             throw error
         }

@@ -10,20 +10,22 @@ import FirebaseAuth
 
 class AuthRepository: AuthRepositoryInterface {
     
-    func signUp(email: String, password: String) async throws -> String? {
-        let result = try await Auth.auth().createUser(withEmail: email, password: password)
+    let auth = Auth.auth()
+    
+    func signUp(email: String, password: String) async throws -> String {
+        let result = try await auth.createUser(withEmail: email, password: password)
         
         return result.user.uid
     }
 
-    func signIn(email: String, password: String) async throws -> String? {
-        let result = try await Auth.auth().signIn(withEmail: email, password: password)
+    func signIn(email: String, password: String) async throws -> String {
+        let result = try await auth.signIn(withEmail: email, password: password)
         
         return result.user.uid
     }
 
     func signOut() throws {
-        try Auth.auth().signOut()
+        try auth.signOut()
     }
     
     /// Translates Firebase Auth errors into user-friendly messages.
@@ -31,7 +33,7 @@ class AuthRepository: AuthRepositoryInterface {
     /// - Parameter error: The error to identify.
     /// - Returns: A string description of the error suitable for display to users.
     func identifyError(_ error: Error) -> String {
-        let errCode = AuthErrorCode(_nsError: error as NSError).code
+        if let errCode = AuthErrorCode(rawValue: (error as NSError).code) {
             switch errCode {
             case .networkError:
                 return "Internet connection problem."
@@ -50,7 +52,7 @@ class AuthRepository: AuthRepositoryInterface {
             default:
                 return "An error occurred: \(errCode.rawValue)"
             }
-    
-//        return "Unknown error: \(error.localizedDescription)"
+        }
+        return "Unknown error: \(error.localizedDescription)"
     }
 }

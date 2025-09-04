@@ -58,19 +58,6 @@ final class SessionStoreTests: XCTestCase {
         
         XCTAssertEqual(session.error, "error creating user")
     }
-
-    @MainActor
-    func testSignUpShouldFailedWithUIDNil() async {
-        let authRepoFake = AuthRepositoryFake()
-        let firestoreRepoFake = FirestoreRepositoryFake()
-        let storageRepoFake = StorageRepositoryFake()
-        
-        let session = SessionStore(authRepository: authRepoFake, firestoreRepository: firestoreRepoFake, storageRepository: storageRepoFake)
-        
-        await session.signUp(fullname: "New user", email: "user@test.app", password: "12345678")
-        
-        XCTAssertEqual(session.error, "An error occured, please try again.")
-    }
     
     @MainActor
     func testSignInShouldSucceed() async {
@@ -121,21 +108,6 @@ final class SessionStoreTests: XCTestCase {
         await session.signIn(email: "user@test.app", password: "12345678")
         
         XCTAssertEqual(session.error, "fetching user's personnal information")
-    }
-    
-    @MainActor
-    func testSignInShouldFailedWithUIDNil() async {
-        let authRepoFake = AuthRepositoryFake()
-        let firestoreRepoFake = FirestoreRepositoryFake()
-        let storageRepoFake = StorageRepositoryFake()
-        
-        authRepoFake.errorString = "error signing in user"
-        
-        let session = SessionStore(authRepository: authRepoFake, firestoreRepository: firestoreRepoFake, storageRepository: storageRepoFake)
-        
-        await session.signIn(email: "user@test.app", password: "12345678")
-        
-        XCTAssertEqual(session.error, "An error occured, please try again.")
     }
     
     @MainActor

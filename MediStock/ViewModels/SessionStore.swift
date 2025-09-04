@@ -35,11 +35,7 @@ class SessionStore: ObservableObject {
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
-            guard let uid else {
-                self.error = "An error occured, please try again."
-                return
-            }
-            let user = User(uid: uid, email: email, fullname: fullname)
+            let user = User(uid: uid!, email: email, fullname: fullname)
             try await firestoreRepository.addUser(user)
             self.session = user
             self.authenticationState = .signedIn
@@ -74,13 +70,9 @@ class SessionStore: ObservableObject {
     
     private func fetchUser(with uid: String?) async -> User? {
         self.error = nil
-        guard let uid = uid else {
-            self.error = "An error occured, please try again."
-            return nil
-        }
                 
         do {
-            return try await firestoreRepository.fetchUser(with: uid)
+            return try await firestoreRepository.fetchUser(with: uid!)
         } catch {
             self.error = "fetching user's personnal information"
             return nil
