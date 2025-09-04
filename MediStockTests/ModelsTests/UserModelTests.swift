@@ -28,7 +28,7 @@ final class UserModelTests: XCTestCase {
     }
     
     func testCreateUserWithInitDataShouldSucceed() {
-        guard let user = User(FakeData().data) else {
+        guard let user = User(FakeData().userData) else {
             XCTFail()
             return
         }
@@ -40,7 +40,7 @@ final class UserModelTests: XCTestCase {
     }
     
     func testCreateUserWithInitDataShouldBeNil() {
-        let user = User(FakeData().wrongData)
+        let user = User(FakeData().wrongUserData)
         
         XCTAssertNil(user)
     }
