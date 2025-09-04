@@ -71,7 +71,7 @@ class FirestoreRepository: FirestoreRepositoryInterface {
     
     func fetchUser(with uid: String) async throws -> User? {
         let document = try await db.collection("users").document(uid).getDocument()
-        return User(document.data(), id: document.documentID)
+        return User(document.data())
     }
     
     func addUser(_ user: User) async throws {

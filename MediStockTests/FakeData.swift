@@ -33,4 +33,17 @@ struct FakeData {
     var error: Error = URLError(.badURL)
     
     var user: User = User(uid: "123", email: "user@test.app", fullname: "New user")
+    
+    var wrongData: [String: Any] = [
+        "email": "user@test.app",
+        "uid": "123",
+        "fullname": "New user",
+    ]
+    
+    var data: [String: Any] = [
+        "email": "user@test.app",
+        "uid": "123",
+        "fullname": "New user",
+        "imageURL": "testurl"
+    ]
 }

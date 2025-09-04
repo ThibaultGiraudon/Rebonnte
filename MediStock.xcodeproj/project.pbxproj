@@ -60,6 +60,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE0D0BD02E697B5C00A346A7 /* ViewModelsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModelsTests; sourceTree = "<group>"; };
+		CE0D0BD72E6985E500A346A7 /* ModelsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ModelsTests; sourceTree = "<group>"; };
 		CE8409B92E5DA769000FA60A /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		CE8409BA2E5DA774000FA60A /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 		CE8409BB2E5DA784000FA60A /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
@@ -157,6 +158,7 @@
 				CE0D0BD02E697B5C00A346A7 /* ViewModelsTests */,
 				CE9B5FD42E6758DE00681B2D /* FakeRepository */,
 				CE9B5FD22E673BAF00681B2D /* FakeData.swift */,
+				CE0D0BD72E6985E500A346A7 /* ModelsTests */,
 			);
 			path = MediStockTests;
 			sourceTree = "<group>";
@@ -224,6 +226,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				CE0D0BD02E697B5C00A346A7 /* ViewModelsTests */,
+				CE0D0BD72E6985E500A346A7 /* ModelsTests */,
 				CE9B5FD42E6758DE00681B2D /* FakeRepository */,
 			);
 			name = MediStockTests;

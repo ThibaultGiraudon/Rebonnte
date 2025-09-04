@@ -27,7 +27,7 @@ struct User: Equatable {
         self.imageURL = imageURL
     }
     
-    init?(_ data: [String: Any]?, id: String) {
+    init?(_ data: [String: Any]?) {
         guard let data, let email = data["email"] as? String,
               let uid = data["uid"] as? String,
               let fullname = data["fullname"] as? String,
