@@ -50,6 +50,7 @@ struct AddMedicineView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Add button")
                 .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
+                .accessibilityIdentifier("addMedicineButton")
             }
         }
     }

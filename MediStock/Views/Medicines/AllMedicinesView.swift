@@ -52,6 +52,9 @@ struct AllMedicinesView: View {
                     Image(systemName: "plus")
                         .foregroundStyle(.primaryText)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Show add medicine form")
+                .accessibilityHint("Double-tap to open adding view")
             }
         }
         .onAppear {

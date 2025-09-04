@@ -13,8 +13,6 @@ struct HomeView: View {
     var body: some View {
         VStack {
             switch session.authenticationState {
-            case .signingIn:
-                ProgressView()
             case .signedIn:
                 MainTabView()
             case .signedOut:

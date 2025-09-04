@@ -3,7 +3,6 @@ import Combine
 import SwiftUI
 
 enum AuthenticationState: Hashable {
-    case signingIn
     case signedIn
     case signedOut
 }
