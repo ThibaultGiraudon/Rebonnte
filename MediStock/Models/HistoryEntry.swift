@@ -1,5 +1,4 @@
 import Foundation
-import FirebaseFirestoreSwift
 
 struct HistoryEntry: Identifiable, Codable, Equatable {
     var id = UUID().uuidString
