@@ -78,6 +78,4 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
             throw userError
         }
     }
-    
-    
 }

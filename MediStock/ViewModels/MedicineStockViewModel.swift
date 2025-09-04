@@ -37,7 +37,9 @@ class MedicineStockViewModel: ObservableObject {
 
     func deleteMedicines(at offsets: IndexSet) async {
         self.error = nil
-        let medicinesToDelete = offsets.map { medicines[$0] }
+        let medicinesToDelete = offsets.map {
+            medicines[$0]
+        }
         do {
             try await repository.deleteMedcines(medicinesToDelete)
         } catch {
@@ -49,7 +51,7 @@ class MedicineStockViewModel: ObservableObject {
         self.error = nil
         do {
             guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
-                print("Failed to retrieve medicine")
+                self.error = "updating medicines"
                 return
             }
             
@@ -109,7 +111,7 @@ class MedicineStockViewModel: ObservableObject {
         do {
             self.history = try await repository.fetchHistory(for: medicine).sorted(by: { $0.timestamp > $1.timestamp})
         } catch {
-            print("Failed to fetch history: \(error)")
+            self.error = "fetching history for \(medicine.name)"
         }
     }
 }

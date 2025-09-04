@@ -26,8 +26,8 @@
 		CE8409B62E5D9A77000FA60A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B52E5D9A77000FA60A /* .gitignore */; };
 		CE8409B82E5D9ACF000FA60A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */; };
 		CE9B5FCF2E673A7C00681B2D /* AddMedicinesVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B5FCE2E673A7C00681B2D /* AddMedicinesVMTests.swift */; };
-		CE9B5FD12E673AE200681B2D /* FirestoreRepositoryFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B5FD02E673AE200681B2D /* FirestoreRepositoryFake.swift */; };
 		CE9B5FD32E673BAF00681B2D /* FakeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B5FD22E673BAF00681B2D /* FakeData.swift */; };
+		CE9B5FDC2E675A0D00681B2D /* MedicinesStockVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B5FDB2E675A0D00681B2D /* MedicinesStockVMTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +58,8 @@
 		CE8409B52E5D9A77000FA60A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE9B5FCE2E673A7C00681B2D /* AddMedicinesVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicinesVMTests.swift; sourceTree = "<group>"; };
-		CE9B5FD02E673AE200681B2D /* FirestoreRepositoryFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepositoryFake.swift; sourceTree = "<group>"; };
 		CE9B5FD22E673BAF00681B2D /* FakeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeData.swift; sourceTree = "<group>"; };
+		CE9B5FDB2E675A0D00681B2D /* MedicinesStockVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicinesStockVMTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -68,6 +68,7 @@
 		CE8409BB2E5DA784000FA60A /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		CE8409BE2E5DB9F7000FA60A /* Repositories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Repositories; sourceTree = "<group>"; };
 		CE9B5F6A2E670A0300681B2D /* Coordinators */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Coordinators; sourceTree = "<group>"; };
+		CE9B5FD42E6758DE00681B2D /* FakeRepository */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FakeRepository; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +158,9 @@
 			isa = PBXGroup;
 			children = (
 				CE9B5FCE2E673A7C00681B2D /* AddMedicinesVMTests.swift */,
-				CE9B5FD02E673AE200681B2D /* FirestoreRepositoryFake.swift */,
+				CE9B5FD42E6758DE00681B2D /* FakeRepository */,
 				CE9B5FD22E673BAF00681B2D /* FakeData.swift */,
+				CE9B5FDB2E675A0D00681B2D /* MedicinesStockVMTests.swift */,
 			);
 			path = MediStockTests;
 			sourceTree = "<group>";
@@ -223,6 +225,9 @@
 			);
 			dependencies = (
 				53E0D8A52C06084900DE1134 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE9B5FD42E6758DE00681B2D /* FakeRepository */,
 			);
 			name = MediStockTests;
 			productName = MediStockTests;
@@ -337,8 +342,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9B5FD32E673BAF00681B2D /* FakeData.swift in Sources */,
-				CE9B5FD12E673AE200681B2D /* FirestoreRepositoryFake.swift in Sources */,
 				CE9B5FCF2E673A7C00681B2D /* AddMedicinesVMTests.swift in Sources */,
+				CE9B5FDC2E675A0D00681B2D /* MedicinesStockVMTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

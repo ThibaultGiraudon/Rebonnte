@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct HistoryEntry: Identifiable, Codable {
+struct HistoryEntry: Identifiable, Codable, Equatable {
     var id = UUID().uuidString
     var medicineId: String
     var user: String
@@ -10,7 +10,8 @@ struct HistoryEntry: Identifiable, Codable {
     var timestamp: Date
     var currentStock: Int
 
-    init(medicineId: String, user: String, action: String, details: String, timestamp: Date = Date(), currentStock: Int) {
+    init(id: String = UUID().uuidString, medicineId: String, user: String, action: String, details: String, timestamp: Date = Date(), currentStock: Int) {
+        self.id = id
         self.medicineId = medicineId
         self.user = user
         self.action = action
@@ -32,4 +33,9 @@ struct HistoryEntry: Identifiable, Codable {
         
         return data
     }
+    
+    static func == (lhs: HistoryEntry, rhs: HistoryEntry) -> Bool {
+        lhs.id == rhs.id
+    }
+    
 }
