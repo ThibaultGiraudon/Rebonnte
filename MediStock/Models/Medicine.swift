@@ -1,5 +1,4 @@
 import Foundation
-import FirebaseFirestoreSwift
 
 struct Medicine: Identifiable, Codable, Equatable, Hashable {
     var id = UUID().uuidString
