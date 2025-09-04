@@ -14,6 +14,7 @@
 		CE0D0C732E69A83E00A346A7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE0D0C722E69A83E00A346A7 /* FirebaseAuth */; };
 		CE0D0C752E69A83E00A346A7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CE0D0C742E69A83E00A346A7 /* FirebaseFirestore */; };
 		CE0D0C772E69A83E00A346A7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE0D0C762E69A83E00A346A7 /* FirebaseStorage */; };
+		CE0D0C7D2E69B78C00A346A7 /* charles-leclerc.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE0D0C7C2E69B78C00A346A7 /* charles-leclerc.jpg */; };
 		CE8409B62E5D9A77000FA60A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B52E5D9A77000FA60A /* .gitignore */; };
 		CE8409B82E5D9ACF000FA60A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */; };
 		CE9B5FD32E673BAF00681B2D /* FakeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B5FD22E673BAF00681B2D /* FakeData.swift */; };
@@ -36,6 +37,7 @@
 		53E0D89D2C06084900DE1134 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		53E0D8A32C06084900DE1134 /* MediStockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MediStockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CE0D0C7C2E69B78C00A346A7 /* charles-leclerc.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "charles-leclerc.jpg"; sourceTree = "<group>"; };
 		CE8409B52E5D9A77000FA60A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE9B5FD22E673BAF00681B2D /* FakeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeData.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		53E0D8A62C06084900DE1134 /* MediStockTests */ = {
 			isa = PBXGroup;
 			children = (
+				CE0D0C7C2E69B78C00A346A7 /* charles-leclerc.jpg */,
 				CE0D0BD02E697B5C00A346A7 /* ViewModelsTests */,
 				CE9B5FD42E6758DE00681B2D /* FakeRepository */,
 				CE9B5FD22E673BAF00681B2D /* FakeData.swift */,
@@ -244,6 +247,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0D0C7D2E69B78C00A346A7 /* charles-leclerc.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
