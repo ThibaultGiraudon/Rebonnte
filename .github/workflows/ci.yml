@@ -1,0 +1,40 @@
+name: iOS Build and Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode Version
+        run: sudo xcode-select --switch /Applications/Xcode_16.4.app
+
+      - name: Build and Test
+        uses: sersoft-gmbh/xcodebuild-action@v3.2.0
+        with:
+          project: MediStock.xcodeproj
+          scheme: MediStock
+          destination: 'platform=iOS Simulator,name=iPhone 16,arch=arm64'
+          action: test
+          result-bundle-path: 'TestResults/TestResults.xcresult'
+          build-settings: |
+            CODE_SIGNING_REQUIRED=NO
+            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGN_IDENTITY=""
+      - name: Process Test Results
+        uses: slidoapp/xcresulttool@v3.1.0
+        with:
+          path: TestResults/TestResults.xcresult
+        if: success() || failure()
