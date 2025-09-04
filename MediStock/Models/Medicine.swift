@@ -13,6 +13,20 @@ struct Medicine: Identifiable, Codable, Equatable, Hashable {
         self.aisle = aisle
     }
     
+    init?(_ data: [String: Any]) {
+        guard let id = data["id"] as? String,
+              let name = data["name"] as? String,
+              let stock = data["stock"] as? Int,
+              let aisle = data["aisle"] as? String else {
+            return nil
+        }
+        
+        self.id = id
+        self.name = name
+        self.stock = stock
+        self.aisle = aisle
+    }
+    
     func data() -> [String: Any] {
         let data: [String: Any] = [
             "id": self.id,

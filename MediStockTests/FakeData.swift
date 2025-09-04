@@ -34,16 +34,29 @@ struct FakeData {
     
     var user: User = User(uid: "123", email: "user@test.app", fullname: "New user")
     
-    var wrongData: [String: Any] = [
+    var wrongUserData: [String: Any] = [
         "email": "user@test.app",
         "uid": "123",
         "fullname": "New user",
     ]
     
-    var data: [String: Any] = [
+    var userData: [String: Any] = [
         "email": "user@test.app",
         "uid": "123",
         "fullname": "New user",
         "imageURL": "testurl"
+    ]
+    
+    let wrongMedicineData: [String: Any] = [
+        "id": "123",
+        "name": "Medicine 33",
+        "stock": 33
+    ]
+
+    let medicineData: [String: Any] = [
+        "id": "123",
+        "name": "Medicine 33",
+        "stock": 33,
+        "aisle": "Aisle 33"
     ]
 }

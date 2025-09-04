@@ -19,6 +19,24 @@ final class MedicineModelTests: XCTestCase {
         XCTAssertEqual(medicine.aisle, "Aisle 33")
     }
     
+    func testMedicineInitDataShouldSucceed() {
+        guard let medicine = Medicine(FakeData().medicineData) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(medicine.id, "33")
+        XCTAssertEqual(medicine.name, "Medicine 33")
+        XCTAssertEqual(medicine.stock, 33)
+        XCTAssertEqual(medicine.aisle, "Aisle 33")
+    }
+    
+    func testMedicineInitDataShouldReturnNil() {
+       let medicine = Medicine(FakeData().wrongMedicineData)
+        
+        XCTAssertNil(medicine)
+    }
+    
     func testMedicineData() {
         let medicine = Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33")
         
