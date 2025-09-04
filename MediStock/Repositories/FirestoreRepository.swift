@@ -11,7 +11,7 @@ import Firebase
 class FirestoreRepository: FirestoreRepositoryInterface {
     private let db = Firestore.firestore()
     private var lastDocument: DocumentSnapshot?
-    private let pageSize = 20
+    var pageSize = 20
     
     func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine] {
         var query: Query = db.collection("medicines").limit(to: pageSize).order(by: sort.value)
