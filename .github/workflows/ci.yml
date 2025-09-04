@@ -24,8 +24,8 @@ jobs:
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
         with:
-          project: EPCollaboratif.xcodeproj
-          scheme: EPCollaboratif
+          project: Rebonnte.xcodeproj
+          scheme: Rebonnte
           destination: 'platform=iOS Simulator,name=iPhone 16,arch=arm64'
           action: test
           result-bundle-path: 'TestResults/TestResults.xcresult'
