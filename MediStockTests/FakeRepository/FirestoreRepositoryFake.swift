@@ -11,7 +11,7 @@ import Foundation
 class FirestoreRepositoryFake: FirestoreRepositoryInterface {
     var medicines: [Medicine] = []
     var history: [HistoryEntry] = []
-    var user: User?
+    var user: User? = nil
     var medicineError: Error?
     var historyError: Error?
     var userError: Error?
