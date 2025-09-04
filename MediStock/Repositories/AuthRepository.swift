@@ -8,45 +8,24 @@
 import Foundation
 import FirebaseAuth
 
-class AuthRepository {
-    @Published var currentUserUID: String? = nil
-    private var handle: AuthStateDidChangeListenerHandle?
-
-    init() {
-        listen()
-    }
-
-    private func listen() {
-        handle = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
-            guard let self = self else { return }
-            if let user = user {
-                self.currentUserUID = user.uid
-            } else {
-                self.currentUserUID = nil
-            }
-        }
-    }
+class AuthRepository: AuthRepositoryInterface {
+    
+    let auth = Auth.auth()
     
     func signUp(email: String, password: String) async throws -> String {
-        let result = try await Auth.auth().createUser(withEmail: email, password: password)
+        let result = try await auth.createUser(withEmail: email, password: password)
         
         return result.user.uid
     }
 
     func signIn(email: String, password: String) async throws -> String {
-        let result = try await Auth.auth().signIn(withEmail: email, password: password)
+        let result = try await auth.signIn(withEmail: email, password: password)
         
         return result.user.uid
     }
 
     func signOut() throws {
-        try Auth.auth().signOut()
-    }
-
-    private func unbind() {
-        if let handle = handle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
+        try auth.signOut()
     }
     
     /// Translates Firebase Auth errors into user-friendly messages.
@@ -54,7 +33,7 @@ class AuthRepository {
     /// - Parameter error: The error to identify.
     /// - Returns: A string description of the error suitable for display to users.
     func identifyError(_ error: Error) -> String {
-        let errCode = AuthErrorCode(_nsError: error as NSError).code
+        if let errCode = AuthErrorCode(rawValue: (error as NSError).code) {
             switch errCode {
             case .networkError:
                 return "Internet connection problem."
@@ -73,7 +52,7 @@ class AuthRepository {
             default:
                 return "An error occurred: \(errCode.rawValue)"
             }
-    
-//        return "Unknown error: \(error.localizedDescription)"
+        }
+        return "Unknown error: \(error.localizedDescription)"
     }
 }

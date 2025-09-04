@@ -20,7 +20,11 @@ class AddMedicineViewModel: ObservableObject {
         return name.isEmpty || aisle.isEmpty || stock < 0
     }
     
-    private let repository = FirestoreRepository()
+    private let repository: FirestoreRepositoryInterface
+    
+    init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
+        self.repository = repository
+    }
     
     func addMedicine(user: String) async {
         self.error = nil

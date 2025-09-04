@@ -3,7 +3,6 @@ import Combine
 import SwiftUI
 
 enum AuthenticationState: Hashable {
-    case signingIn
     case signedIn
     case signedOut
 }
@@ -16,20 +15,26 @@ class SessionStore: ObservableObject {
     @Published var error: String?
     @Published var authenticationState: AuthenticationState = .signedOut
     
-    private var authRepository: AuthRepository = .init()
-    private var firestoreRepository: FirestoreRepository = .init()
-    private var storageRepository: StorageRepository = .init()
+    private var authRepository: AuthRepositoryInterface
+    private var firestoreRepository: FirestoreRepositoryInterface
+    private var storageRepository: StorageRepositoryInterface
+    
+    init(
+        authRepository: AuthRepositoryInterface = AuthRepository(),
+        firestoreRepository: FirestoreRepositoryInterface = FirestoreRepository(),
+        storageRepository: StorageRepositoryInterface = StorageRepository()
+    ) {
+        self.authRepository = authRepository
+        self.firestoreRepository = firestoreRepository
+        self.storageRepository = storageRepository
+    }
 
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
-            guard let uid else {
-                self.error = "An error occured, please try again."
-                return
-            }
-            let user = User(uid: uid, email: email, fullname: fullname)
+            let user = User(uid: uid!, email: email, fullname: fullname)
             try await firestoreRepository.addUser(user)
             self.session = user
             self.authenticationState = .signedIn
@@ -62,15 +67,11 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func fetchUser(with uid: String?) async -> User? {
+    private func fetchUser(with uid: String?) async -> User? {
         self.error = nil
-        guard let uid = uid else {
-            self.error = "User not logged in"
-            return nil
-        }
                 
         do {
-            return try await firestoreRepository.fetchUser(with: uid)
+            return try await firestoreRepository.fetchUser(with: uid!)
         } catch {
             self.error = "fetching user's personnal information"
             return nil
@@ -113,55 +114,6 @@ class SessionStore: ObservableObject {
             self.error = "uploading new user's profile picture"
         }
         self.isLoading = false
-    }
-    
-}
-
-struct User {
-    var uid: String
-    var email: String
-    var fullname: String
-    var imageURL: String
-    
-    init() {
-        self.uid = UUID().uuidString
-        self.email = ""
-        self.fullname = ""
-        self.imageURL = ""
-    }
-    
-    init(uid: String, email: String, fullname: String, imageURL: String = "") {
-        self.uid = uid
-        self.email = email
-        self.fullname = fullname
-        self.imageURL = imageURL
-    }
-    
-    init?(_ data: [String: Any]?, id: String) {
-        guard let data, let email = data["email"] as? String,
-              let uid = data["uid"] as? String,
-              let fullname = data["fullname"] as? String,
-              let imageURL = data["imageURL"] as? String
-        else {
-            print("failed to get data")
-            return nil
-        }
-        
-        self.uid = uid
-        self.email = email
-        self.fullname = fullname
-        self.imageURL = imageURL
-    }
-    
-    func data() -> [String: Any] {
-        let data: [String: Any] = [
-            "uid": self.uid,
-            "email": self.email,
-            "fullname": self.fullname,
-            "imageURL": self.imageURL
-        ]
-        
-        return data
     }
     
 }

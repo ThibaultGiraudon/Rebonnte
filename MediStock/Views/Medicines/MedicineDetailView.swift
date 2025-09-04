@@ -51,7 +51,7 @@ struct MedicineDetailView: View {
         }
         .onAppear {
             Task {
-//                await medicinesVM.fetchHistory(for: medicine)
+                await medicinesVM.fetchHistory(for: medicine)
             }
         }
     }
@@ -155,13 +155,6 @@ struct MedicineDetailView_Previews: PreviewProvider {
         let sampleViewModel = MedicineStockViewModel()
         sampleViewModel.history = [
             .init(medicineId: "12", user: "user@test.com", action: "Add new medicine", details: "user@test.com adds Sample with initial stock of 10", currentStock: 10),
-//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 2", details: "Stock change from 10 to 12", currentStock: 12),
-//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 12 to 15", currentStock: 15),
-//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 6", details: "Stock change from 15 to 21", currentStock: 21),
-//            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 2", details: "Stock change from 21 to 19", currentStock: 19),
-//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 19", details: "Stock change from 19 to 38", currentStock: 38),
-//            .init(medicineId: "12", user: "user@test.com", action: "Decreasing stock of 10", details: "Stock change from 38 to 28", currentStock: 28),
-//            .init(medicineId: "12", user: "user@test.com", action: "Increasing stock of 3", details: "Stock change from 28 to 25", currentStock: 25),
         ]
          return MedicineDetailView(medicine: sampleMedicine, medicinesVM: sampleViewModel).environmentObject(SessionStore())
     }

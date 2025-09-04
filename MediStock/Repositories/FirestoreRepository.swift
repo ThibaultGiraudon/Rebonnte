@@ -8,10 +8,10 @@
 import Foundation
 import Firebase
 
-class FirestoreRepository {
+class FirestoreRepository: FirestoreRepositoryInterface {
     private let db = Firestore.firestore()
     private var lastDocument: DocumentSnapshot?
-    private let pageSize = 20
+    var pageSize = 20
     
     func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine] {
         var query: Query = db.collection("medicines").limit(to: pageSize).order(by: sort.value)
@@ -71,7 +71,7 @@ class FirestoreRepository {
     
     func fetchUser(with uid: String) async throws -> User? {
         let document = try await db.collection("users").document(uid).getDocument()
-        return User(document.data(), id: document.documentID)
+        return User(document.data())
     }
     
     func addUser(_ user: User) async throws {

@@ -10,10 +10,6 @@ import Foundation
 class AppCoordinator: ObservableObject {
     @Published var path: [AppRoute] = []
     
-    func goToSignIn() {
-        path.append(.signIn)
-    }
-    
     func goToRegister() {
         path.append(.register)
     }
@@ -30,10 +26,6 @@ class AppCoordinator: ObservableObject {
         if !path.isEmpty {
             path.removeLast()
         }
-    }
-    
-    func resetNavigation() {
-        path = []
     }
 }
 

@@ -29,7 +29,7 @@ struct LoginView: View {
             
             CustomSecureField(label: "Password", text: $password, prompt: "Enter password")
             
-            CustomButton(title: "Sign In", color: .lightBlue) {
+            CustomButton(title: "Sign in", color: .lightBlue) {
                 Task {
                    await session.signIn(email: email, password: password)
                 }
