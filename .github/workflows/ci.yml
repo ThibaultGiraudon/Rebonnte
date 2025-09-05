@@ -25,7 +25,7 @@ jobs:
         env:
           GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE_INFO }}
         run: |
-          echo $GOOGLE_SERVICE | base64 --decode > ./App/GoogleService-Info.plist
+          echo $GOOGLE_SERVICE | base64 --decode > GoogleService-Info.plist
 
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
