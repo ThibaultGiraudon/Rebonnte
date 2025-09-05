@@ -11,8 +11,13 @@ on:
 
 jobs:
   build-and-test:
+
+  
     runs-on: macos-latest
     timeout-minutes: 20
+    permissions:
+      checks: write
+      contents: read
 
     steps:
       - name: Checkout repository
