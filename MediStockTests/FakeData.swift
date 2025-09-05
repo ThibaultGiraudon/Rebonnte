@@ -48,13 +48,13 @@ struct FakeData {
     ]
     
     let wrongMedicineData: [String: Any] = [
-        "id": "123",
+        "id": "33",
         "name": "Medicine 33",
         "stock": 33
     ]
 
     let medicineData: [String: Any] = [
-        "id": "123",
+        "id": "33",
         "name": "Medicine 33",
         "stock": 33,
         "aisle": "Aisle 33"
