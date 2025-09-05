@@ -22,9 +22,10 @@ jobs:
         run: sudo xcode-select --switch /Applications/Xcode_16.4.app
 
       - name: Create GoogleService-Info.plist
+        env:
+          GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE_INFO }}
         run: |
-          echo "${{ secrets.GOOGLE_SERVICE_INFO }}" | base64 --decode > ./App/GoogleService-Info.plist
-
+          echo $GOOGLE_SERVICE | base64 --decode > ./App/GoogleService-Info.plist
 
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
