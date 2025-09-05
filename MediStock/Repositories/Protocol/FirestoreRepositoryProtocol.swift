@@ -9,6 +9,7 @@ import Foundation
 
 protocol FirestoreRepositoryInterface {
     func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine]
+    func fetchAllMedicines(matching name: String) async throws -> [Medicine]
     func addMedicine(_ medicine: Medicine) async throws
     func updateStock(for document: String, amount: Int) async throws
     func updateMedicine(_ medicine: Medicine) async throws

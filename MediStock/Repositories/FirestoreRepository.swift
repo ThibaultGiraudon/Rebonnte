@@ -36,6 +36,18 @@ class FirestoreRepository: FirestoreRepositoryInterface {
         return items
     }
     
+    func fetchAllMedicines(matching name: String = "") async throws -> [Medicine] {
+        let snapshots = try await db.collection("medicines").whereField("name", isEqualTo: name).getDocuments()
+        
+        let documents = snapshots.documents
+        
+        let items = documents.compactMap {
+            Medicine($0.data())
+        }
+        
+        return items
+    }
+    
     func addMedicine(_ medicine: Medicine) async throws {
         try await db.collection("medicines").document(medicine.id).setData(medicine.data())
     }

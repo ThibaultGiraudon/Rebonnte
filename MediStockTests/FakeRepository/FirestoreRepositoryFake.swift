@@ -9,6 +9,7 @@ import Foundation
 @testable import MediStock
 
 class FirestoreRepositoryFake: FirestoreRepositoryInterface {
+    
     var medicines: [Medicine] = []
     var history: [HistoryEntry] = []
     var user: User? = nil
@@ -17,6 +18,13 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
     var userError: Error?
     
     func fetchMedicines(sortedBy sort: MediStock.SortOption, matching name: String, nextItems: Bool) async throws -> [MediStock.Medicine] {
+        if let medicineError {
+            throw medicineError
+        }
+        return medicines
+    }
+    
+    func fetchAllMedicines(matching name: String) async throws -> [MediStock.Medicine] {
         if let medicineError {
             throw medicineError
         }

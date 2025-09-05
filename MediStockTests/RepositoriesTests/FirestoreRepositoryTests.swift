@@ -64,6 +64,19 @@ final class FirestoreRepositoryTests: XCTestCase {
         } catch {
             XCTFail("Fetching Medicine 33 failed: \(error)")
         }
+
+        do {
+            medicines = try await repository.fetchAllMedicines(matching: "Medicine 33")
+            XCTAssertEqual(medicines.count, 1)
+            guard let medicine33 = medicines.first(where: { $0.id == "33" }) else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertNotNil(medicine33)
+        } catch {
+            XCTFail("Fetching Medicine 33 failed: \(error)")
+        }
         
         do {
             try await repository.deleteMedcines(FakeData().medicines)

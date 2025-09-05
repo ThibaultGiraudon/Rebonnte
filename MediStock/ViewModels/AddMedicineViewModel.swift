@@ -14,6 +14,7 @@ class AddMedicineViewModel: ObservableObject {
     @Published var stock: Int?
     
     @Published var error: String? = nil
+    @Published var showAlert: Bool = false
     
     var shouldDisabled: Bool {
         guard let stock = stock else { return true }
@@ -26,19 +27,23 @@ class AddMedicineViewModel: ObservableObject {
         self.repository = repository
     }
     
-    func addMedicine(user: String) async {
+    func addMedicine(user: String, tryAnyway: Bool = false) async {
         self.error = nil
         guard let stock = stock else {
             return
         }
         let newMedicine = Medicine(name: name, stock: stock, aisle: aisle)
         do {
-            try await repository.addMedicine(newMedicine)
-            await addHistory(action: "Add new medicine",
+            if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
+                try await repository.addMedicine(newMedicine)
+                await addHistory(action: "Add new medicine",
                                  user: user,
                                  medicineId: newMedicine.id,
                                  details: "\(user) add \(newMedicine.name) with initial stock of \(stock)",
                                  currentStock: stock)
+            } else {
+                showAlert = true
+            }
         } catch {
             self.error = "adding new medicines"
         }

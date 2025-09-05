@@ -63,7 +63,7 @@ final class AddMedicinesVMTests: XCTestCase {
         viewModel.aisle = "Aisle 33"
         viewModel.stock = 33
         
-        await viewModel.addMedicine(user: "test123")
+        await viewModel.addMedicine(user: "test123", tryAnyway: true)
         
         XCTAssertEqual(viewModel.error, "adding change to history")
     }

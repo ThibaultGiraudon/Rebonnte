@@ -27,6 +27,21 @@ struct AddMedicineView: View {
             Color.background
                 .ignoresSafeArea()
         }
+        .alert("Medication already exists",
+               isPresented: $addMedicinesVM.showAlert) {
+            Button("Cancel", role: .cancel) { }
+            
+            Button("Add anyway") {
+                Task {
+                    await addMedicinesVM.addMedicine(user: session.session?.email ?? "", tryAnyway: true)
+                    if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
+                        dismiss()
+                    }
+                }
+            }
+        } message: {
+            Text("This medication is already in the list. Would you like to add it anyway ?")
+        }
         .navigationTitle("Add medicine")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -43,7 +58,9 @@ struct AddMedicineView: View {
                 Button("Add") {
                     Task {
                         await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
-                        dismiss()
+                        if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
+                            dismiss()
+                        }
                     }
                 }
                 .disabled(addMedicinesVM.shouldDisabled)
