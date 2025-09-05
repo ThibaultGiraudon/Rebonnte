@@ -27,6 +27,14 @@ jobs:
         run: |
           echo $GOOGLE_SERVICE | base64 --decode > GoogleService-Info.plist
 
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Start Firebase Emulator
+        run: |
+          firebase emulators:start 
+          sleep 10
+
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
         with:
