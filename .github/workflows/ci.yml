@@ -32,7 +32,7 @@ jobs:
 
       - name: Start Firebase Emulator
         run: |
-          firebase emulators:start --project gestionstockmedicaments-dd197
+          firebase emulators:start --project gestionstockmedicaments-dd197 > firebase.log 2>&1 &
           sleep 10
 
       - name: Build and Test
