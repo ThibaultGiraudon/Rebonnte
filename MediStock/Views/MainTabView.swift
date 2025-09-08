@@ -19,8 +19,8 @@ enum TabItem: String, CaseIterable {
 
 struct MainTabView: View {
     @EnvironmentObject var session: SessionStore
-    @StateObject var medicinesVM = MedicineStockViewModel()
-    @StateObject var addMedicinesVM = AddMedicineViewModel()
+    @ObservedObject var medicinesVM: MedicineStockViewModel
+    @ObservedObject var addMedicinesVM: AddMedicineViewModel
     
     @State private var activeError: String?
     @State private var selectedTab: TabItem = .aisles
@@ -77,7 +77,7 @@ struct MainTabView: View {
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
         let session = SessionStore()
-        MainTabView()
+        MainTabView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
             .environmentObject(session)
     }
 }

@@ -4,14 +4,15 @@ struct ContentView: View {
     @EnvironmentObject var session: SessionStore
     @EnvironmentObject var coordinator: AppCoordinator
     @StateObject var medicinesVM = MedicineStockViewModel()
+    @StateObject var addMedicineVM = AddMedicineViewModel()
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            HomeView(session: session, medicinesVM: medicinesVM)
+            HomeView(session: session, medicinesVM: medicinesVM, addMedicineVM: addMedicineVM)
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .home:
-                        HomeView(session: session, medicinesVM: medicinesVM)
+                        HomeView(session: session, medicinesVM: medicinesVM, addMedicineVM: addMedicineVM)
                     case .signIn:
                         LoginView()
                     case .register:

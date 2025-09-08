@@ -41,6 +41,7 @@ class AddMedicineViewModel: ObservableObject {
                                  medicineId: newMedicine.id,
                                  details: "\(user) add \(newMedicine.name) with initial stock of \(stock)",
                                  currentStock: stock)
+                self.resetFields()
             } else {
                 showAlert = true
             }
@@ -57,5 +58,11 @@ class AddMedicineViewModel: ObservableObject {
         } catch {
             self.error = "adding change to history"
         }
+    }
+    
+    private func resetFields() {
+        self.name = ""
+        self.aisle = ""
+        self.stock = nil
     }
 }

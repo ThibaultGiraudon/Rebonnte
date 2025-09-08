@@ -42,6 +42,7 @@ class MedicineStockViewModel: ObservableObject {
         }
         do {
             try await repository.deleteMedcines(medicinesToDelete)
+            medicines.remove(atOffsets: offsets)
         } catch {
             self.error = "deleting medicines"
         }

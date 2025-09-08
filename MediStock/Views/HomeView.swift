@@ -10,11 +10,12 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject var session: SessionStore
     @ObservedObject var medicinesVM: MedicineStockViewModel
+    @ObservedObject var addMedicineVM: AddMedicineViewModel
     var body: some View {
         VStack {
             switch session.authenticationState {
             case .signedIn:
-                MainTabView()
+                MainTabView(medicinesVM: medicinesVM, addMedicinesVM: addMedicineVM)
             case .signedOut:
                 LoginView()
             }
@@ -23,5 +24,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(session: SessionStore(), medicinesVM: MedicineStockViewModel())
+    HomeView(session: SessionStore(), medicinesVM: MedicineStockViewModel(), addMedicineVM: AddMedicineViewModel())
 }
