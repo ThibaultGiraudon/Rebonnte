@@ -5,6 +5,9 @@
 //  Created by Thibault Giraudon on 04/09/2025.
 //
 
+
+// TODO add script to run emulator
+
 import XCTest
 @testable import MediStock
 import FirebaseAuth

@@ -64,6 +64,11 @@ struct MainTabView: View {
                 .frame(maxWidth: .infinity)
             }
         }
+        .overlay() {
+            if session.isLoading == true || medicinesVM.isLoading == true || addMedicinesVM.isLoading == true {
+                LoadingView()
+            }
+        }
         .onReceive(session.$error) { if let err = $0 { activeError = err} }
         .onReceive(medicinesVM.$error) { if let err = $0 { activeError = err} }
         .onReceive(addMedicinesVM.$error) { if let err = $0 { activeError = err} }

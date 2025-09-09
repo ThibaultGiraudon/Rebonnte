@@ -63,7 +63,10 @@ extension MedicineDetailView {
         VStack(alignment: .leading) {
             HStack {
                 Button {
-                    medicine.stock -= 1
+                    Task {
+                        medicine.stock -= medicine.stock == 0 ? 0 : 1
+                        await medicinesVM.updateStock(for: medicine, by: session.session?.email ?? "", medicine.stock)
+                    }
                 } label: {
                     Image(systemName: "minus.circle")
                         .font(.title)
@@ -78,9 +81,22 @@ extension MedicineDetailView {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
                 .frame(width: 100)
+                .onSubmit {
+                    Task {
+                        await medicinesVM.updateStock(for: medicine, by: session.session?.email ?? "", medicine.stock)
+                    }
+                }
+                .onChange(of: medicine.stock) { _, _ in
+                    if medicine.stock < 0 {
+                        medicine.stock = 0
+                    }
+                }
                 
                 Button {
-                    medicine.stock += 1
+                    Task {
+                        medicine.stock += 1
+                        await medicinesVM.updateStock(for: medicine, by: session.session?.email ?? "", medicine.stock)
+                    }
                 } label: {
                     Image(systemName: "plus.circle")
                         .font(.title)

@@ -15,10 +15,11 @@ class AddMedicineViewModel: ObservableObject {
     
     @Published var error: String? = nil
     @Published var showAlert: Bool = false
+    @Published var isLoading: Bool = false
     
     var shouldDisabled: Bool {
         guard let stock = stock else { return true }
-        return name.isEmpty || aisle.isEmpty || stock < 0
+        return name.isEmpty || aisle.isEmpty || stock < 0 || isLoading == true
     }
     
     private let repository: FirestoreRepositoryInterface
@@ -32,6 +33,7 @@ class AddMedicineViewModel: ObservableObject {
         guard let stock = stock else {
             return
         }
+        isLoading = true
         let newMedicine = Medicine(name: name, stock: stock, aisle: aisle)
         do {
             if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
@@ -48,6 +50,7 @@ class AddMedicineViewModel: ObservableObject {
         } catch {
             self.error = "adding new medicines"
         }
+        isLoading = false
     }
     
     private func addHistory(action: String, user: String, medicineId: String, details: String, currentStock: Int) async {

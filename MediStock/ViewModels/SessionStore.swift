@@ -31,6 +31,7 @@ class SessionStore: ObservableObject {
 
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
+        isLoading = true
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
@@ -41,10 +42,12 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = authRepository.identifyError(error)
         }
+        isLoading = false
     }
 
     func signIn(email: String, password: String) async {
         self.error = nil
+        isLoading = true
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
@@ -53,6 +56,7 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = authRepository.identifyError(error)
         }
+        isLoading = false
     }
 
     func signOut() {
