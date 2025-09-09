@@ -28,6 +28,42 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;# ----------------------------&#10;# V&#xe9;rifier Docker et lancer Firebase Emulator&#10;# ----------------------------&#10;&#10;# Fonction pour afficher une alerte macOS&#10;function alert {&#10;    local message=&quot;$1&quot;&#10;    osascript -e &quot;tell app \&quot;System Events\&quot; to display dialog \&quot;$message\&quot; buttons {\&quot;OK\&quot;} default button 1 with icon caution&quot;&#10;}&#10;&#10;# V&#xe9;rifier Docker install&#xe9;&#10;if ! command -v docker &amp;&gt; /dev/null; then&#10;    alert &quot;Docker n&apos;est pas install&#xe9;. Veuillez installer Docker Desktop pour macOS.&quot;&#10;    exit 1&#10;fi&#10;&#10;# V&#xe9;rifier Docker en cours d&apos;ex&#xe9;cution&#10;if ! docker info &gt; /dev/null 2&gt;&amp;1; then&#10;    alert &quot;Docker Desktop n&apos;est pas d&#xe9;marr&#xe9;. Merci de le lancer avant de d&#xe9;marrer les tests.&quot;&#10;    exit 1&#10;fi&#10;&#10;# Nom du conteneur&#10;CONTAINER_NAME=&quot;firebase-emulator&quot;&#10;&#10;# V&#xe9;rifier si le conteneur est d&#xe9;j&#xe0; lanc&#xe9;&#10;if [ &quot;$(docker ps -q -f name=${CONTAINER_NAME})&quot; ]; then&#10;    echo &quot;&#x2139;&#xfe0f; Conteneur ${CONTAINER_NAME} d&#xe9;j&#xe0; lanc&#xe9;.&quot;&#10;else&#10;    echo &quot;&#x1f680; Lancement du conteneur Firebase Emulator...&quot;&#10;    if ! docker-compose -f &quot;${SRCROOT}/docker/docker-compose.yml&quot; up -d --build; then&#10;        alert &quot;Impossible de d&#xe9;marrer le conteneur Firebase Emulator.&quot;&#10;        exit 1&#10;    fi&#10;fi&#10;&#10;echo &quot;&#x23f3; Attente que Firebase Auth Emulator soit pr&#xea;t sur le port 9000...&quot;&#10;for i in {1..30}; do&#10;  if nc -z localhost 9000; then&#10;    echo &quot;&#x2705; Auth Emulator pr&#xea;t !&quot;&#10;    break&#10;  fi&#10;  sleep 1&#10;done&#10;&#10;if ! nc -z localhost 9000; then&#10;  osascript -e &apos;tell app &quot;System Events&quot; to display dialog &quot;Auth Emulator non pr&#xea;t&quot;&apos;&#10;  exit 1&#10;fi&#10;&#10;  osascript -e &apos;tell app &quot;System Events&quot; to display dialog &quot;Emulator ready&quot;&apos;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "53E0D8922C06084700DE1134"
+                     BuildableName = "MediStock.app"
+                     BlueprintName = "MediStock"
+                     ReferencedContainer = "container:MediStock.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;CONTAINER_NAME=&quot;firebase-emulator&quot;&#10;&#10;if [ &quot;$(docker ps -q -f name=${CONTAINER_NAME})&quot; ]; then&#10;    echo &quot;Arr&#xea;t du conteneur Firebase Emulator...&quot;&#10;    docker stop ${CONTAINER_NAME}&#10;    docker rm ${CONTAINER_NAME}&#10;    echo &quot;Conteneur arr&#xea;t&#xe9;.&quot;&#10;fi&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "53E0D8922C06084700DE1134"
+                     BuildableName = "MediStock.app"
+                     BlueprintName = "MediStock"
+                     ReferencedContainer = "container:MediStock.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <TestPlans>
          <TestPlanReference
             reference = "container:MediStock.xctestplan"
@@ -86,6 +122,42 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;# D&#xe9;marre l&apos;&#xe9;mulateur Firebase en arri&#xe8;re-plan&#10;echo &quot;Lancement de l&apos;&#xe9;mulateur Firebase...&quot;&#10;firebase emulators:start --only firestore,auth,storage --project demo-project --import=./data --export-on-exit=./data &gt; /tmp/firebase_emulator.log 2&gt;&amp;1 &amp;&#10;&#10;# Sauvegarde le PID pour l&apos;arr&#xea;ter plus tard&#10;echo $! &gt; /tmp/firebase_emulator.pid&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "53E0D8922C06084700DE1134"
+                     BuildableName = "MediStock.app"
+                     BlueprintName = "MediStock"
+                     ReferencedContainer = "container:MediStock.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;if [ -f /tmp/firebase_emulator.pid ]; then&#10;    PID=$(cat /tmp/firebase_emulator.pid)&#10;    echo &quot;Arr&#xea;t de l&apos;&#xe9;mulateur Firebase (PID: $PID)...&quot;&#10;    kill $PID&#10;    rm /tmp/firebase_emulator.pid&#10;else&#10;    echo &quot;Aucun PID trouv&#xe9;, l&apos;&#xe9;mulateur ne semble pas tourner.&quot;&#10;fi&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "53E0D8922C06084700DE1134"
+                     BuildableName = "MediStock.app"
+                     BlueprintName = "MediStock"
+                     ReferencedContainer = "container:MediStock.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

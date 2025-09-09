@@ -1,0 +1,11 @@
+services:
+  firebase-emulator:
+    build: .
+    container_name: firebase-emulator
+    ports:
+      - "9000:9000"   # Auth
+      - "9010:9010"   # Firestore
+      - "9020:9020"   # Storage
+      - "9030:9030"   # UI
+    volumes:
+      - ../:/workspace

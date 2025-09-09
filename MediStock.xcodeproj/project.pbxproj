@@ -57,6 +57,7 @@
 		CE0D0BD72E6985E500A346A7 /* ModelsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ModelsTests; sourceTree = "<group>"; };
 		CE0D0BE02E69917F00A346A7 /* RepositoriesTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RepositoriesTests; sourceTree = "<group>"; };
 		CE0D0C832E69B8B300A346A7 /* MediStockUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MediStockUITests; sourceTree = "<group>"; };
+		CE414A892E704D9F00C874FD /* docker */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = docker; sourceTree = "<group>"; };
 		CE8409B92E5DA769000FA60A /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		CE8409BA2E5DA774000FA60A /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 		CE8409BB2E5DA784000FA60A /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
@@ -96,6 +97,7 @@
 		53E0D88A2C06084700DE1134 = {
 			isa = PBXGroup;
 			children = (
+				CE414A892E704D9F00C874FD /* docker */,
 				CE0D0C8D2E69C61200A346A7 /* MediStock.xctestplan */,
 				CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */,
 				CE8409B52E5D9A77000FA60A /* .gitignore */,
@@ -169,6 +171,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				CE414A892E704D9F00C874FD /* docker */,
 				CE8409B92E5DA769000FA60A /* Models */,
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
 				CE8409BB2E5DA784000FA60A /* Views */,
