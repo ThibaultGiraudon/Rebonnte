@@ -59,7 +59,7 @@ class MedicineStockViewModel: ObservableObject {
     func updateStock(for medicine: Medicine, by user: String, _ stock: Int) async {
         self.error = nil
         guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
-            self.error = "updating medicines"
+            self.error = "updating stock"
             return
         }
         isLoading = true
@@ -76,7 +76,7 @@ class MedicineStockViewModel: ObservableObject {
                 )
             }
             try await repository.updateStock(for: medicine.id, amount: stock)
-            await self.fetchMedicines()
+            self.medicines[index] = medicine
         } catch {
             self.error = "updating stock"
         }
@@ -126,7 +126,7 @@ class MedicineStockViewModel: ObservableObject {
                 )
             }
 
-            await self.fetchMedicines()
+            self.medicines[index] = medicine
         } catch {
             self.error = "updating medicines"
         }

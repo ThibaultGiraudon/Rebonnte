@@ -81,7 +81,7 @@ final class MedicinesStockVMTests: XCTestCase {
             return
         }
         
-        print(viewModel.history)
+        print(viewModel.medicines)
         
         let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 changed name from Medicine 33 to Medicine 34"})
         let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 changed aisle from Aisle 33 to Aisle 34"})
@@ -90,6 +90,69 @@ final class MedicinesStockVMTests: XCTestCase {
         XCTAssertNotNil(historyUpdateName)
         XCTAssertNotNil(historyUpdateAisle)
         XCTAssertNotNil(historyUpdateStock)
+    }
+    
+    @MainActor
+    func testUpdateStockShouldSucceed() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.medicines = FakeData().medicines
+        let viewModel = MedicineStockViewModel(repository: fakeRepo)
+        viewModel.medicines = FakeData().medicines
+        
+        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        
+        guard let medicine = viewModel.medicines.first(where: { $0.id == "33" }) else {
+            XCTFail()
+            return
+        }
+        
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 34"})
+        XCTAssertEqual(medicine, FakeData().medicine)
+        XCTAssertNotNil(historyUpdateStock)
+    }
+    
+    @MainActor
+    func testUpdateStockDecreaseShouldSucceed() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.medicines = FakeData().medicines
+        let viewModel = MedicineStockViewModel(repository: fakeRepo)
+        viewModel.medicines = FakeData().medicines
+        
+        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 32)
+        
+        guard let medicine = viewModel.medicines.first(where: { $0.id == "33" }) else {
+            XCTFail()
+            return
+        }
+        
+        print(viewModel.history)
+        
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 34"})
+        XCTAssertEqual(medicine, FakeData().medicine)
+        XCTAssertNotNil(historyUpdateStock)
+    }
+    
+    @MainActor
+    func testUpdateStockShouldFailed() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.medicineError = FakeData().error
+        let viewModel = MedicineStockViewModel(repository: fakeRepo)
+        viewModel.medicines = FakeData().medicines
+        
+        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        
+        XCTAssertEqual(viewModel.error, "updating stock")
+    }
+    
+    @MainActor
+    func testUpdateStockShouldFailedWithNoMedicine() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.medicineError = FakeData().error
+        let viewModel = MedicineStockViewModel(repository: fakeRepo)
+        
+        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        
+        XCTAssertEqual(viewModel.error, "updating stock")
     }
     
     @MainActor
