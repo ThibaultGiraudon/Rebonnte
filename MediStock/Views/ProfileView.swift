@@ -89,23 +89,26 @@ struct ProfileView: View {
             Text(email)
                 .font(.title2)
             Spacer()
-            customButton("Save", color: .lightBlue) {
+            CustomButton("Save", color: .lightBlue) {
                 Task {
                     await session.updateUser(fullname: fullname)
                 }
             }
+            .padding(.horizontal, 20)
             .disabled(shouldDisabled)
             .opacity(shouldDisabled ? 0.6 : 1)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Save button")
             .accessibilityHint(shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to save changes")
-            customButton("Log Out", color: .darkBlue) {
+            
+            CustomButton("Log Out", color: .darkBlue) {
                 session.signOut()
             }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Log out button")
             .accessibilityHint("Double-tap to log out")
-            .padding(.vertical, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
@@ -118,24 +121,6 @@ struct ProfileView: View {
         .onAppear {
             self.email = session.session?.email ?? "email@email.com"
             self.fullname = session.session?.fullname ?? "New user"
-        }
-    }
-    
-    @ViewBuilder
-    func customButton(_ title: String, color: Color,  completion: @escaping () -> Void) -> some View {
-        Button {
-            completion()
-        } label: {
-            Text(title)
-                .foregroundStyle(.white)
-                .font(.title)
-                .frame(maxWidth: .infinity)
-                .padding(10)
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(color)
-                }
-                .padding(.horizontal, 20)
         }
     }
 }

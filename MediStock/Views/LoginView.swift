@@ -73,27 +73,6 @@ struct LoginView: View {
     }
 }
 
-struct CustomButton: View {
-    var title: String
-    var color: Color
-    var completion: () -> Void
-    var body: some View {
-        Button {
-            completion()
-        } label: {
-            Text(title)
-                .foregroundStyle(.white)
-                .font(.title2)
-                .frame(maxWidth: .infinity)
-                .padding(10)
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(color)
-                }
-        }
-    }
-}
-
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView().environmentObject(SessionStore())
