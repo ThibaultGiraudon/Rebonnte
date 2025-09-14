@@ -89,7 +89,7 @@ struct ProfileView: View {
             Text(email)
                 .font(.title2)
             Spacer()
-            CustomButton("Save", color: .lightBlue) {
+            CustomButton(title: "Save", color: .lightBlue) {
                 Task {
                     await session.updateUser(fullname: fullname)
                 }
@@ -101,7 +101,7 @@ struct ProfileView: View {
             .accessibilityLabel("Save button")
             .accessibilityHint(shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to save changes")
             
-            CustomButton("Log Out", color: .darkBlue) {
+            CustomButton(title: "Log Out", color: .darkBlue) {
                 session.signOut()
             }
             .padding(.vertical, 10)
