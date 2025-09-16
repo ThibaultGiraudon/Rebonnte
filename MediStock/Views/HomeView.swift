@@ -11,11 +11,18 @@ struct HomeView: View {
     @ObservedObject var session: SessionStore
     @ObservedObject var medicinesVM: MedicineStockViewModel
     @ObservedObject var addMedicineVM: AddMedicineViewModel
+    @ObservedObject var aislesVM: AislesViewModel
+    @ObservedObject var addAisleVM: AddAisleViewModel
     var body: some View {
         VStack {
             switch session.authenticationState {
             case .signedIn:
-                MainTabView(medicinesVM: medicinesVM, addMedicinesVM: addMedicineVM)
+                MainTabView(
+                    medicinesVM: medicinesVM,
+                    addMedicinesVM: addMedicineVM,
+                    aislesVM: aislesVM,
+                    addAisleVM: addAisleVM
+                )
             case .signedOut:
                 LoginView()
             }
@@ -24,5 +31,11 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(session: SessionStore(), medicinesVM: MedicineStockViewModel(), addMedicineVM: AddMedicineViewModel())
+    HomeView(
+        session: SessionStore(),
+        medicinesVM: MedicineStockViewModel(),
+        addMedicineVM: AddMedicineViewModel(),
+        aislesVM: AislesViewModel(),
+        addAisleVM: AddAisleViewModel()
+    )
 }

@@ -21,6 +21,8 @@ struct MainTabView: View {
     @EnvironmentObject var session: SessionStore
     @ObservedObject var medicinesVM: MedicineStockViewModel
     @ObservedObject var addMedicinesVM: AddMedicineViewModel
+    @ObservedObject var aislesVM: AislesViewModel
+    @ObservedObject var addAisleVM: AddAisleViewModel
     
     @State private var activeError: String?
     @State private var selectedTab: TabItem = .aisles
@@ -37,7 +39,11 @@ struct MainTabView: View {
             } else {
                 switch selectedTab {
                 case .aisles:
-                    AisleListView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
+                    AisleListView(
+                        medicinesVM: medicinesVM,
+                        addMedicinesVM: addMedicinesVM,
+                        aislesVM: aislesVM,
+                        addAisleVM: addAisleVM)
                 case .medicines:
                     AllMedicinesView(medicinesVM: medicinesVM, addMedicinesVM: addMedicinesVM)
                 case .profile:
@@ -82,7 +88,12 @@ struct MainTabView: View {
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
         let session = SessionStore()
-        MainTabView(medicinesVM: MedicineStockViewModel(), addMedicinesVM: AddMedicineViewModel())
+        MainTabView(
+            medicinesVM: MedicineStockViewModel(),
+            addMedicinesVM: AddMedicineViewModel(),
+            aislesVM: AislesViewModel(),
+            addAisleVM: AddAisleViewModel()
+        )
             .environmentObject(session)
     }
 }

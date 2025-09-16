@@ -1,7 +1,5 @@
 import Foundation
 
-// TODO add loading view
-
 @MainActor
 class MedicineStockViewModel: ObservableObject {
     @Published var medicines: [Medicine] = []

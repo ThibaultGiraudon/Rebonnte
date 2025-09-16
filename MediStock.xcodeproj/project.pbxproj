@@ -53,6 +53,8 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE0B594E2E794EBD00CDD492 /* Ressources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Ressources; sourceTree = "<group>"; };
+		CE0B59572E795ACA00CDD492 /* Extension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extension; sourceTree = "<group>"; };
 		CE0D0BD02E697B5C00A346A7 /* ViewModelsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModelsTests; sourceTree = "<group>"; };
 		CE0D0BD72E6985E500A346A7 /* ModelsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ModelsTests; sourceTree = "<group>"; };
 		CE0D0BE02E69917F00A346A7 /* RepositoriesTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RepositoriesTests; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		53E0D8952C06084700DE1134 /* MediStock */ = {
 			isa = PBXGroup;
 			children = (
+				CE0B594E2E794EBD00CDD492 /* Ressources */,
 				53E0D8E12C065FFE00DE1134 /* AppDelegate.swift */,
 				53E0D8962C06084700DE1134 /* MediStockApp.swift */,
 				CE9B5F6A2E670A0300681B2D /* Coordinators */,
@@ -130,6 +133,7 @@
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
 				CE8409BE2E5DB9F7000FA60A /* Repositories */,
 				53E0D89C2C06084900DE1134 /* Preview Content */,
+				CE0B59572E795ACA00CDD492 /* Extension */,
 			);
 			path = MediStock;
 			sourceTree = "<group>";
@@ -171,6 +175,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				CE0B594E2E794EBD00CDD492 /* Ressources */,
+				CE0B59572E795ACA00CDD492 /* Extension */,
 				CE414A892E704D9F00C874FD /* docker */,
 				CE8409B92E5DA769000FA60A /* Models */,
 				CE8409BA2E5DA774000FA60A /* ViewModels */,
