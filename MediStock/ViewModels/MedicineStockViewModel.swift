@@ -3,9 +3,7 @@ import Foundation
 @MainActor
 class MedicineStockViewModel: ObservableObject {
     @Published var medicines: [Medicine] = []
-    var aisles: [String] {
-        Array(Set(medicines.map { $0.aisle })).sorted()
-    }
+    var aisles: [String] = []
     @Published var history: [HistoryEntry] = []
     
     @Published var filterText: String = ""
@@ -150,6 +148,17 @@ class MedicineStockViewModel: ObservableObject {
             self.history = try await repository.fetchHistory(for: medicine).sorted(by: { $0.timestamp > $1.timestamp})
         } catch {
             self.error = "fetching history for \(medicine.name)"
+        }
+        isLoading = false
+    }
+    
+    func fetchAisles() async {
+        self.error = nil
+        isLoading = true
+        do {
+            self.aisles = try await repository.fetchAllAisles(matching: "").compactMap { $0.name }
+        } catch {
+            self.error = "fetching aisles"
         }
         isLoading = false
     }

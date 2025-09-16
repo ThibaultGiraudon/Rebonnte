@@ -12,14 +12,19 @@ class AddMedicineViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var aisle: String = ""
     @Published var stock: Int?
+    @Published var normalStock: Int?
+    @Published var warningStock: Int?
+    @Published var alertStock: Int?
+    
+    @Published var aisles: [String] = []
     
     @Published var error: String? = nil
     @Published var showAlert: Bool = false
     @Published var isLoading: Bool = false
     
     var shouldDisabled: Bool {
-        guard let stock = stock else { return true }
-        return name.isEmpty || aisle.isEmpty || stock < 0 || isLoading == true
+        guard let stock = stock, let normalStock = normalStock, let warningStock = warningStock, let alertStock = alertStock else { return true }
+        return name.isEmpty || aisle.isEmpty || stock < 0 || normalStock < 0 || warningStock < 0 || alertStock < 0 || isLoading == true
     }
     
     private let repository: FirestoreRepositoryInterface
@@ -28,13 +33,24 @@ class AddMedicineViewModel: ObservableObject {
         self.repository = repository
     }
     
+    func fetchAisles() async {
+        self.error = nil
+        do {
+            aisles = try await repository.fetchAllAisles(matching: "").compactMap { $0.name }
+            guard let firstAisle = aisles.first else { return }
+            aisle = firstAisle
+        } catch {
+            self.error = "fetching aisle list"
+        }
+    }
+    
     func addMedicine(user: String, tryAnyway: Bool = false) async {
         self.error = nil
-        guard let stock = stock else {
+        guard let stock = stock, let normalStock = normalStock, let warningStock = warningStock, let alertStock = alertStock else {
             return
         }
         isLoading = true
-        let newMedicine = Medicine(name: name, stock: stock, aisle: aisle)
+        let newMedicine = Medicine(name: name, stock: stock, aisle: aisle, normalStock: normalStock, warningStock: warningStock, alertStock: alertStock)
         do {
             if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
                 try await repository.addMedicine(newMedicine)
@@ -67,5 +83,8 @@ class AddMedicineViewModel: ObservableObject {
         self.name = ""
         self.aisle = ""
         self.stock = nil
+        self.normalStock = nil
+        self.warningStock = nil
+        self.alertStock = nil
     }
 }

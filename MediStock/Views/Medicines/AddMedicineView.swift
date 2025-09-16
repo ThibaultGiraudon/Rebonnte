@@ -11,14 +11,34 @@ struct AddMedicineView: View {
     @StateObject var addMedicinesVM: AddMedicineViewModel
     @EnvironmentObject var session: SessionStore
     @Environment(\.dismiss) var dismiss
+    
+    @State private var isPresentingAislePicker = false
     var body: some View {
         Form {
             Section {
                 TextField("Medicine name", text: $addMedicinesVM.name)
-                TextField("Aisle name", text: $addMedicinesVM.aisle)
+                HStack {
+                    Text("Aisle")
+                    Spacer()
+                    Text(addMedicinesVM.aisle)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        isPresentingAislePicker.toggle()
+                    }
+                }
+                
+                if isPresentingAislePicker {
+                    AislePickerView(selectedAisle: $addMedicinesVM.aisle, in: addMedicinesVM.aisles)
+                }
+                
             }
-            Section {
+            Section("Stock") {
                 TextField("Stock", value: $addMedicinesVM.stock, format: .number)
+                TextField("Normal stock", value: $addMedicinesVM.normalStock, format: .number)
+                TextField("Warning stock", value: $addMedicinesVM.warningStock, format: .number)
+                TextField("Alert stock", value: $addMedicinesVM.alertStock, format: .number)
             }
         }
         .listRowBackground(Color.customPrimary)
@@ -44,6 +64,11 @@ struct AddMedicineView: View {
         }
         .navigationTitle("Add medicine")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            Task {
+                await addMedicinesVM.fetchAisles()
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button("Cancel") {

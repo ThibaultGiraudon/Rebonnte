@@ -34,7 +34,7 @@ struct MedicineListView: View {
                     await medicinesVM.deleteMedicines(at: indexes)
                 }
             }
-        }
+        } 
         .listRowBackground(Color.customPrimary)
         .scrollContentBackground(.hidden)
         .background {
