@@ -33,9 +33,8 @@ struct ContentView: View {
                         RegisterView()
                     case .detail(let medicine):
                         MedicineDetailView(medicine: medicine, medicinesVM: medicinesVM)
-                    case .medicinesList(let aisle):
-                        MedicineListView(medicinesVM: medicinesVM, aisle: aisle)
-                            .navigationTitle(aisle)
+                    case .aisleDetail(let aisle):
+                        AisleDetailView(aisle: aisle, aisleViewModel: aislesVM, medicinesVM: medicinesVM)
                     }
                 }
         }

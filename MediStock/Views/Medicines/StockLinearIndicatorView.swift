@@ -8,11 +8,45 @@
 import SwiftUI
 
 struct StockLinearIndicatorView: View {
+    var stock: Int
+    var normalStock: Int
+    var waringStock: Int
+    var alertStock: Int
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            GeometryReader { geo in
+                let width = geo.size.width
+                ZStack(alignment: .leading) {
+                        Capsule()
+                            .frame(width: width, height: 10)
+                            .foregroundStyle(.gray.opacity(0.2))
+                        Capsule()
+                            .fill(LinearGradient(stops: gradient.stops, startPoint: .leading, endPoint: .trailing))
+                            .frame(width: width * (Double(stock) / Double(normalStock)), height: 10)
+                    }
+            }
+            .frame(maxHeight: 10)
+            .scrollDisabled(true)
+            Text("\(stock)")
+                .foregroundStyle(gradient)
+        }
+    }
+    
+    var gradient: Gradient {
+        switch stock {
+            case 0...alertStock:
+                return .init(colors: [.red, .orange])
+            case alertStock...waringStock:
+                return .init(colors: [.orange, .yellow])
+            case waringStock...normalStock:
+                return .init(colors: [.green, .teal])
+            default:
+                return .init(colors: [.green, .teal])
+        }
     }
 }
 
 #Preview {
-    StockLinearIndicatorView()
+    StockLinearIndicatorView(stock: 3, normalStock: 33, waringStock: 10, alertStock: 3)
 }

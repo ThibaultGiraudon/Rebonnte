@@ -15,14 +15,25 @@ struct AisleDetailView: View {
         VStack {
             Image(systemName: aisle.icon)
                 .resizable()
-                .frame(width: 100, height: 100)
-                .background(Color(aisle.color.toColor()))
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48)
+                .foregroundStyle(.customPrimary)
+                .padding(20)
+                .background {
+                    Circle()
+                        .fill(aisle.color.toColor())
+                }
             Text(aisle.name)
-                .font(.headline)
+                .font(.largeTitle)
+                .foregroundStyle(.primaryText)
+            Text("\(aisle.medicines.count) medicines available")
+            
+            MedicineListView(medicinesVM: medicinesVM, aisle: aisle.name)
         }
+        .background(Color.customPrimary)
     }
 }
 
 #Preview {
-    AisleDetailView(aisle: Aisle(name: "Test", icon: "pills.fill", color: "00BB58"), aisleViewModel: AislesViewModel(), medicinesVM: MedicineStockViewModel())
+    AisleDetailView(aisle: Aisle(name: "test", icon: "pills.fill", color: "00BB58"), aisleViewModel: AislesViewModel(), medicinesVM: MedicineStockViewModel())
 }

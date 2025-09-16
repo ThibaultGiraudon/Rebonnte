@@ -3,7 +3,6 @@ import SwiftUI
 // TODO: search medicine and aisle with .contains in code
 // TODO: keep actual filter on submit
 // TODO: add xmark to delete search text
-// TODO: aadd sort order by stock / name
 // TODO: add full history with search on medicine
 // TODO: jpeg file for test result not the best
 
@@ -22,7 +21,7 @@ struct AisleListView: View {
             LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
                 ForEach(aislesVM.aisles, id: \.self) { aisle in
                     Button {
-                        coordinator.goToMedicinesList(for: aisle.name)
+                        coordinator.goToAisleDetail(for: aisle)
                     } label: {
                             AisleRowView(aisle: aisle)
                                 .foregroundStyle(.primaryText)

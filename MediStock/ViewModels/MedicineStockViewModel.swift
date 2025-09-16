@@ -8,9 +8,25 @@ class MedicineStockViewModel: ObservableObject {
     
     @Published var filterText: String = ""
     @Published var sortOption: SortOption = .none
+    @Published var sortAscending: Bool = true
     
     @Published var error: String? = nil
     @Published var isLoading: Bool = false
+    
+    var filteredMedicines: [Medicine] {
+        medicines.filter {
+            filterText.isEmpty || $0.name.lowercased().contains(filterText.lowercased())
+        }.sorted {
+            switch sortOption {
+            case .none:
+                return false 
+            case .name:
+                return sortAscending ? $0.name < $1.name : $0.name > $1.name
+            case .stock:
+                return sortAscending ? $0.stock < $1.stock : $0.stock > $1.stock
+            }
+        }
+    }
     
     private let repository: FirestoreRepositoryInterface
     
@@ -26,7 +42,7 @@ class MedicineStockViewModel: ObservableObject {
             if fetchNext == true {
                 for medicine in fetchedMedicines {
                     if !self.medicines.contains(where: { $0.id == medicine.id }) {
-                        self.medicines.append(medicine)                        
+                        self.medicines.append(medicine)
                     }
                 }
             } else {

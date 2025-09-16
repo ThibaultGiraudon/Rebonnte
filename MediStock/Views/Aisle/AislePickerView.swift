@@ -46,6 +46,7 @@ struct AislePickerView: View {
                         Image(systemName: selectedAisle == aisle ? "checkmark.circle.fill" : "circle")
                             .foregroundColor(selectedAisle == aisle ? .blue : .gray)
                         Text(aisle)
+                        Spacer()
                     }
                     .onTapGesture {
                         selectedAisle = aisle

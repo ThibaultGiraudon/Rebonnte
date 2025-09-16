@@ -18,8 +18,8 @@ class AppCoordinator: ObservableObject {
         path.append(.detail(medicine: medicine))
     }
     
-    func goToMedicinesList(for aisle: String) {
-        path.append(.medicinesList(aisle: aisle))
+    func goToAisleDetail(for aisle: Aisle) {
+        path.append(.aisleDetail(aisle: aisle))
     }
     
     func dismiss() {
@@ -34,5 +34,5 @@ enum AppRoute: Hashable {
     case signIn
     case register
     case detail(medicine: Medicine)
-    case medicinesList(aisle: String)
+    case aisleDetail(aisle: Aisle)
 }

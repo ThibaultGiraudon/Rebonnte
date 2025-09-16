@@ -7,18 +7,35 @@ struct AllMedicinesView: View {
     
     var body: some View {
         VStack {
-            // Filtrage et Tri
             HStack {
-                TextField("Filter by name", text: $medicinesVM.filterText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.leading, 10)
-                    .onSubmit {
-                        Task {
-                            await medicinesVM.fetchMedicines()
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                    TextField("Search in name", text: $medicinesVM.filterText)
+                        .onSubmit {
+                            Task {
+                                await medicinesVM.fetchMedicines()
+                            }
                         }
+                    if !medicinesVM.filterText.isEmpty {
+                        Image(systemName: "xmark.circle.fill")
+                            .onTapGesture {
+                                Task {
+                                    medicinesVM.filterText = ""
+                                    await medicinesVM.fetchMedicines()
+                                }
+                            }
                     }
+                }
+                .padding(5)
+                .background {
+                    Capsule().stroke()
+                }
+                .foregroundStyle(.gray)
                 
-                Spacer()
+                Image(systemName: medicinesVM.sortAscending ? "arrow.up" : "arrow.down")
+                    .onTapGesture {
+                        medicinesVM.sortAscending.toggle()
+                    }
                 
                 Picker("Sort by", selection: $medicinesVM.sortOption) {
                     Text("None").tag(SortOption.none)
@@ -28,15 +45,9 @@ struct AllMedicinesView: View {
                 .tint(.primaryText)
                 .pickerStyle(MenuPickerStyle())
                 .padding(.trailing, 10)
-                .onChange(of: medicinesVM.sortOption) {
-                    Task {
-                        await medicinesVM.fetchMedicines()
-                    }
-                }
             }
-            .padding(.top, 10)
+            .padding([.top, .leading], 10)
             
-            // Liste des Médicaments
             MedicineListView(medicinesVM: medicinesVM)
         }
         .background {

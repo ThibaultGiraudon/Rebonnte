@@ -1,5 +1,5 @@
 //
-//  StockIndicatorView.swift
+//  StockCircleIndicatorView.swift
 //  MediStock
 //
 //  Created by Thibault Giraudon on 16/09/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StockIndicatorView: View {
+struct StockCircleIndicatorView: View {
     var stock: Int
     var normalStock: Int
     var waringStock: Int
@@ -46,5 +46,5 @@ struct StockIndicatorView: View {
 }
 
 #Preview {
-    StockIndicatorView(stock: 18, normalStock: 25, waringStock: 10, alertStock: 5)
+    StockCircleIndicatorView(stock: 18, normalStock: 25, waringStock: 10, alertStock: 5)
 }

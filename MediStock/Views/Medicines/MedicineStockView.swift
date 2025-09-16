@@ -13,7 +13,7 @@ struct MedicineStockView: View {
         VStack(alignment: .leading) {
             HStack(spacing: 25) {
                 VStack {
-                    StockIndicatorView(stock: medicine.stock, normalStock: medicine.normalStock, waringStock: medicine.warningStock, alertStock: medicine.alertStock)
+                    StockCircleIndicatorView(stock: medicine.stock, normalStock: medicine.normalStock, waringStock: medicine.warningStock, alertStock: medicine.alertStock)
                 }
                 VStack(alignment: .leading) {
                     stockIndicator(for: "Current stock", medicine.stock)
