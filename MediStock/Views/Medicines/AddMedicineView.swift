@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddMedicineView: View {
-    @StateObject var addMedicinesVM: AddMedicineViewModel
+    @ObservedObject var addMedicinesVM: AddMedicineViewModel
     @EnvironmentObject var session: SessionStore
     @Environment(\.dismiss) var dismiss
     

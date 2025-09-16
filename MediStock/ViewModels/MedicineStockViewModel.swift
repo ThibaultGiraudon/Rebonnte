@@ -25,7 +25,9 @@ class MedicineStockViewModel: ObservableObject {
             let fetchedMedicines = try await repository.fetchMedicines(sortedBy: sortOption, matching: filterText, nextItems: fetchNext)
             if fetchNext == true {
                 for medicine in fetchedMedicines {
-                    self.medicines.append(medicine)
+                    if !self.medicines.contains(where: { $0.id == medicine.id }) {
+                        self.medicines.append(medicine)                        
+                    }
                 }
             } else {
                 self.medicines = fetchedMedicines
@@ -34,7 +36,6 @@ class MedicineStockViewModel: ObservableObject {
             self.error = "fetching medicines"
         }
         isLoading = false
-        print("Fetching medicines")
     }
 
     func deleteMedicines(at offsets: IndexSet) async {
@@ -110,6 +111,8 @@ class MedicineStockViewModel: ObservableObject {
                     details: "\(user) changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
                     currentStock: medicine.stock
                 )
+                await AislesViewModel().add(medicine, in: medicine.aisle)
+                await AislesViewModel().remove(medicine, from: currentMedicine.aisle)
             }
             
             if currentMedicine.name != medicine.name {

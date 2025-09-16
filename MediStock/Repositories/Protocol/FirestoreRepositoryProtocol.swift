@@ -25,5 +25,6 @@ protocol FirestoreRepositoryInterface {
     func fetchAisles(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Aisle]
     func fetchAllAisles(matching name: String) async throws -> [Aisle]
     func addAisle(_ medicine: Aisle) async throws
+    func updateAisle(_ aisle: Aisle) async throws 
     func deleteAisle(_ Aisles: [Aisle]) async throws
 }

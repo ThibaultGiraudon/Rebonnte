@@ -7,6 +7,7 @@ struct MedicineDetailView: View {
     @EnvironmentObject var session: SessionStore
     
     @State var isShowingChart: Bool = false
+    @State var isShowingEditView: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,16 +44,19 @@ struct MedicineDetailView: View {
         .navigationBarTitle("Medicine Details", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Save") {
-                    Task {
-                        await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
-                    }
+                Button("Edit") {
+                    isShowingEditView = true
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Save button")
+                .accessibilityLabel("Edit button")
                 .accessibilityHint("Double-tap to save changes")
             }
         }
+        .sheet(isPresented: $isShowingEditView, content: {
+            NavigationStack {
+                EditMedicineView(medicine: $medicine, medicinesVM: medicinesVM)
+            }
+        })
         .onAppear {
             Task {
                 await medicinesVM.fetchHistory(for: medicine)
@@ -130,6 +134,8 @@ struct MedicineDetailView_Previews: PreviewProvider {
         sampleViewModel.history = [
             .init(medicineId: "12", user: "user@test.com", action: "Add new medicine", details: "user@test.com adds Sample with initial stock of 10", currentStock: 10),
         ]
-         return MedicineDetailView(medicine: sampleMedicine, medicinesVM: sampleViewModel).environmentObject(SessionStore())
+        return NavigationStack {
+            MedicineDetailView(medicine: sampleMedicine, medicinesVM: sampleViewModel).environmentObject(SessionStore())
+        }
     }
 }

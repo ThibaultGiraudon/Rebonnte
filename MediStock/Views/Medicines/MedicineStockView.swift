@@ -33,7 +33,7 @@ struct MedicineStockView: View {
             Text(title)
                 .foregroundStyle(.gray)
             Text("\(stock)")
-                .foregroundStyle(.black)
+                .foregroundStyle(.primaryText)
         }
     }
 }

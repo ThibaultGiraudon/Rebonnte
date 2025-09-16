@@ -12,7 +12,7 @@ struct Aisle: Identifiable, Hashable, Equatable {
     var name: String
     var icon: String
     var color: String
-    var medicines: [Medicine]
+    var medicines: [String]
     
     func data() -> [String: Any] {
         let data: [String: Any] = [
@@ -26,7 +26,7 @@ struct Aisle: Identifiable, Hashable, Equatable {
         return data
     }
     
-    init(id: String = UUID().uuidString, name: String, icon: String, color: String, medicines: [Medicine] = []) {
+    init(id: String = UUID().uuidString, name: String, icon: String, color: String, medicines: [String] = []) {
         self.id = id
         self.name = name
         self.medicines = medicines
@@ -39,7 +39,7 @@ struct Aisle: Identifiable, Hashable, Equatable {
               let name = data["name"] as? String,
               let icon = data["icon"] as? String,
               let color = data["color"] as? String,
-              let medicines = data["medicines"] as? [Medicine] else {
+              let medicines = data["medicines"] as? [String] else {
             return nil
         }
         

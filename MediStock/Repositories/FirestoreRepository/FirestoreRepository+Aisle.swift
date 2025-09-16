@@ -45,6 +45,10 @@ extension FirestoreRepository {
         return items
     }
     
+    func updateAisle(_ aisle: Aisle) async throws {
+        try await db.collection("aisles").document(aisle.id).setData(aisle.data())
+    }
+    
     func addAisle(_ medicine: Aisle) async throws {
         try await db.collection("aisles").document(medicine.id).setData(medicine.data())
     }

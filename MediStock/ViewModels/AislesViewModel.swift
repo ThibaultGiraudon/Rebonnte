@@ -27,4 +27,38 @@ class AislesViewModel: ObservableObject {
             self.error = "fetching aisles"
         }
     }
+    
+    func add(_ medicine: Medicine, in aisleName: String) async {
+        do {
+            await self.fetchAisles()
+            guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
+                print("Failed to find \(aisleName)")
+                return
+            }
+            var aisle = self.aisles[index]
+            aisle.medicines.append(medicine.name)
+            try await repository.updateAisle(aisle)
+            self.aisles[index] = aisle
+        } catch {
+            print("adding medicine to aisle")
+            self.error = "adding medicine to aisle"
+        }
+    }
+    
+    func remove(_ medicine: Medicine, from aisleName: String) async {
+        do {
+            await self.fetchAisles()
+            guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
+                print("Failed to find \(aisleName)")
+                return
+            }
+            var aisle = self.aisles[index]
+            aisle.medicines.removeAll { $0 == medicine.name }
+            try await repository.updateAisle(aisle)
+            self.aisles[index] = aisle
+        } catch {
+            print("removing medicine to aisle")
+            self.error = "removing medicine to aisle"
+        }
+    }
 }

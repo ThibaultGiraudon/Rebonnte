@@ -59,6 +59,7 @@ class AddMedicineViewModel: ObservableObject {
                                  medicineId: newMedicine.id,
                                  details: "\(user) add \(newMedicine.name) with initial stock of \(stock)",
                                  currentStock: stock)
+                await AislesViewModel().add(newMedicine, in: newMedicine.aisle)
                 self.resetFields()
             } else {
                 showAlert = true
