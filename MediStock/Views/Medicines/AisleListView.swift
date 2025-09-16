@@ -1,6 +1,5 @@
 import SwiftUI
 
-// TODO: add aisle in firebase
 // TODO: search medicine and aisle with .contains in code
 // TODO: keep actual filter on submit
 // TODO: add xmark to delete search text
@@ -19,21 +18,25 @@ struct AisleListView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
-        List {
-            ForEach(medicinesVM.aisles, id: \.self) { aisle in
-                Button {
-                    coordinator.goToMedicinesList(for: aisle)
-                } label: {
-                    Text(aisle)
-                        .foregroundStyle(.primaryText)
+        ScrollView {
+            LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
+                ForEach(aislesVM.aisles, id: \.self) { aisle in
+                    Button {
+                        coordinator.goToMedicinesList(for: aisle.name)
+                    } label: {
+                            AisleRowView(aisle: aisle)
+                                .foregroundStyle(.primaryText)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.customPrimary)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(aisle.name) button")
+                    .accessibilityHint("Double-tap to see aisle's detail")
                 }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(aisle) button")
-                .accessibilityHint("Double-tap to see aisle's detail")
             }
         }
-        .listRowBackground(Color.customPrimary)
-        .scrollContentBackground(.hidden)
+        .padding()
         .background {
             Color.background
                 .ignoresSafeArea()
@@ -53,7 +56,7 @@ struct AisleListView: View {
         }
         .onAppear {
             Task {
-                await medicinesVM.fetchMedicines()
+                await aislesVM.fetchAisles()
             }
         }
         .sheet(isPresented: $showAddAisle) {

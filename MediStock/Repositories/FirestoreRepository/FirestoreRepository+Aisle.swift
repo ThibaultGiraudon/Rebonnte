@@ -34,7 +34,7 @@ extension FirestoreRepository {
     }
     
     func fetchAllAisles(matching name: String = "") async throws -> [Aisle] {
-        let snapshots = try await db.collection("aisles").whereField("name", isEqualTo: name).getDocuments()
+        let snapshots = try await db.collection("aisles")/*.whereField("name", isEqualTo: name)*/.getDocuments()
         
         let documents = snapshots.documents
         

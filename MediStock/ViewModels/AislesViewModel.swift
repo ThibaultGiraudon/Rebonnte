@@ -18,7 +18,7 @@ class AislesViewModel: ObservableObject {
         self.repository = repository
     }
     
-    
+    @MainActor
     func fetchAisles() async {
         self.error = nil
         do {
