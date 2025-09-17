@@ -7,7 +7,7 @@ struct MedicineListView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
-        var filteredMedicines: [Medicine] = medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }
+        let filteredMedicines: [Medicine] = medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }
         ScrollView {
             
             if filteredMedicines.isEmpty {

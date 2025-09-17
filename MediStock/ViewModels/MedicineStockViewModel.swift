@@ -27,6 +27,8 @@ class MedicineStockViewModel: ObservableObject {
             }
         }
     }
+    var warningMedicines: [Medicine] { medicines.filter { $0.stock <= $0.warningStock && $0.stock > $0.alertStock } }
+    var alertMedicines: [Medicine] { medicines.filter { $0.stock <= $0.alertStock } }
     
     private let repository: FirestoreRepositoryInterface
     

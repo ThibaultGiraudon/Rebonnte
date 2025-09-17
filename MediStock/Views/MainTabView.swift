@@ -1,12 +1,15 @@
 import SwiftUI
 
 enum TabItem: String, CaseIterable {
+    case home
     case aisles
     case medicines
     case profile
     
     var icon: String {
         switch self {
+        case .home:
+            "house"
         case .aisles:
             "list.bullet.circle"
         case .medicines:
@@ -38,6 +41,8 @@ struct MainTabView: View {
                 }
             } else {
                 switch selectedTab {
+                case .home:
+                    HomeView(medicinesVM: medicinesVM, addMedicineVM: addMedicinesVM, aislesVM: aislesVM, addAisleVM: addAisleVM)
                 case .aisles:
                     AisleListView(
                         addMedicinesVM: addMedicinesVM,

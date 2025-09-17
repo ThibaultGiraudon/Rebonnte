@@ -10,23 +10,35 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            HomeView(
-                session: session,
-                medicinesVM: medicinesVM,
-                addMedicineVM: addMedicineVM,
-                aislesVM: aislesVM,
-                addAisleVM: addAisleVM
-            )
+            VStack {
+                switch session.authenticationState {
+                case .signedIn:
+                    MainTabView(
+                        medicinesVM: medicinesVM,
+                        addMedicinesVM: addMedicineVM,
+                        aislesVM: aislesVM,
+                        addAisleVM: addAisleVM
+                    )
+                case .signedOut:
+                    LoginView()
+                }
+            }
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .home:
-                        HomeView(
-                            session: session,
-                            medicinesVM: medicinesVM,
-                            addMedicineVM: addMedicineVM,
-                            aislesVM: aislesVM,
-                            addAisleVM: addAisleVM
-                        )
+                        VStack {
+                            switch session.authenticationState {
+                            case .signedIn:
+                                MainTabView(
+                                    medicinesVM: medicinesVM,
+                                    addMedicinesVM: addMedicineVM,
+                                    aislesVM: aislesVM,
+                                    addAisleVM: addAisleVM
+                                )
+                            case .signedOut:
+                                LoginView()
+                            }
+                        }
                     case .signIn:
                         LoginView()
                     case .register:
@@ -35,6 +47,8 @@ struct ContentView: View {
                         MedicineDetailView(medicine: medicine, medicinesVM: medicinesVM)
                     case .aisleDetail(let aisle):
                         AisleDetailView(aisle: aisle, aisleViewModel: aislesVM, medicinesVM: medicinesVM)
+                    case .addMedicine:
+                        AddMedicineView(addMedicinesVM: addMedicineVM)
                     }
                 }
         }

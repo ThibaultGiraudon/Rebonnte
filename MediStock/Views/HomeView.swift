@@ -8,34 +8,120 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var session: SessionStore
     @ObservedObject var medicinesVM: MedicineStockViewModel
     @ObservedObject var addMedicineVM: AddMedicineViewModel
     @ObservedObject var aislesVM: AislesViewModel
     @ObservedObject var addAisleVM: AddAisleViewModel
+
+    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject var coordinator: AppCoordinator
+    
+    @State private var selectedMedicineToUpdate: Medicine?
+    @State private var selectedMedicineToMove: Medicine?
     var body: some View {
-        VStack {
-            switch session.authenticationState {
-            case .signedIn:
-                MainTabView(
-                    medicinesVM: medicinesVM,
-                    addMedicinesVM: addMedicineVM,
-                    aislesVM: aislesVM,
-                    addAisleVM: addAisleVM
-                )
-            case .signedOut:
-                LoginView()
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading) {
+                LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
+                    CardView(icon: "pills", title: "Total medicines", color: .blue, value: medicinesVM.medicines.count)
+                    CardView(icon: "archivebox", title: "Total aisles", color: .purple, value: aislesVM.aisles.count)
+                    CardView(icon: "exclamationmark.triangle", title: "Critical stock", color: .red, value: medicinesVM.alertMedicines.count)
+                    CardView(icon: "clock", title: "Warning stock", color: .yellow, value: medicinesVM.warningMedicines.count)
+                }
+                .padding(.bottom)
+                
+                Text("Quick actions")
+                    .font(.title2.bold())
+                VStack {
+                    Button { coordinator.goToAddMedicine() } label: {
+                        customLabel("Add medicine", systemImage: "plus.circle", color: .blue)
+                    }
+                    
+                    Picker(selection: $selectedMedicineToUpdate) {
+                        EmptyView().tag(nil as Medicine?)
+                        ForEach(medicinesVM.medicines) { medicine in
+                            MedicineRowView(medicine: medicine)
+                                .tag(medicine as Medicine?)
+                        }
+                    } label: {
+                        customLabel("Update stock", systemImage: "arrow.up.arrow.down", color: .yellow)
+                    }
+                    .pickerStyle(.navigationLink)
+                    
+                    Picker(selection: $selectedMedicineToMove) {
+                        EmptyView().tag(nil as Medicine?)
+                        ForEach(medicinesVM.medicines) { medicine in
+                            MedicineRowView(medicine: medicine)
+                                .tag(medicine as Medicine?)
+                        }
+                    } label: {
+                        customLabel("Move medicine", systemImage: "arrow.left.arrow.right", color: .green)
+                    }
+                    .pickerStyle(.navigationLink)
+                }
+            }
+            .onAppear {
+                Task {
+                    await medicinesVM.fetchMedicines()
+                    await aislesVM.fetchAisles()
+                }
+            }
+            .sheet(item: $selectedMedicineToUpdate, onDismiss: { Task { await medicinesVM.fetchMedicines()}}) { medicine in
+                UpdateMedicineStockView(medicine: medicine, medicinesVM: medicinesVM)
+                    .padding(.top)
+                    .presentationDetents([.fraction(0.3)])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(item: $selectedMedicineToMove, onDismiss: { Task { await medicinesVM.fetchMedicines()}}) { medicine in
+                MovesMedicineView(medicine: medicine, aislesVM: aislesVM, medicinesVM: medicinesVM)
+                    .padding(.top)
+                    .presentationDetents([.fraction(0.5)])
+                    .presentationDragIndicator(.visible)
             }
         }
+        .onReceive(medicinesVM.$error, perform: { err in
+            if let err {
+                print(err)
+            }
+        })
+        .navigationTitle("Dashboard")
+        .padding()
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
+    }
+    
+    @ViewBuilder
+    func customLabel(_ title: String, systemImage: String, color: Color) -> some View {
+            HStack {
+                Image(systemName: systemImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(color)
+                Text(title)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.headline)
+                    .foregroundStyle(.gray)
+            }
+            .font(.title2)
+            .padding()
+            .foregroundColor(.primaryText)
+            .background(Color.customPrimary)
+            .cornerRadius(8)
     }
 }
 
 #Preview {
-    HomeView(
-        session: SessionStore(),
-        medicinesVM: MedicineStockViewModel(),
-        addMedicineVM: AddMedicineViewModel(),
-        aislesVM: AislesViewModel(),
-        addAisleVM: AddAisleViewModel()
-    )
+    NavigationStack {
+        HomeView(
+            medicinesVM: MedicineStockViewModel(),
+            addMedicineVM: AddMedicineViewModel(),
+            aislesVM: AislesViewModel(),
+            addAisleVM: AddAisleViewModel()
+        )
+        .environmentObject(AppCoordinator())
+        .environmentObject(SessionStore())
+    }
 }

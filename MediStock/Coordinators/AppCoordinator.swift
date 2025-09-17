@@ -22,6 +22,10 @@ class AppCoordinator: ObservableObject {
         path.append(.aisleDetail(aisle: aisle))
     }
     
+    func goToAddMedicine() {
+        path.append(.addMedicine)
+    }
+    
     func dismiss() {
         if !path.isEmpty {
             path.removeLast()
@@ -35,4 +39,5 @@ enum AppRoute: Hashable {
     case register
     case detail(medicine: Medicine)
     case aisleDetail(aisle: Aisle)
+    case addMedicine
 }
