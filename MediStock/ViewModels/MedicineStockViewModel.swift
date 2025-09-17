@@ -38,7 +38,10 @@ class MedicineStockViewModel: ObservableObject {
 
     func fetchMedicines(fetchNext: Bool = false) async {
         self.error = nil
+        
         isLoading = true
+        defer { isLoading = false }
+        
         do {
             let fetchedMedicines = try await repository.fetchMedicines(sortedBy: sortOption, matching: filterText, nextItems: fetchNext)
             if fetchNext == true {
@@ -53,7 +56,6 @@ class MedicineStockViewModel: ObservableObject {
         } catch {
             self.error = "fetching medicines"
         }
-        isLoading = false
     }
     
     func medicines(inAisle aisle: String) -> [Medicine] {
@@ -76,54 +78,73 @@ class MedicineStockViewModel: ObservableObject {
     }
     
     func updateStock(for medicine: Medicine, by user: String, _ stock: Int) async {
+    func increaseStock(for medicine: Medicine, by user: String, _ amount: Int) async {
+        await updateStock(for: medicine, to: medicine.stock + amount, by: user)
+    }
+
+    func decreaseStock(for medicine: Medicine, by user: String, _ amount: Int) async {
+        await updateStock(for: medicine, to: medicine.stock - amount, by: user)
+    }
+    
+    func updateStock(for medicine: Medicine, to newStock: Int, by user: String) async {
         self.error = nil
+        
         guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
             self.error = "updating stock"
             return
         }
+        
         isLoading = true
+        defer { isLoading = false }
+        
+        let currentMedicine = self.medicines[index]
         do {
-            let currentMedicine = self.medicines[index]
-            let amount = medicine.stock - currentMedicine.stock
-            if amount != 0 {
-                await self.addHistory(
-                    action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
-                    user: user,
-                    medicineId: medicine.id,
-                    details: "\(user) changed stock from \(currentMedicine.stock) to \(medicine.stock)",
-                    currentStock: medicine.stock
-                )
-            }
-            try await repository.updateStock(for: medicine.id, amount: stock)
-            self.medicines[index] = medicine
+            await self.updateHistory(oldMedicine: currentMedicine, newStock: newStock, user: user)
+            
+            try await repository.updateStock(for: medicine.id, amount: newStock)
+            
+            medicines[index].stock = newStock
         } catch {
             self.error = "updating stock"
         }
-        isLoading = false
+    }
+    
+    private func updateHistory(oldMedicine: Medicine, newStock: Int, user: String) async {
+        let diff = newStock - oldMedicine.stock
+        guard diff != 0 else { return }
+        
+        let action = diff > 0
+            ? "Increased stock of \(oldMedicine.name) by \(diff)"
+            : "Decreased stock of \(oldMedicine.name) by \(-diff)"
+        
+        await addHistory(
+            action: action,
+            user: user,
+            medicineId: oldMedicine.id,
+            details: "\(user) \(action)",
+            currentStock: newStock
+        )
     }
 
     func updateMedicine(_ medicine: Medicine, user: String) async {
         self.error = nil
+        
         guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
             self.error = "updating medicines"
             return
         }
+
+        let currentMedicine = self.medicines[index]
+        
         isLoading = true
+        defer { isLoading = false }
+        
         do {
             
             try await repository.updateMedicine(medicine)
 
-            let currentMedicine = self.medicines[index]
-            let amount = medicine.stock - currentMedicine.stock
-            if amount != 0 {
-                await self.addHistory(
-                    action: "\(amount > 0 ? "Increased" : "Decreased") stock of \(medicine.name) by \(amount)",
-                    user: user,
-                    medicineId: medicine.id,
-                    details: "\(user) changed stock from \(currentMedicine.stock) to \(medicine.stock)",
-                    currentStock: medicine.stock
-                )
-            }
+            
+            await self.updateHistory(oldMedicine: currentMedicine, newStock: medicine.stock, user: user)
             
             if currentMedicine.aisle != medicine.aisle {
                 await addHistory(
@@ -151,7 +172,6 @@ class MedicineStockViewModel: ObservableObject {
         } catch {
             self.error = "updating medicines"
         }
-        isLoading = false
     }
 
     private func addHistory(action: String, user: String, medicineId: String, details: String, currentStock: Int) async {
@@ -168,23 +188,27 @@ class MedicineStockViewModel: ObservableObject {
 
     func fetchHistory(for medicine: Medicine) async {
         self.error = nil
+        
         isLoading = true
+        defer { isLoading = false }
+        
         do {
             self.history = try await repository.fetchHistory(for: medicine).sorted(by: { $0.timestamp > $1.timestamp})
         } catch {
             self.error = "fetching history for \(medicine.name)"
         }
-        isLoading = false
     }
     
     func fetchAisles() async {
         self.error = nil
+        
         isLoading = true
+        defer { isLoading = false }
+        
         do {
             self.aisles = try await repository.fetchAllAisles(matching: "").compactMap { $0.name }
         } catch {
             self.error = "fetching aisles"
         }
-        isLoading = false
     }
 }

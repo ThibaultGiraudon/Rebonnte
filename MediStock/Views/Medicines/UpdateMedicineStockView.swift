@@ -12,6 +12,8 @@ struct UpdateMedicineStockView: View {
     @ObservedObject var medicinesVM: MedicineStockViewModel
     var initialStock: Int
     
+    @State private var debounceTask: Task<Void, Never>?
+    
     @EnvironmentObject var session: SessionStore
     
     init(medicine: Medicine, medicinesVM: MedicineStockViewModel) {
@@ -28,8 +30,13 @@ struct UpdateMedicineStockView: View {
             Stepper("Stock: \(medicine.stock)", value: $medicine.stock, in: 0...Int.max)
                 .labelsHidden()
                 .onChange(of: medicine.stock) {
-                    Task {
-                        await medicinesVM.updateStock(for: medicine, by: session.session?.email ?? "", medicine.stock)
+                    debounceTask?.cancel()
+                    
+                    debounceTask = Task {
+                        try? await Task.sleep(for: .milliseconds(500))
+                        guard !Task.isCancelled else { return }
+                        
+                        await medicinesVM.updateStock(for: medicine, to: medicine.stock, by: session.session?.email ?? "")
                     }
                 }
         }

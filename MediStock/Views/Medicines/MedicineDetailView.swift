@@ -22,7 +22,7 @@ struct MedicineDetailView: View {
                 }
                 
                 Section("Stock") {
-                    MedicineStockView(medicine: $medicine)
+                    MedicineStockView(medicine: $medicine, medicinesVM: medicinesVM)
                 }
                 
                 Section(isExpanded: $isShowingChart) {

@@ -9,6 +9,11 @@ import SwiftUI
 
 struct MedicineStockView: View {
     @Binding var medicine: Medicine
+    @ObservedObject var medicinesVM: MedicineStockViewModel
+    
+    @EnvironmentObject var session: SessionStore
+    @State private var debounceTask: Task<Void, Never>?
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 25) {
@@ -24,6 +29,16 @@ struct MedicineStockView: View {
             }
             Stepper("Update stock", value: $medicine.stock, in: 0...Int.max)
                 .labelsHidden()
+                .onChange(of: medicine.stock) {
+                    debounceTask?.cancel()
+                    
+                    debounceTask = Task {
+                        try? await Task.sleep(for: .milliseconds(500))
+                        guard !Task.isCancelled else { return }
+                        
+                        await medicinesVM.updateStock(for: medicine, to: medicine.stock, by: session.session?.email ?? "")
+                    }
+                }
         }
     }
     
@@ -40,5 +55,6 @@ struct MedicineStockView: View {
 
 #Preview {
     @Previewable @State var medicine = Medicine(name: "Doliprane 500mg", stock: 25, aisle: "Pills", normalStock: 25, warningStock: 10, alertStock: 5, icon: "pills", color: "06ffb7")
-    MedicineStockView(medicine: $medicine)
+    MedicineStockView(medicine: $medicine, medicinesVM: MedicineStockViewModel())
+        .environmentObject(SessionStore())
 }
