@@ -1,6 +1,7 @@
 import SwiftUI
 
 // TODO: add full history with search on medicine
+// TODO: add delete on detail view and list
 // TODO: jpeg file for test result not the best
 
 struct AisleListView: View {

@@ -6,8 +6,6 @@
 //
 
 
-// TODO add script to run emulator
-
 import XCTest
 @testable import MediStock
 import FirebaseAuth
