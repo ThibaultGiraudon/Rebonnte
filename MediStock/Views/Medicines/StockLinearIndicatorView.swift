@@ -23,7 +23,7 @@ struct StockLinearIndicatorView: View {
                             .foregroundStyle(.gray.opacity(0.2))
                         Capsule()
                             .fill(LinearGradient(stops: gradient.stops, startPoint: .leading, endPoint: .trailing))
-                            .frame(width: width * (Double(stock) / Double(normalStock)), height: 10)
+                            .frame(width: min(width, width * (Double(stock) / Double(normalStock))), height: 10)
                     }
             }
             .frame(maxHeight: 10)
@@ -35,9 +35,9 @@ struct StockLinearIndicatorView: View {
         switch stock {
             case 0...alertStock:
                 return .init(colors: [.red, .orange])
-            case alertStock...waringStock:
+            case 0...waringStock:
                 return .init(colors: [.orange, .yellow])
-            case waringStock...normalStock:
+            case 0...normalStock:
                 return .init(colors: [.green, .teal])
             default:
                 return .init(colors: [.green, .teal])
@@ -46,5 +46,5 @@ struct StockLinearIndicatorView: View {
 }
 
 #Preview {
-    StockLinearIndicatorView(stock: 3, normalStock: 33, waringStock: 10, alertStock: 3)
+    StockLinearIndicatorView(stock: 60, normalStock: 30, waringStock: 10, alertStock: 3)
 }

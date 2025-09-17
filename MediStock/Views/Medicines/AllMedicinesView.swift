@@ -48,7 +48,7 @@ struct AllMedicinesView: View {
             }
             .padding([.top, .leading, .bottom], 10)
             
-            MedicineListView(medicinesVM: medicinesVM)
+            MedicineListView(medicinesVM: medicinesVM, filter: .all)
         }
         .background {
             Color.customPrimary
@@ -66,11 +66,6 @@ struct AllMedicinesView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Show add medicine form")
                 .accessibilityHint("Double-tap to open adding view")
-            }
-        }
-        .onAppear {
-            Task {
-                await medicinesVM.fetchMedicines()
             }
         }
         .sheet(isPresented: $showAddMedicine, onDismiss: {

@@ -2,12 +2,24 @@ import SwiftUI
 
 struct MedicineListView: View {
     @ObservedObject var medicinesVM: MedicineStockViewModel
-    var aisle: String = ""
+    let filter: MedicinesFilter
     
     @EnvironmentObject var coordinator: AppCoordinator
 
+    private var filteredMedicines: [Medicine] {
+        switch filter {
+        case .all:
+            return medicinesVM.medicines
+        case .warningStock:
+            return medicinesVM.warningMedicines
+        case .aisle(let aisle):
+            return medicinesVM.medicines(inAisle: aisle)
+        case .alertStock:
+            return medicinesVM.alertMedicines
+        }
+    }
+    
     var body: some View {
-        let filteredMedicines: [Medicine] = medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }
         ScrollView {
             
             if filteredMedicines.isEmpty {
@@ -44,7 +56,7 @@ struct MedicineListView: View {
         }
         .onAppear {
             Task {
-               await medicinesVM.fetchMedicines()
+                await medicinesVM.fetchMedicines()
             }
         }
     }
@@ -52,7 +64,7 @@ struct MedicineListView: View {
 
 struct MedicineListView_Previews: PreviewProvider {
     static var previews: some View {
-        MedicineListView(medicinesVM: MedicineStockViewModel(), aisle: "").environmentObject(SessionStore())
+        MedicineListView(medicinesVM: MedicineStockViewModel(), filter: .warningStock).environmentObject(SessionStore())
             .environmentObject(AppCoordinator())
     }
 }

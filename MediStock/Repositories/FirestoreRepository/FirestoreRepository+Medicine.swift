@@ -11,14 +11,16 @@ import FirebaseFirestore
 extension FirestoreRepository {
     
     func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine] {
+        print("👉 fetchMedicines called with sort: \(sort), name: \(name), nextItems: \(nextItems)")
+
         var query: Query = db.collection("medicines").limit(to: pageSize).order(by: sort.value)
         
         if !name.isEmpty {
             query = query.whereField("name", isEqualTo: name)
         }
         
-        if nextItems == true, let lastDocument {
-            query = query.start(afterDocument: lastDocument)
+        if nextItems, let doc = self.lastDocument {
+            query = query.start(afterDocument: doc)
         }
         
         let snapshot = try await query.getDocuments()
@@ -28,7 +30,9 @@ extension FirestoreRepository {
             Medicine($0.data())
         }
         
-        self.lastDocument = documents.last
+        if !documents.isEmpty {
+            self.lastDocument = documents.last
+        }
         
         return items
     }

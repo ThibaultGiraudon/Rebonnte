@@ -45,10 +45,14 @@ struct ContentView: View {
                         RegisterView()
                     case .detail(let medicine):
                         MedicineDetailView(medicine: medicine, medicinesVM: medicinesVM)
+                    case .aisleList:
+                        AisleListView(addMedicinesVM: addMedicineVM, aislesVM: aislesVM, addAisleVM: addAisleVM)
                     case .aisleDetail(let aisle):
                         AisleDetailView(aisle: aisle, aisleViewModel: aislesVM, medicinesVM: medicinesVM)
                     case .addMedicine:
                         AddMedicineView(addMedicinesVM: addMedicineVM)
+                    case .medicineList(let filter):
+                        MedicineListView(medicinesVM: medicinesVM, filter: filter)
                     }
                 }
         }

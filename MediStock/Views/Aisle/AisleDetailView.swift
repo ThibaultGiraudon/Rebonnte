@@ -28,7 +28,7 @@ struct AisleDetailView: View {
                 .foregroundStyle(.primaryText)
             Text("\(aisle.medicines.count) medicines available")
             
-            MedicineListView(medicinesVM: medicinesVM, aisle: aisle.name)
+            MedicineListView(medicinesVM: medicinesVM, filter: .aisle(aisle.name))
         }
         .background(Color.customPrimary)
     }

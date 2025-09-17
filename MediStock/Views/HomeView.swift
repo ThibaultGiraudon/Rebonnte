@@ -18,14 +18,33 @@ struct HomeView: View {
     
     @State private var selectedMedicineToUpdate: Medicine?
     @State private var selectedMedicineToMove: Medicine?
+    
+    init(medicinesVM: MedicineStockViewModel, addMedicineVM: AddMedicineViewModel, aislesVM: AislesViewModel, addAisleVM: AddAisleViewModel) {
+        self.medicinesVM = medicinesVM
+        self.addMedicineVM = addMedicineVM
+        self.aislesVM = aislesVM
+        self.addAisleVM = addAisleVM
+    }
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
                     CardView(icon: "pills", title: "Total medicines", color: .blue, value: medicinesVM.medicines.count)
+                        .onTapGesture {
+                            coordinator.goToMedicinesList(.all)
+                        }
                     CardView(icon: "archivebox", title: "Total aisles", color: .purple, value: aislesVM.aisles.count)
+                        .onTapGesture {
+                            coordinator.goToAisleList()
+                        }
                     CardView(icon: "exclamationmark.triangle", title: "Critical stock", color: .red, value: medicinesVM.alertMedicines.count)
+                        .onTapGesture {
+                            coordinator.goToMedicinesList(.alertStock)
+                        }
                     CardView(icon: "clock", title: "Warning stock", color: .yellow, value: medicinesVM.warningMedicines.count)
+                        .onTapGesture {
+                            coordinator.goToMedicinesList(.warningStock)
+                        }
                 }
                 .padding(.bottom)
                 
@@ -59,12 +78,6 @@ struct HomeView: View {
                     .pickerStyle(.navigationLink)
                 }
             }
-            .onAppear {
-                Task {
-                    await medicinesVM.fetchMedicines()
-                    await aislesVM.fetchAisles()
-                }
-            }
             .sheet(item: $selectedMedicineToUpdate, onDismiss: { Task { await medicinesVM.fetchMedicines()}}) { medicine in
                 UpdateMedicineStockView(medicine: medicine, medicinesVM: medicinesVM)
                     .padding(.top)
@@ -78,11 +91,11 @@ struct HomeView: View {
                     .presentationDragIndicator(.visible)
             }
         }
-        .onReceive(medicinesVM.$error, perform: { err in
-            if let err {
-                print(err)
-            }
-        })
+        .task {
+                print("CPT in HomeView")
+                await medicinesVM.fetchMedicines()
+                await aislesVM.fetchAisles()
+        }
         .navigationTitle("Dashboard")
         .padding()
         .background {

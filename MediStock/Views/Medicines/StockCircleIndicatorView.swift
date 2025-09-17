@@ -35,9 +35,9 @@ struct StockCircleIndicatorView: View {
         switch stock {
             case 0...alertStock:
                 return .init(colors: [.red, .orange])
-            case alertStock...waringStock:
+            case 0...waringStock:
                 return .init(colors: [.orange, .yellow])
-            case waringStock...normalStock:
+            case 0...normalStock:
                 return .init(colors: [.green, .teal])
             default:
                 return .init(colors: [.green, .teal])

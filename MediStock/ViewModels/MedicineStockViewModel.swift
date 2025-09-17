@@ -55,6 +55,10 @@ class MedicineStockViewModel: ObservableObject {
         }
         isLoading = false
     }
+    
+    func medicines(inAisle aisle: String) -> [Medicine] {
+        self.medicines.filter { $0.aisle == aisle }
+    }
 
     func deleteMedicines(at offsets: IndexSet) async {
         self.error = nil
