@@ -40,7 +40,6 @@ struct MainTabView: View {
                 switch selectedTab {
                 case .aisles:
                     AisleListView(
-                        medicinesVM: medicinesVM,
                         addMedicinesVM: addMedicinesVM,
                         aislesVM: aislesVM,
                         addAisleVM: addAisleVM)

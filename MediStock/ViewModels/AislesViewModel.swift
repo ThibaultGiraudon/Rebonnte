@@ -9,6 +9,11 @@ import Foundation
 
 class AislesViewModel: ObservableObject {
     @Published var aisles: [Aisle] = []
+    @Published var filterText: String = ""
+    
+    var filteredAisles: [Aisle] {
+        aisles.filter { filterText.isEmpty || $0.name.lowercased().contains(filterText.lowercased()) }
+    }
     
     private let repository: FirestoreRepositoryInterface
     

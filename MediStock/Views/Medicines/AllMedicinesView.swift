@@ -10,7 +10,7 @@ struct AllMedicinesView: View {
             HStack {
                 HStack {
                     Image(systemName: "magnifyingglass")
-                    TextField("Search in name", text: $medicinesVM.filterText)
+                    TextField("Search", text: $medicinesVM.filterText)
                         .onSubmit {
                             Task {
                                 await medicinesVM.fetchMedicines()

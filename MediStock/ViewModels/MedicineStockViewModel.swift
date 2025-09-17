@@ -19,7 +19,7 @@ class MedicineStockViewModel: ObservableObject {
         }.sorted {
             switch sortOption {
             case .none:
-                return false 
+                return sortAscending ? false : true
             case .name:
                 return sortAscending ? $0.name < $1.name : $0.name > $1.name
             case .stock:

@@ -4,7 +4,6 @@ import SwiftUI
 // TODO: jpeg file for test result not the best
 
 struct AisleListView: View {
-    @ObservedObject var medicinesVM: MedicineStockViewModel
     @ObservedObject var addMedicinesVM: AddMedicineViewModel
     @ObservedObject var aislesVM: AislesViewModel
     @ObservedObject var addAisleVM: AddAisleViewModel
@@ -14,25 +13,52 @@ struct AisleListView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
-        ScrollView {
-            ForEach(aislesVM.aisles, id: \.self) { aisle in
-                Button {
-                    coordinator.goToAisleDetail(for: aisle)
-                } label: {
-                        AisleRowView(aisle: aisle)
-                            .foregroundStyle(.primaryText)
-                            .background(Color.customPrimary)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+        VStack {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                TextField("Search", text: $aislesVM.filterText)
+                
+                if !aislesVM.filterText.isEmpty {
+                    Image(systemName: "xmark.circle.fill")
+                        .onTapGesture {
+                            aislesVM.filterText = ""
+                        }
                 }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(aisle.name) button")
-                .accessibilityHint("Double-tap to see aisle's detail")
+            }
+            .padding(5)
+            .background {
+                Capsule().stroke()
+            }
+            .foregroundStyle(.gray)
+            .padding()
+            
+            ScrollView {
+                if aislesVM.filteredAisles.isEmpty {
+                    ContentUnavailableView("No aisle found", systemImage: "xmark.bin")
+                } else {
+                    ForEach(aislesVM.filteredAisles, id: \.self) { aisle in
+                        Button {
+                            coordinator.goToAisleDetail(for: aisle)
+                        } label: {
+                            AisleRowView(aisle: aisle)
+                                .foregroundStyle(.primaryText)
+                                .background(Color.customPrimary)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("\(aisle.name) button")
+                        .accessibilityHint("Double-tap to see aisle's detail")
+                    }
+                }
+            }
+            .padding()
+            .background {
+                Color.background
+                    .ignoresSafeArea()
             }
         }
-        .padding(.top)
-        .padding()
         .background {
-            Color.background
+            Color.customPrimary
                 .ignoresSafeArea()
         }
         .navigationTitle("Aisles")
@@ -42,6 +68,7 @@ struct AisleListView: View {
                     showAddAisle = true
                 } label: {
                     Image(systemName: "plus")
+                        .tint(.primaryText)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Add button")
@@ -65,7 +92,6 @@ struct AisleListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             AisleListView(
-                medicinesVM: MedicineStockViewModel(),
                 addMedicinesVM: AddMedicineViewModel(),
                 aislesVM: AislesViewModel(),
                 addAisleVM: AddAisleViewModel()

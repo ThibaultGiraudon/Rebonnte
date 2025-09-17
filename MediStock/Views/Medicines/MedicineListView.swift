@@ -7,26 +7,32 @@ struct MedicineListView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
+        var filteredMedicines: [Medicine] = medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }
         ScrollView {
-            ForEach(medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }, id: \.id) { medicine in
-                Button { coordinator.goToDetail(for: medicine) } label: {
-                    MedicineRowView(medicine: medicine)
-                        .padding()
-                        .foregroundStyle(.primaryText)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.customPrimary)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                .onAppear {
-                    if medicine == medicinesVM.medicines.last {
-                        Task {
-                            await medicinesVM.fetchMedicines(fetchNext: true)
+            
+            if filteredMedicines.isEmpty {
+                ContentUnavailableView("No medicines found", systemImage: "")
+            } else {
+                ForEach(filteredMedicines, id: \.id) { medicine in
+                    Button { coordinator.goToDetail(for: medicine) } label: {
+                        MedicineRowView(medicine: medicine)
+                            .padding(5)
+                            .foregroundStyle(.primaryText)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.customPrimary)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .onAppear {
+                        if medicine == medicinesVM.medicines.last {
+                            Task {
+                                await medicinesVM.fetchMedicines(fetchNext: true)
+                            }
                         }
                     }
-                }
-                .contextMenu {
-                    Button("Delete", systemImage: "trash", role: .destructive) {
-                        
+                    .contextMenu {
+                        Button("Delete", systemImage: "trash", role: .destructive) {
+                            
+                        }
                     }
                 }
             }
