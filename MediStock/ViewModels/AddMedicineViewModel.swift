@@ -15,6 +15,9 @@ class AddMedicineViewModel: ObservableObject {
     @Published var normalStock: Int?
     @Published var warningStock: Int?
     @Published var alertStock: Int?
+    @Published var color: String = "6495ED"
+    @Published var icon: String = "pills"
+    
     
     @Published var aisles: [String] = []
     
@@ -50,7 +53,7 @@ class AddMedicineViewModel: ObservableObject {
             return
         }
         isLoading = true
-        let newMedicine = Medicine(name: name, stock: stock, aisle: aisle, normalStock: normalStock, warningStock: warningStock, alertStock: alertStock)
+        let newMedicine = Medicine(name: name, stock: stock, aisle: aisle, normalStock: normalStock, warningStock: warningStock, alertStock: alertStock, icon: icon, color: color)
         do {
             if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
                 try await repository.addMedicine(newMedicine)

@@ -88,6 +88,6 @@ struct EditMedicineView: View {
 }
 
 #Preview {
-    @Previewable @State var medicine = Medicine(name: "sample", stock: 25, aisle: "Pills", normalStock: 25, warningStock: 25, alertStock: 25)
+    @Previewable @State var medicine = Medicine(name: "sample", stock: 25, aisle: "Pills", normalStock: 25, warningStock: 25, alertStock: 25, icon: "pills", color: "06ffb7")
     EditMedicineView(medicine: $medicine, medicinesVM: MedicineStockViewModel())
 }

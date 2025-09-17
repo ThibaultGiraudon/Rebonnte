@@ -13,86 +13,121 @@ struct AddMedicineView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var isPresentingAislePicker = false
+    @State private var isShowingIconPicker = false
+    @State private var color: Color = .blue
     var body: some View {
-        Form {
-            Section {
-                TextField("Medicine name", text: $addMedicinesVM.name)
-                HStack {
-                    Text("Aisle")
-                    Spacer()
-                    Text(addMedicinesVM.aisle)
+        VStack {
+            Image(systemName: addMedicinesVM.icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48)
+                .foregroundStyle(addMedicinesVM.color.toColor())
+                .padding(20)
+                .background {
+                    Circle()
+                        .fill(addMedicinesVM.color.toColor().opacity(0.2))
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation {
-                        isPresentingAislePicker.toggle()
+            Form {
+                
+                Section {
+                    TextField("Medicine name", text: $addMedicinesVM.name)
+                    HStack {
+                        Text("Aisle")
+                        Spacer()
+                        Text(addMedicinesVM.aisle)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation {
+                            isPresentingAislePicker.toggle()
+                        }
+                    }
+                    
+                    if isPresentingAislePicker {
+                        AislePickerView(selectedAisle: $addMedicinesVM.aisle, in: addMedicinesVM.aisles)
                     }
                 }
                 
-                if isPresentingAislePicker {
-                    AislePickerView(selectedAisle: $addMedicinesVM.aisle, in: addMedicinesVM.aisles)
+                Section {
+                    HStack {
+                        Text("Icon")
+                        Spacer()
+                        Image(systemName: addMedicinesVM.icon)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        isShowingIconPicker.toggle()
+                    }
+                    
+                    if isShowingIconPicker {
+                        IconPickerView(selectedIcon: $addMedicinesVM.icon)
+                    }
+                    ColorPicker("Select color", selection: $color)
+                        .onChange(of: color) {
+                            addMedicinesVM.color = color.toHex() ?? "6495ED"
+                        }
                 }
                 
-            }
-            Section("Stock") {
-                TextField("Stock", value: $addMedicinesVM.stock, format: .number)
-                TextField("Normal stock", value: $addMedicinesVM.normalStock, format: .number)
-                TextField("Warning stock", value: $addMedicinesVM.warningStock, format: .number)
-                TextField("Alert stock", value: $addMedicinesVM.alertStock, format: .number)
-            }
-        }
-        .listRowBackground(Color.customPrimary)
-        .scrollContentBackground(.hidden)
-        .background {
-            Color.background
-                .ignoresSafeArea()
-        }
-        .alert("Medication already exists",
-               isPresented: $addMedicinesVM.showAlert) {
-            Button("Cancel", role: .cancel) { }
-            
-            Button("Add anyway") {
-                Task {
-                    await addMedicinesVM.addMedicine(user: session.session?.email ?? "", tryAnyway: true)
-                    if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
-                        dismiss()
-                    }
+                Section("Stock") {
+                    TextField("Stock", value: $addMedicinesVM.stock, format: .number)
+                    TextField("Normal stock", value: $addMedicinesVM.normalStock, format: .number)
+                    TextField("Warning stock", value: $addMedicinesVM.warningStock, format: .number)
+                    TextField("Alert stock", value: $addMedicinesVM.alertStock, format: .number)
                 }
             }
-        } message: {
-            Text("This medication is already in the list. Would you like to add it anyway ?")
-        }
-        .navigationTitle("Add medicine")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            Task {
-                await addMedicinesVM.fetchAisles()
+            .listRowBackground(Color.customPrimary)
+            .scrollContentBackground(.hidden)
+            .background {
+                Color.background
+                    .ignoresSafeArea()
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Cancel") {
-                    dismiss()
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Cancel button")
-                .accessibilityHint("Double-tap to cancel action")
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Add") {
+            .alert("Medication already exists",
+                   isPresented: $addMedicinesVM.showAlert) {
+                Button("Cancel", role: .cancel) { }
+                
+                Button("Add anyway") {
                     Task {
-                        await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
+                        await addMedicinesVM.addMedicine(user: session.session?.email ?? "", tryAnyway: true)
                         if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
                             dismiss()
                         }
                     }
                 }
-                .disabled(addMedicinesVM.shouldDisabled)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Add button")
-                .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
-                .accessibilityIdentifier("addMedicineButton")
+            } message: {
+                Text("This medication is already in the list. Would you like to add it anyway ?")
+            }
+            .navigationTitle("Add medicine")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                Task {
+                    await addMedicinesVM.fetchAisles()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Cancel button")
+                    .accessibilityHint("Double-tap to cancel action")
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add") {
+                        Task {
+                            await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
+                            if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
+                                dismiss()
+                            }
+                        }
+                    }
+                    .disabled(addMedicinesVM.shouldDisabled)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Add button")
+                    .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
+                    .accessibilityIdentifier("addMedicineButton")
+                }
             }
         }
     }

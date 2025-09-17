@@ -21,11 +21,11 @@ struct AddAisleView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 48)
-                .foregroundStyle(.customPrimary)
+                .foregroundStyle(addAisleVM.color.toColor())
                 .padding(20)
                 .background {
                     Circle()
-                        .fill(addAisleVM.color.toColor())
+                        .fill(addAisleVM.color.toColor().opacity(0.2))
                 }
             Form {
                 TextField("Aisle name", text: $addAisleVM.name)

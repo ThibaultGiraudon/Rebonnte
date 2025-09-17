@@ -39,6 +39,6 @@ struct MedicineStockView: View {
 }
 
 #Preview {
-    @Previewable @State var medicine = Medicine(name: "Doliprane 500mg", stock: 25, aisle: "Pills", normalStock: 25, warningStock: 10, alertStock: 5)
+    @Previewable @State var medicine = Medicine(name: "Doliprane 500mg", stock: 25, aisle: "Pills", normalStock: 25, warningStock: 10, alertStock: 5, icon: "pills", color: "06ffb7")
     MedicineStockView(medicine: $medicine)
 }

@@ -46,7 +46,7 @@ struct AllMedicinesView: View {
                 .pickerStyle(MenuPickerStyle())
                 .padding(.trailing, 10)
             }
-            .padding([.top, .leading], 10)
+            .padding([.top, .leading, .bottom], 10)
             
             MedicineListView(medicinesVM: medicinesVM)
         }

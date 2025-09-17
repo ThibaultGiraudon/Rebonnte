@@ -8,27 +8,25 @@ struct MedicineListView: View {
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
-                ForEach(medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }, id: \.id) { medicine in
-                    Button(action: { coordinator.goToDetail(for: medicine) }) {
-                        MedicineRowView(medicine: medicine)
-                            .padding()
-                            .foregroundStyle(.primaryText)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.customPrimary)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                    .onAppear {
-                        if medicine == medicinesVM.medicines.last {
-                            Task {
-                                await medicinesVM.fetchMedicines(fetchNext: true)
-                            }
+            ForEach(medicinesVM.filteredMedicines.filter { aisle.isEmpty ? true : $0.aisle == aisle }, id: \.id) { medicine in
+                Button { coordinator.goToDetail(for: medicine) } label: {
+                    MedicineRowView(medicine: medicine)
+                        .padding()
+                        .foregroundStyle(.primaryText)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.customPrimary)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .onAppear {
+                    if medicine == medicinesVM.medicines.last {
+                        Task {
+                            await medicinesVM.fetchMedicines(fetchNext: true)
                         }
                     }
-                    .contextMenu {
-                        Button("Delete", systemImage: "trash", role: .destructive) {
-                            
-                        }
+                }
+                .contextMenu {
+                    Button("Delete", systemImage: "trash", role: .destructive) {
+                        
                     }
                 }
             }

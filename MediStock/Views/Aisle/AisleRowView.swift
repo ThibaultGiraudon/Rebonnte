@@ -10,21 +10,25 @@ import SwiftUI
 struct AisleRowView: View {
     var aisle: Aisle
     var body: some View {
-        VStack(alignment: .center) {
+        HStack(alignment: .center) {
             Image(systemName: aisle.icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
                 .padding(10)
-                .font(.largeTitle)
                 .background {
                     Circle()
-                        .fill(aisle.color.toColor())
+                        .fill(aisle.color.toColor().opacity(0.2))
                 }
-                .foregroundStyle(.customPrimary)
-            
-            Text(aisle.name)
-                .font(.largeTitle)
-            
-            Text("\(aisle.medicines.count) medicines")
-                .font(.title)
+                .foregroundStyle(aisle.color.toColor())
+            VStack(alignment: .leading) {
+                Text(aisle.name)
+                    .font(.largeTitle)
+                
+                Text("\(aisle.medicines.count) medicines")
+                    .foregroundStyle(.gray)
+            }
+            Spacer()
         }
         .padding(5)
     }

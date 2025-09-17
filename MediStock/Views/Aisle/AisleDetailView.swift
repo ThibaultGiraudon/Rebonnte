@@ -17,11 +17,11 @@ struct AisleDetailView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 48)
-                .foregroundStyle(.customPrimary)
+                .foregroundStyle(aisle.color.toColor())
                 .padding(20)
                 .background {
                     Circle()
-                        .fill(aisle.color.toColor())
+                        .fill(aisle.color.toColor().opacity(0.2))
                 }
             Text(aisle.name)
                 .font(.largeTitle)

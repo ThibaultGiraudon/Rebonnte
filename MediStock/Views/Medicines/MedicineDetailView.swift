@@ -129,7 +129,10 @@ struct MedicineDetailView_Previews: PreviewProvider {
             aisle: "Aisle 1",
             normalStock: 25,
             warningStock: 10,
-            alertStock: 5)
+            alertStock: 5,
+            icon: "pills",
+            color: "64DEF5"
+        )
         let sampleViewModel = MedicineStockViewModel()
         sampleViewModel.history = [
             .init(medicineId: "12", user: "user@test.com", action: "Add new medicine", details: "user@test.com adds Sample with initial stock of 10", currentStock: 10),

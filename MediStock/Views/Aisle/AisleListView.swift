@@ -1,8 +1,5 @@
 import SwiftUI
 
-// TODO: search medicine and aisle with .contains in code
-// TODO: keep actual filter on submit
-// TODO: add xmark to delete search text
 // TODO: add full history with search on medicine
 // TODO: jpeg file for test result not the best
 
@@ -18,23 +15,21 @@ struct AisleListView: View {
 
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 2)) {
-                ForEach(aislesVM.aisles, id: \.self) { aisle in
-                    Button {
-                        coordinator.goToAisleDetail(for: aisle)
-                    } label: {
-                            AisleRowView(aisle: aisle)
-                                .foregroundStyle(.primaryText)
-                                .frame(maxWidth: .infinity)
-                                .background(Color.customPrimary)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(aisle.name) button")
-                    .accessibilityHint("Double-tap to see aisle's detail")
+            ForEach(aislesVM.aisles, id: \.self) { aisle in
+                Button {
+                    coordinator.goToAisleDetail(for: aisle)
+                } label: {
+                        AisleRowView(aisle: aisle)
+                            .foregroundStyle(.primaryText)
+                            .background(Color.customPrimary)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(aisle.name) button")
+                .accessibilityHint("Double-tap to see aisle's detail")
             }
         }
+        .padding(.top)
         .padding()
         .background {
             Color.background

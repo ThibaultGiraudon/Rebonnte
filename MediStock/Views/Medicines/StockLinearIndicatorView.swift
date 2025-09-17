@@ -28,8 +28,6 @@ struct StockLinearIndicatorView: View {
             }
             .frame(maxHeight: 10)
             .scrollDisabled(true)
-            Text("\(stock)")
-                .foregroundStyle(gradient)
         }
     }
     
