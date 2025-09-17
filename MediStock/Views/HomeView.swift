@@ -55,23 +55,15 @@ struct HomeView: View {
                         customLabel("Add medicine", systemImage: "plus.circle", color: .blue)
                     }
                     
-                    Picker(selection: $selectedMedicineToUpdate) {
-                        EmptyView().tag(nil as Medicine?)
-                        ForEach(medicinesVM.medicines) { medicine in
-                            MedicineRowView(medicine: medicine)
-                                .tag(medicine as Medicine?)
-                        }
+                    NavigationLink {
+                        MedicinePickerView(medicines: medicinesVM.medicines, selectedMedicine: $selectedMedicineToUpdate)
                     } label: {
                         customLabel("Update stock", systemImage: "arrow.up.arrow.down", color: .yellow)
                     }
                     .pickerStyle(.navigationLink)
                     
-                    Picker(selection: $selectedMedicineToMove) {
-                        EmptyView().tag(nil as Medicine?)
-                        ForEach(medicinesVM.medicines) { medicine in
-                            MedicineRowView(medicine: medicine)
-                                .tag(medicine as Medicine?)
-                        }
+                    NavigationLink {
+                        MedicinePickerView(medicines: medicinesVM.medicines, selectedMedicine: $selectedMedicineToMove)
                     } label: {
                         customLabel("Move medicine", systemImage: "arrow.left.arrow.right", color: .green)
                     }
@@ -92,9 +84,8 @@ struct HomeView: View {
             }
         }
         .task {
-                print("CPT in HomeView")
-                await medicinesVM.fetchMedicines()
-                await aislesVM.fetchAisles()
+            await medicinesVM.fetchMedicines()
+            await aislesVM.fetchAisles()
         }
         .navigationTitle("Dashboard")
         .padding()
