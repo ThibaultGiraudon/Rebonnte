@@ -147,6 +147,20 @@ final class FirestoreRepositoryTests: XCTestCase {
         } catch {
             XCTFail("Fetching history failed: \(error)")
         }
+        
+        do {
+            try await repository.deleteHistory([historyEntry])
+            
+            let history = try await repository.fetchHistory(for: Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33", normalStock: 40, warningStock: 10, alertStock: 5, icon: "pills", color: "000000"))
+            
+            XCTAssertTrue(history.isEmpty)
+        } catch {
+            XCTFail("Deleting history failed: \(error)")
+        }
+    }
+    
+    func testAddHistoryShouldFailed() async {
+        
     }
 
     func testAddAndFetchAndUpdateUser() async {
@@ -182,7 +196,7 @@ final class FirestoreRepositoryTests: XCTestCase {
     func testAddAndFetchAisle() async {
         let repository = FirestoreRepository()
         
-        var aisle = FakeData().aisles[0]
+        let aisle = FakeData().aisles[0]
         
         do {
             try await repository.addAisle(aisle)

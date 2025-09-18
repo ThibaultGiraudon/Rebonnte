@@ -50,6 +50,7 @@ struct AddAisleView: View {
                         addAisleVM.color = color.toHex() ?? "6495ED"
                     }
             }
+            .navigationTitle("Add aisle")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {

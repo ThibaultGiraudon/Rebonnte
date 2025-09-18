@@ -25,21 +25,24 @@ final class MediStockUITests: XCTestCase {
     }
     
     func test_fullFlow_createAccount_logout_login_addMedicine_checkList() throws {
-//        createAccount()
-//        XCTAssertTrue(app.staticTexts["profile"].waitForExistence(timeout: 5))
-//        
-//        logout()
-//        XCTAssertTrue(app.buttons["Sign in"].waitForExistence(timeout: 5))
-//        
-//        login()
-//        XCTAssertTrue(app.staticTexts["medicines"].waitForExistence(timeout: 5))
-//        
-//        addMedicine()
-//        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 5))
-//        
-//        checkMedicine()
-//        
-//        updateMedicine()
+        createAccount()
+        XCTAssertTrue(app.staticTexts["profile"].waitForExistence(timeout: 5))
+        
+        logout()
+        XCTAssertTrue(app.buttons["Sign in"].waitForExistence(timeout: 5))
+        
+        login()
+        XCTAssertTrue(app.staticTexts["medicines"].waitForExistence(timeout: 5))
+        
+        addAisle()
+        XCTAssertTrue(app.staticTexts["Aisle 33"].waitForExistence(timeout: 5))
+        
+        addMedicine()
+        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 5))
+        
+        checkMedicine()
+        
+        updateMedicine()
     }
     
     func createAccount() {
@@ -80,23 +83,46 @@ final class MediStockUITests: XCTestCase {
         app.buttons["Sign in"].tap()
     }
     
+    func addAisle() {
+        app.staticTexts["aisles"].tap()
+        
+        app.buttons["Add"].tap()
+        
+        let aisleNameField = app.textFields["Aisle name"]
+        
+        aisleNameField.tap()
+        aisleNameField.typeText("Aisle 33")
+        
+        app.navigationBars["Add aisle"].buttons["Add"].tap()
+    }
+    
     func addMedicine() {
         app.staticTexts["medicines"].tap()
         
         app.buttons["Add"].tap()
         
         let medicineNameField = app.textFields["Medicine name"]
-        let aisleNameField = app.textFields["Aisle name"]
         let stockField = app.textFields["Stock"]
+        let normalStockField = app.textFields["Normal stock"]
+        let warningStockField = app.textFields["Warning stock"]
+        let alertStockField = app.textFields["Alert stock"]
+        
+        
         
         medicineNameField.tap()
-        medicineNameField.typeText("Medicine 33")
-        
-        aisleNameField.tap()
-        aisleNameField.typeText("Aisle 33")
+        medicineNameField.typeText("Medicine 33\n")
         
         stockField.tap()
         stockField.typeText("33\n")
+        
+        normalStockField.tap()
+        normalStockField.typeText("33\n")
+        
+        warningStockField.tap()
+        warningStockField.typeText("32\n")
+        
+        alertStockField.tap()
+        alertStockField.typeText("31\n")
         
         app.navigationBars["Add medicine"].buttons["Add"].tap()
     }
@@ -104,14 +130,16 @@ final class MediStockUITests: XCTestCase {
     func checkMedicine() {
         app.staticTexts["aisles"].tap()
         
-        app.buttons["Aisle 33"].tap()
+        app.staticTexts["Aisle 33"].tap()
         
         app.staticTexts["Medicine 33"].tap()
         
-        XCTAssertTrue(app.textFields["Medicine 33"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 5))
     }
     
     func updateMedicine() {
+        app.buttons["Edit"].tap()
+        
         let medicineNameField = app.textFields["Medicine 33"]
         
         medicineNameField.tap()
