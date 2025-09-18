@@ -37,7 +37,7 @@ struct MovesMedicineView: View {
             CustomButton(title: "Save", color: .lightBlue) {
                 Task {
                     medicine.aisle = selectedAisle
-                    await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
+                    await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "", aislesVM: AislesViewModel())
                     dismiss()
                 }
             }

@@ -13,6 +13,8 @@ class MedicineStockViewModel: ObservableObject {
     @Published var error: String? = nil
     @Published var isLoading: Bool = false
     
+    
+    // TODO: filter donc work anymore on view
     var filteredMedicines: [Medicine] {
         medicines.filter {
             filterText.isEmpty || $0.name.lowercased().contains(filterText.lowercased())
@@ -76,7 +78,7 @@ class MedicineStockViewModel: ObservableObject {
             guard var aisle = aisles.first else {
                 return
             }
-            
+                        
             aisle.medicines.removeAll { $0 == medicine.name }
             try await repository.updateAisle(aisle)
             
@@ -86,7 +88,7 @@ class MedicineStockViewModel: ObservableObject {
         }
     }
     
-    func deleteHistory(for medicine: Medicine) async {
+    private func deleteHistory(for medicine: Medicine) async {
         self.error = nil
         
         isLoading = true
@@ -141,7 +143,7 @@ class MedicineStockViewModel: ObservableObject {
         )
     }
 
-    func updateMedicine(_ medicine: Medicine, user: String) async {
+    func updateMedicine(_ medicine: Medicine, user: String, aislesVM: AislesViewModel) async {
         self.error = nil
         
         guard let index = self.medicines.firstIndex(where: { $0.id == medicine.id }) else {
@@ -169,8 +171,8 @@ class MedicineStockViewModel: ObservableObject {
                     details: "\(user) changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
                     currentStock: medicine.stock
                 )
-                await AislesViewModel().add(medicine, in: medicine.aisle)
-                await AislesViewModel().remove(medicine, from: currentMedicine.aisle)
+                await aislesVM.add(medicine, in: medicine.aisle)
+                await aislesVM.remove(medicine, from: currentMedicine.aisle)
             }
             
             if currentMedicine.name != medicine.name {

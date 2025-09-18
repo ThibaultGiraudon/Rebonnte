@@ -82,7 +82,7 @@ struct EditMedicineView: View {
                 Button("Save") {
                     Task {
                         self.medicine = editedMedicine
-                        await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "")
+                        await medicinesVM.updateMedicine(medicine, user: session.session?.email ?? "", aislesVM: AislesViewModel())
                         if medicinesVM.error == nil {
                             dismiss()
                         }
