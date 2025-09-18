@@ -56,12 +56,6 @@ struct Aisle: Identifiable, Hashable, Equatable {
     /// contains an invalid type, initialization will fail and return `nil`.
     ///
     /// - Parameter data: A dictionary containing the aisle's properties.
-    ///   - id: The unique identifier of the aisle.
-    ///   - name: The name of the aisle.
-    ///   - icon: The symbol or icon representing the aisle.
-    ///   - color: The foreground color associated with the icon.
-    ///   - medicines: A list of medicine names stored in the aisle.
-    ///
     init?(_ data: [String: Any]) {
         guard let id = data["id"] as? String,
               let name = data["name"] as? String,

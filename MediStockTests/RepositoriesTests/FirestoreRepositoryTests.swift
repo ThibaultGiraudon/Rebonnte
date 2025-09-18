@@ -79,7 +79,7 @@ final class FirestoreRepositoryTests: XCTestCase {
         }
         
         do {
-            try await repository.deleteMedcines(FakeData().medicines)
+            try await repository.deleteMedicines(FakeData().medicines)
             medicines = try await repository.fetchMedicines(sortedBy: .none, matching: "", nextItems: false)
             
             XCTAssertTrue(medicines.isEmpty)

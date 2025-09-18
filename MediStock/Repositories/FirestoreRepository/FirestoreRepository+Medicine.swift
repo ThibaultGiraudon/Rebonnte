@@ -59,7 +59,7 @@ extension FirestoreRepository {
         try await db.collection("medicines").document(medicine.id).setData(medicine.data())
     }
     
-    func deleteMedcines(_ medicines: [Medicine]) async throws {
+    func deleteMedicines(_ medicines: [Medicine]) async throws {
         for medicine in medicines {
             try await db.collection("medicines").document(medicine.id).delete()
         }

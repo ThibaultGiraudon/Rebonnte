@@ -66,10 +66,13 @@ struct Medicine: Identifiable, Codable, Equatable, Hashable {
         self.color = color
     }
     
-    /// Initializes a `Medicine` from a dictionary representation.
+    /// Creates a new `Medicine` instance from a dictionary.
+    ///
+    /// This failable initializer attempts to build an `Medicine` using the values
+    /// provided in the given dictionary. If any required key is missing or
+    /// contains an invalid type, initialization will fail and return `nil`.
     ///
     /// - Parameter data: A dictionary containing the medicine's properties.
-    /// - Returns: `nil` if one or more required keys are missing or invalid.
     init?(_ data: [String: Any]) {
         guard let id = data["id"] as? String,
               let name = data["name"] as? String,

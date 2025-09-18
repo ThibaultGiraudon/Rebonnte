@@ -51,7 +51,7 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
         }
     }
     
-    func deleteMedcines(_ medicines: [MediStock.Medicine]) async throws {
+    func deleteMedicines(_ medicines: [MediStock.Medicine]) async throws {
         if let medicineError {
             throw medicineError
         }
