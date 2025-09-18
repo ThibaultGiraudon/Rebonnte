@@ -71,4 +71,19 @@ struct FakeData {
         "icon": "pills",
         "color": "000000"
     ]
+    
+    let aisleData: [String: Any] = [
+        "id": "33",
+        "name": "Aisle 33",
+        "icon": "pills",
+        "color": "000000",
+        "medicines": ["33"]
+    ]
+    
+    let wrongAisleData: [String: Any] = [
+        "id": "33",
+        "name": "Aisle 33",
+        "color": "000000",
+        "icon": "pills"
+    ]
 }
