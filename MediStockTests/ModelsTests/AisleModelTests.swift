@@ -11,11 +11,11 @@ import XCTest
 final class AisleModelTests: XCTestCase {
 
     func testAisleInit() {
-        let aisle = Aisle(name: "Aisle 1", icon: "pills", color: "00000")
+        let aisle = Aisle(name: "Aisle 1", icon: "pills", color: "000000")
         
         XCTAssertEqual(aisle.name, "Aisle 1")
         XCTAssertEqual(aisle.icon, "pills")
-        XCTAssertEqual(aisle.color, "00000")
+        XCTAssertEqual(aisle.color, "000000")
     }
 
     
@@ -27,7 +27,7 @@ final class AisleModelTests: XCTestCase {
         
         XCTAssertEqual(aisle.name, "Aisle 33")
         XCTAssertEqual(aisle.icon, "pills")
-        XCTAssertEqual(aisle.color, "00000")
+        XCTAssertEqual(aisle.color, "000000")
     }
     
     func testCreateAisleWithInitDataShouldBeNil() {
