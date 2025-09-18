@@ -16,7 +16,7 @@ struct RegisterView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var shouldDisabled: Bool {
-        fullname.isEmpty || email.isEmpty || password.isEmpty
+        fullname.isEmpty || email.isEmpty || password.isEmpty || session.isLoading
     }
     
     var body: some View {
@@ -39,7 +39,7 @@ struct RegisterView: View {
             CustomSecureField(label: "Password", text: $password, prompt: "Enter password")
                 .textInputAutocapitalization(.never)
             
-            CustomButton(title: "Create", color: .lightBlue) {
+            CustomButton(title: session.isLoading ? "" : "Create", color: .lightBlue) {
                 Task {
                     await session.signUp(fullname: fullname, email: email, password: password)
                     if session.error == nil {
@@ -49,6 +49,11 @@ struct RegisterView: View {
             }
             .opacity(shouldDisabled ? 0.6 : 1)
             .disabled(shouldDisabled)
+            .overlay {
+                if session.isLoading {
+                    ProgressView()
+                }
+            }
             .padding(.top)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Create an account button")

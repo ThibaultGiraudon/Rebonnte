@@ -70,9 +70,13 @@ struct AddMedicineView: View {
                 
                 Section("Stock") {
                     TextField("Stock", value: $addMedicinesVM.stock, format: .number)
+                        .keyboardType(.numberPad)
                     TextField("Normal stock", value: $addMedicinesVM.normalStock, format: .number)
+                        .keyboardType(.numberPad)
                     TextField("Warning stock", value: $addMedicinesVM.warningStock, format: .number)
+                        .keyboardType(.numberPad)
                     TextField("Alert stock", value: $addMedicinesVM.alertStock, format: .number)
+                        .keyboardType(.numberPad)
                 }
             }
             .listRowBackground(Color.customPrimary)
@@ -96,38 +100,43 @@ struct AddMedicineView: View {
             } message: {
                 Text("This medication is already in the list. Would you like to add it anyway ?")
             }
-            .navigationTitle("Add medicine")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                Task {
-                    await addMedicinesVM.fetchAisles()
-                }
+        }
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
+        .navigationTitle("Add medicine")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            Task {
+                await addMedicinesVM.fetchAisles()
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Cancel button")
-                    .accessibilityHint("Double-tap to cancel action")
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    dismiss()
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add") {
-                        Task {
-                            await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
-                            if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
-                                dismiss()
-                            }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Cancel button")
+                .accessibilityHint("Double-tap to cancel action")
+                .disabled(addMedicinesVM.isLoading)
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Add") {
+                    Task {
+                        await addMedicinesVM.addMedicine(user: session.session?.email ?? "")
+                        if addMedicinesVM.error == nil && addMedicinesVM.showAlert == false {
+                            dismiss()
                         }
                     }
-                    .disabled(addMedicinesVM.shouldDisabled)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Add button")
-                    .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
-                    .accessibilityIdentifier("addMedicineButton")
                 }
+                .disabled(addMedicinesVM.shouldDisabled)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Add button")
+                .accessibilityHint(addMedicinesVM.shouldDisabled ? "Button disabled, fill in all fields" : "Double-tap to add medicines")
+                .accessibilityIdentifier("addMedicineButton")
             }
         }
     }

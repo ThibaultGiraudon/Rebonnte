@@ -29,8 +29,6 @@ struct AddAisleView: View {
                 }
             Form {
                 TextField("Aisle name", text: $addAisleVM.name)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
                 
                 HStack {
                     Text("Icon")
@@ -56,7 +54,9 @@ struct AddAisleView: View {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .disabled(addAisleVM.isLoading)
                 }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add") {
                         Task {
@@ -64,6 +64,7 @@ struct AddAisleView: View {
                             dismiss()
                         }
                     }
+                    .disabled(addAisleVM.isLoading || addAisleVM.name.isEmpty)
                 }
             }
         }

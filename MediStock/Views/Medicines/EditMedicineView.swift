@@ -18,7 +18,7 @@ struct EditMedicineView: View {
     @Environment(\.dismiss) private var dismiss
     
     private var shouldDisabled: Bool {
-        medicine.name.isEmpty || medicine.aisle.isEmpty || medicine.stock < 0 || medicine.normalStock < 0 || medicine.warningStock < 0 || medicine.alertStock < 0
+        medicine.name.isEmpty || medicine.aisle.isEmpty || medicine.stock < 0 || medicine.normalStock < 0 || medicine.warningStock < 0 || medicine.alertStock < 0 || medicinesVM.isLoading
     }
     
     init(medicine: Binding<Medicine>, medicinesVM: MedicineStockViewModel) {
@@ -50,9 +50,13 @@ struct EditMedicineView: View {
             }
             Section("Stock") {
                 TextField("Stock", value: $editedMedicine.stock, format: .number)
+                    .keyboardType(.numberPad)
                 TextField("Normal stock", value: $editedMedicine.normalStock, format: .number)
+                    .keyboardType(.numberPad)
                 TextField("Warning stock", value: $editedMedicine.warningStock, format: .number)
+                    .keyboardType(.numberPad)
                 TextField("Alert stock", value: $editedMedicine.alertStock, format: .number)
+                    .keyboardType(.numberPad)
             }
         }
         .listRowBackground(Color.customPrimary)
@@ -73,6 +77,7 @@ struct EditMedicineView: View {
                 Button("Cancel") {
                     dismiss()
                 }
+                .disabled(medicinesVM.isLoading)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Cancel button")
                 .accessibilityHint("Double-tap to cancel action")

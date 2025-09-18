@@ -8,7 +8,7 @@ struct LoginView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
     var shouldDisable: Bool {
-        email.isEmpty || password.isEmpty
+        email.isEmpty || password.isEmpty || session.isLoading
     }
     
     var body: some View {
@@ -29,13 +29,18 @@ struct LoginView: View {
             
             CustomSecureField(label: "Password", text: $password, prompt: "Enter password")
             
-            CustomButton(title: "Sign in", color: .lightBlue) {
+            CustomButton(title: session.isLoading ? "" : "Sign in", color: .lightBlue) {
                 Task {
                    await session.signIn(email: email, password: password)
                 }
             }
             .opacity(shouldDisable ? 0.6 : 1)
             .disabled(shouldDisable)
+            .overlay {
+                if session.isLoading {
+                    ProgressView()
+                }
+            }
             .padding(.top)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Sign in button")

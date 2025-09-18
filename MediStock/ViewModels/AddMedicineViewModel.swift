@@ -56,7 +56,6 @@ class AddMedicineViewModel: ObservableObject {
         isLoading = true
         let newMedicine = Medicine(name: name, stock: stock, aisle: aisle, normalStock: normalStock, warningStock: warningStock, alertStock: alertStock, icon: icon, color: color)
         do {
-            print(" all medicine :\(try await repository.fetchAllMedicines(matching: name))")
             if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
                 try await repository.addMedicine(newMedicine)
                 await addHistory(action: "Add new medicine",

@@ -85,7 +85,15 @@ struct FBImage<Content: View>: View {
         if let image = loader.image {
             content(Image(uiImage: image))
         } else {
-            ProgressView()
+            Image(systemName: "person.circle.fill")
+                .resizable()
+                .frame(width: 200, height: 200)
+                .foregroundStyle(Color.gray)
+                .background {
+                    Circle()
+                        .fill(.white)
+                }
+                .padding(.top, 100)
         }
     }
 }

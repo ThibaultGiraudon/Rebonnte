@@ -31,7 +31,10 @@ class SessionStore: ObservableObject {
 
     func signUp(fullname: String, email: String, password: String) async {
         self.error = nil
-        isLoading = true
+        
+        self.isLoading = true
+        defer { self.isLoading = false }
+        
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signUp(email: trimmedEmail, password: password)
@@ -42,12 +45,14 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = authRepository.identifyError(error)
         }
-        isLoading = false
     }
 
     func signIn(email: String, password: String) async {
         self.error = nil
-        isLoading = true
+        
+        self.isLoading = true
+        defer { self.isLoading = false }
+        
         do {
             let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
             self.uid = try await authRepository.signIn(email: trimmedEmail, password: password)
@@ -56,7 +61,6 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = authRepository.identifyError(error)
         }
-        isLoading = false
     }
 
     func signOut() {
@@ -73,7 +77,7 @@ class SessionStore: ObservableObject {
     
     private func fetchUser(with uid: String?) async -> User? {
         self.error = nil
-                
+        
         do {
             return try await firestoreRepository.fetchUser(with: uid!)
         } catch {
@@ -88,7 +92,10 @@ class SessionStore: ObservableObject {
             self.error = "User not logged in"
             return
         }
+        
         self.isLoading = true
+        defer { self.isLoading = false }
+        
         user.fullname = fullname
         do {
             try await firestoreRepository.updateUser(user)
@@ -96,15 +103,19 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = "updating user's personnal information"
         }
-        self.isLoading = false
     }
     
     func uploadImage(_ image: UIImage) async {
+        self.error = nil
+        
         guard var user = session else {
             self.error = "User not logged in"
             return
         }
+        
         self.isLoading = true
+        defer { self.isLoading = false }
+        
         do {
             let currentImageURL = user.imageURL
             let imageURL = try await storageRepository.uploadImage(image, to: "profils_image")
@@ -117,7 +128,6 @@ class SessionStore: ObservableObject {
         } catch {
             self.error = "uploading new user's profile picture"
         }
-        self.isLoading = false
     }
     
 }

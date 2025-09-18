@@ -20,7 +20,7 @@ struct MedicineListView: View {
     }
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             
             if medicinesVM.filteredMedicines(from: filteredMedicines).isEmpty {
                 ContentUnavailableView("No medicines found", systemImage: "")

@@ -75,7 +75,7 @@ struct MainTabView: View {
             }
         }
         .overlay() {
-            if session.isLoading == true || medicinesVM.isLoading == true || addMedicinesVM.isLoading == true {
+            if medicinesVM.isLoading == true || addMedicinesVM.isLoading == true {
                 LoadingView()
             }
         }

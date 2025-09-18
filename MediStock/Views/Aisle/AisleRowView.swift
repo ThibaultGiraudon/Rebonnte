@@ -24,6 +24,7 @@ struct AisleRowView: View {
             VStack(alignment: .leading) {
                 Text(aisle.name)
                     .font(.largeTitle)
+                    .multilineTextAlignment(.leading)
                 
                 Text("\(aisle.medicines.count) medicines")
                     .foregroundStyle(.gray)
@@ -35,7 +36,7 @@ struct AisleRowView: View {
 }
 
 #Preview {
-    AisleRowView(aisle: .init(name: "test", icon: "pills.fill", color: "B51A00"))
+    AisleRowView(aisle: .init(name: "Allergy & Asthma", icon: "pills.fill", color: "B51A00"))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
 }

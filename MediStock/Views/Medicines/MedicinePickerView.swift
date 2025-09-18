@@ -46,6 +46,10 @@ struct MedicinePickerView: View {
             }
         }
         .padding()
+        .background {
+            Color.background
+                .ignoresSafeArea()
+        }
     }
 }
 
