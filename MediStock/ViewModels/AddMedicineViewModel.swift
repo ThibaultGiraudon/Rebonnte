@@ -32,15 +32,16 @@ class AddMedicineViewModel: ObservableObject {
     
     private let repository: FirestoreRepositoryInterface
     
-    init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
+    init(repository: FirestoreRepositoryInterface = FirestoreRepository(), aisle: String = "") {
         self.repository = repository
+        self.aisle = aisle
     }
     
     func fetchAisles() async {
         self.error = nil
         do {
             aisles = try await repository.fetchAllAisles(matching: "").compactMap { $0.name }
-            guard let firstAisle = aisles.first else { return }
+            guard aisle.isEmpty, let firstAisle = aisles.first else { return }
             aisle = firstAisle
         } catch {
             self.error = "fetching aisle list"

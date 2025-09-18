@@ -20,7 +20,7 @@ struct AddAisleView: View {
             Image(systemName: addAisleVM.icon)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 48)
+                .frame(width: 48, height: 48)
                 .foregroundStyle(addAisleVM.color.toColor())
                 .padding(20)
                 .background {

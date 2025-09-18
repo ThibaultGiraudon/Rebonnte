@@ -11,6 +11,8 @@ struct AisleDetailView: View {
     var aisle: Aisle
     @ObservedObject var aisleViewModel: AislesViewModel
     @ObservedObject var medicinesVM: MedicineStockViewModel
+    
+    @State private var showAddMedicine: Bool = false
     var body: some View {
         VStack {
             Image(systemName: aisle.icon)
@@ -31,6 +33,28 @@ struct AisleDetailView: View {
             MedicineListView(medicinesVM: medicinesVM, filter: .aisle(aisle.name))
         }
         .background(Color.customPrimary)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showAddMedicine = true
+                } label: {
+                    Image(systemName: "plus")
+                        .tint(.primaryText)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Add button")
+                .accessibilityHint("Double-tap to add new medicine")
+            }
+        }
+        .sheet(isPresented: $showAddMedicine, onDismiss: {
+            Task {
+                await medicinesVM.fetchMedicines()
+            }
+        }) {
+            NavigationStack {
+                AddMedicineView(addMedicinesVM: AddMedicineViewModel(aisle: aisle.name))
+            }
+        }
     }
 }
 

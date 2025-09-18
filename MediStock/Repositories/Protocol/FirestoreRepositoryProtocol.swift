@@ -16,13 +16,13 @@ protocol FirestoreRepositoryInterface {
     func deleteMedcines(_ medicines: [Medicine]) async throws
     
     func fetchHistory(for medicine: Medicine) async throws -> [HistoryEntry]
+    func deleteHistory(_ history: [HistoryEntry]) async throws
     func addHistory(_ history: HistoryEntry) async throws
     
     func fetchUser(with uid: String) async throws -> User?
     func addUser(_ user: User) async throws
     func updateUser(_ user: User) async throws
     
-    func fetchAisles(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Aisle]
     func fetchAllAisles(matching name: String) async throws -> [Aisle]
     func addAisle(_ medicine: Aisle) async throws
     func updateAisle(_ aisle: Aisle) async throws 

@@ -44,6 +44,12 @@ class FirestoreRepository: FirestoreRepositoryInterface {
         return items
     }
     
+    func deleteHistory(_ history: [HistoryEntry]) async throws {
+        for item in history {
+            try await db.collection("history").document(item.id).delete()
+        }
+    }
+    
     func addHistory(_ history: HistoryEntry) async throws {
         try await db.collection("history").document(history.id).setData(history.data())
     }

@@ -37,7 +37,6 @@ class AislesViewModel: ObservableObject {
         do {
             await self.fetchAisles()
             guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
-                print("Failed to find \(aisleName)")
                 return
             }
             var aisle = self.aisles[index]
@@ -45,7 +44,6 @@ class AislesViewModel: ObservableObject {
             try await repository.updateAisle(aisle)
             self.aisles[index] = aisle
         } catch {
-            print("adding medicine to aisle")
             self.error = "adding medicine to aisle"
         }
     }
@@ -54,7 +52,6 @@ class AislesViewModel: ObservableObject {
         do {
             await self.fetchAisles()
             guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
-                print("Failed to find \(aisleName)")
                 return
             }
             var aisle = self.aisles[index]
@@ -62,7 +59,6 @@ class AislesViewModel: ObservableObject {
             try await repository.updateAisle(aisle)
             self.aisles[index] = aisle
         } catch {
-            print("removing medicine to aisle")
             self.error = "removing medicine to aisle"
         }
     }

@@ -62,22 +62,45 @@ class MedicineStockViewModel: ObservableObject {
         self.medicines.filter { $0.aisle == aisle }
     }
 
-    func deleteMedicines(at offsets: IndexSet) async {
+    func delete(_ medicine: Medicine) async {
         self.error = nil
+        
         isLoading = true
-        let medicinesToDelete = offsets.map {
-            medicines[$0]
-        }
+        defer { isLoading = false }
+        
         do {
-            try await repository.deleteMedcines(medicinesToDelete)
-            await fetchMedicines()
+            try await repository.deleteMedcines([medicine])
+            await self.deleteHistory(for: medicine)
+            
+            let aisles = try await repository.fetchAllAisles(matching: medicine.aisle)
+            guard var aisle = aisles.first else {
+                return
+            }
+            
+            aisle.medicines.removeAll { $0 == medicine.name }
+            try await repository.updateAisle(aisle)
+            
+            await self.fetchMedicines()
         } catch {
-            self.error = "deleting medicines"
+            self.error = "deleting medicine"
         }
-        isLoading = false
     }
     
-    func updateStock(for medicine: Medicine, by user: String, _ stock: Int) async {
+    func deleteHistory(for medicine: Medicine) async {
+        self.error = nil
+        
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            let historyToDelete = try await repository.fetchHistory(for: medicine)
+            
+            try await repository.deleteHistory(historyToDelete)
+        } catch {
+            self.error = "deleting history"
+        }
+    }
+    
     func increaseStock(for medicine: Medicine, by user: String, _ amount: Int) async {
         await updateStock(for: medicine, to: medicine.stock + amount, by: user)
     }

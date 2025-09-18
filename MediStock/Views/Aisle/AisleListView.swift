@@ -73,7 +73,7 @@ struct AisleListView: View {
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Add button")
-                .accessibilityHint("Double-tap to add new medicine")
+                .accessibilityHint("Double-tap to add new aisle")
             }
         }
         .onAppear {
@@ -81,7 +81,11 @@ struct AisleListView: View {
                 await aislesVM.fetchAisles()
             }
         }
-        .sheet(isPresented: $showAddAisle) {
+        .sheet(isPresented: $showAddAisle, onDismiss: {
+            Task {
+                await aislesVM.fetchAisles()
+            }
+        }) {
             NavigationStack {
                 AddAisleView(addAisleVM: addAisleVM)
             }

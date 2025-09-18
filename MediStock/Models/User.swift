@@ -33,7 +33,6 @@ struct User: Equatable {
               let fullname = data["fullname"] as? String,
               let imageURL = data["imageURL"] as? String
         else {
-            print("failed to get data")
             return nil
         }
         

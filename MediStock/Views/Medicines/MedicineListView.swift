@@ -43,7 +43,9 @@ struct MedicineListView: View {
                     }
                     .contextMenu {
                         Button("Delete", systemImage: "trash", role: .destructive) {
-                            
+                            Task {
+                                await medicinesVM.delete(medicine)
+                            }
                         }
                     }
                 }

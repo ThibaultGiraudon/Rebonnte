@@ -10,34 +10,16 @@ import FirebaseFirestore
 
 extension FirestoreRepository {
     
-    func fetchAisles(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Aisle] {
-        var query: Query = db.collection("aisles").limit(to: pageSize).order(by: sort.value)
+    func fetchAllAisles(matching name: String = "") async throws -> [Aisle] {
+        var query: Query = db.collection("aisles")
         
         if !name.isEmpty {
             query = query.whereField("name", isEqualTo: name)
         }
         
-        if nextItems == true, let lastDocument {
-            query = query.start(afterDocument: lastDocument)
-        }
-        
         let snapshot = try await query.getDocuments()
         
         let documents = snapshot.documents
-        let items = documents.compactMap {
-            Aisle($0.data())
-        }
-        
-        self.lastDocument = documents.last
-        
-        return items
-    }
-    
-    func fetchAllAisles(matching name: String = "") async throws -> [Aisle] {
-        let snapshots = try await db.collection("aisles")/*.whereField("name", isEqualTo: name)*/.getDocuments()
-        
-        let documents = snapshots.documents
-        
         let items = documents.compactMap {
             Aisle($0.data())
         }

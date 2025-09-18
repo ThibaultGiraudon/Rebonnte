@@ -11,8 +11,6 @@ import FirebaseFirestore
 extension FirestoreRepository {
     
     func fetchMedicines(sortedBy sort: SortOption, matching name: String, nextItems: Bool) async throws -> [Medicine] {
-        print("👉 fetchMedicines called with sort: \(sort), name: \(name), nextItems: \(nextItems)")
-
         var query: Query = db.collection("medicines").limit(to: pageSize).order(by: sort.value)
         
         if !name.isEmpty {
