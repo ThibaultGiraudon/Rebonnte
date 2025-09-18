@@ -19,7 +19,6 @@ final class MedicinesStockVMTests: XCTestCase {
         await viewModel.fetchMedicines()
         
         XCTAssertEqual(viewModel.medicines, FakeData().medicines)
-        XCTAssertEqual(viewModel.aisles, FakeData().aisles)
     }
     
     @MainActor
@@ -50,7 +49,7 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         viewModel.medicines = FakeData().medicines
         
-        await viewModel.deleteMedicines(at: IndexSet([0]))
+        await viewModel.delete(FakeData().medicine)
         
         XCTAssertNil(viewModel.error)
     }
@@ -62,9 +61,9 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         viewModel.medicines = FakeData().medicines
         
-        await viewModel.deleteMedicines(at: IndexSet([0]))
+        await viewModel.delete(FakeData().medicine)
         
-        XCTAssertEqual(viewModel.error, "deleting medicines")
+        XCTAssertEqual(viewModel.error, "deleting medicine")
     }
     
     @MainActor
@@ -85,7 +84,7 @@ final class MedicinesStockVMTests: XCTestCase {
         
         let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 changed name from Medicine 33 to Medicine 34"})
         let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 changed aisle from Aisle 33 to Aisle 34"})
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 34"})
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1"})
         XCTAssertEqual(medicine, FakeData().medicine)
         XCTAssertNotNil(historyUpdateName)
         XCTAssertNotNil(historyUpdateAisle)
@@ -99,15 +98,15 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         viewModel.medicines = FakeData().medicines
         
-        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        await viewModel.updateStock(for: FakeData().medicine, to: 34, by: "user123")
         
         guard let medicine = viewModel.medicines.first(where: { $0.id == "33" }) else {
             XCTFail()
             return
         }
         
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 34"})
-        XCTAssertEqual(medicine, FakeData().medicine)
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1"})
+        XCTAssertEqual(medicine.stock, 34)
         XCTAssertNotNil(historyUpdateStock)
     }
     
@@ -118,7 +117,7 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         viewModel.medicines = FakeData().medicines
         
-        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 32)
+        await viewModel.updateStock(for: FakeData().medicine, to: 32, by: "user123")
         
         guard let medicine = viewModel.medicines.first(where: { $0.id == "33" }) else {
             XCTFail()
@@ -127,8 +126,8 @@ final class MedicinesStockVMTests: XCTestCase {
         
         print(viewModel.history)
         
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 34"})
-        XCTAssertEqual(medicine, FakeData().medicine)
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1"})
+        XCTAssertEqual(medicine.stock, 32)
         XCTAssertNotNil(historyUpdateStock)
     }
     
@@ -139,7 +138,7 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         viewModel.medicines = FakeData().medicines
         
-        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        await viewModel.updateStock(for: FakeData().medicine, to: 34, by: "user123")
         
         XCTAssertEqual(viewModel.error, "updating stock")
     }
@@ -150,7 +149,7 @@ final class MedicinesStockVMTests: XCTestCase {
         fakeRepo.medicineError = FakeData().error
         let viewModel = MedicineStockViewModel(repository: fakeRepo)
         
-        await viewModel.updateStock(for: FakeData().medicine, by: "user123", 34)
+        await viewModel.updateStock(for: FakeData().medicine, to: 34, by: "user123")
         
         XCTAssertEqual(viewModel.error, "updating stock")
     }
@@ -176,7 +175,7 @@ final class MedicinesStockVMTests: XCTestCase {
         
         let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 changed name from Medicine 33 to Medicine 34"})
         let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 changed aisle from Aisle 33 to Aisle 34"})
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 changed stock from 33 to 32"})
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1"})
         XCTAssertEqual(medicine, updatedMedicine)
         XCTAssertNotNil(historyUpdateName)
         XCTAssertNotNil(historyUpdateAisle)

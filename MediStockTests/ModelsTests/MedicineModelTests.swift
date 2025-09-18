@@ -11,7 +11,7 @@ import XCTest
 final class MedicineModelTests: XCTestCase {
 
     func testMedicineInit() {
-        let medicine = Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33")
+        let medicine = Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33", normalStock: 40, warningStock: 10, alertStock: 5, icon: "pills", color: "000000")
         
         XCTAssertEqual(medicine.id, "33")
         XCTAssertEqual(medicine.name, "Medicine 33")
@@ -38,7 +38,7 @@ final class MedicineModelTests: XCTestCase {
     }
     
     func testMedicineData() {
-        let medicine = Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33")
+        let medicine = Medicine(id: "33", name: "Medicine 33", stock: 33, aisle: "Aisle 33", normalStock: 40, warningStock: 10, alertStock: 5, icon: "pills", color: "000000")
         
         let data = medicine.data()
         

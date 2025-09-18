@@ -46,6 +46,9 @@ final class AddMedicinesVMTests: XCTestCase {
         viewModel.name = "Medicine 33"
         viewModel.aisle = "Aisle 33"
         viewModel.stock = 33
+        viewModel.normalStock = 33
+        viewModel.warningStock = 32
+        viewModel.alertStock = 31
         
         await viewModel.addMedicine(user: "test123")
         
@@ -62,6 +65,9 @@ final class AddMedicinesVMTests: XCTestCase {
         viewModel.name = "Medicine 33"
         viewModel.aisle = "Aisle 33"
         viewModel.stock = 33
+        viewModel.normalStock = 33
+        viewModel.warningStock = 32
+        viewModel.alertStock = 31
         
         await viewModel.addMedicine(user: "test123", tryAnyway: true)
         
@@ -80,6 +86,12 @@ final class AddMedicinesVMTests: XCTestCase {
         viewModel.aisle = "Aisle 33"
         XCTAssertTrue(viewModel.shouldDisabled)
         viewModel.stock = 33
+        XCTAssertTrue(viewModel.shouldDisabled)
+        viewModel.normalStock = 33
+        XCTAssertTrue(viewModel.shouldDisabled)
+        viewModel.warningStock = 32
+        XCTAssertTrue(viewModel.shouldDisabled)
+        viewModel.alertStock = 31
         XCTAssertFalse(viewModel.shouldDisabled)
     }
 }

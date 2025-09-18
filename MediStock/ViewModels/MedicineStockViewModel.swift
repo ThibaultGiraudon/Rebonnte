@@ -101,14 +101,6 @@ class MedicineStockViewModel: ObservableObject {
         }
     }
     
-    func increaseStock(for medicine: Medicine, by user: String, _ amount: Int) async {
-        await updateStock(for: medicine, to: medicine.stock + amount, by: user)
-    }
-
-    func decreaseStock(for medicine: Medicine, by user: String, _ amount: Int) async {
-        await updateStock(for: medicine, to: medicine.stock - amount, by: user)
-    }
-    
     func updateStock(for medicine: Medicine, to newStock: Int, by user: String) async {
         self.error = nil
         
