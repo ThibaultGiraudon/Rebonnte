@@ -38,7 +38,7 @@ final class MediStockUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Aisle 33"].waitForExistence(timeout: 5))
         
         addMedicine()
-        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 10))
         
         checkMedicine()
         

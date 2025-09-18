@@ -13,9 +13,16 @@ class MedicineStockViewModel: ObservableObject {
     @Published var error: String? = nil
     @Published var isLoading: Bool = false
     
+    var warningMedicines: [Medicine] { medicines.filter { $0.stock <= $0.warningStock && $0.stock > $0.alertStock } }
+    var alertMedicines: [Medicine] { medicines.filter { $0.stock <= $0.alertStock } }
     
-    // TODO: filter donc work anymore on view
-    var filteredMedicines: [Medicine] {
+    private let repository: FirestoreRepositoryInterface
+    
+    init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
+        self.repository = repository
+    }
+    
+    func filteredMedicines(from medicines: [Medicine]) -> [Medicine] {
         medicines.filter {
             filterText.isEmpty || $0.name.lowercased().contains(filterText.lowercased())
         }.sorted {
@@ -28,14 +35,6 @@ class MedicineStockViewModel: ObservableObject {
                 return sortAscending ? $0.stock < $1.stock : $0.stock > $1.stock
             }
         }
-    }
-    var warningMedicines: [Medicine] { medicines.filter { $0.stock <= $0.warningStock && $0.stock > $0.alertStock } }
-    var alertMedicines: [Medicine] { medicines.filter { $0.stock <= $0.alertStock } }
-    
-    private let repository: FirestoreRepositoryInterface
-    
-    init(repository: FirestoreRepositoryInterface = FirestoreRepository()) {
-        self.repository = repository
     }
 
     func fetchMedicines(fetchNext: Bool = false) async {

@@ -22,10 +22,10 @@ struct MedicineListView: View {
     var body: some View {
         ScrollView {
             
-            if filteredMedicines.isEmpty {
+            if medicinesVM.filteredMedicines(from: filteredMedicines).isEmpty {
                 ContentUnavailableView("No medicines found", systemImage: "")
             } else {
-                ForEach(filteredMedicines, id: \.id) { medicine in
+                ForEach(medicinesVM.filteredMedicines(from: filteredMedicines), id: \.id) { medicine in
                     Button { coordinator.goToDetail(for: medicine) } label: {
                         MedicineRowView(medicine: medicine)
                             .padding(5)

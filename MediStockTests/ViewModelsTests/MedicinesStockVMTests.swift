@@ -279,11 +279,11 @@ final class MedicinesStockVMTests: XCTestCase {
         let viewModel = MedicineStockViewModel(repository: FirestoreRepositoryFake())
         viewModel.medicines = FakeData().medicines
         
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines)
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines)
         viewModel.filterText = "Medicine 2"
-        XCTAssertEqual(viewModel.filteredMedicines.count, 0)
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines).count, 0)
         viewModel.filterText = "Medicine 33"
-        XCTAssertEqual(viewModel.filteredMedicines, [FakeData().medicines[0]])
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), [FakeData().medicines[0]])
     }
     
     @MainActor
@@ -292,17 +292,17 @@ final class MedicinesStockVMTests: XCTestCase {
         viewModel.medicines = FakeData().medicines
         
         viewModel.sortOption = .name
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines.sorted { $0.name < $1.name })
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines.sorted { $0.name < $1.name })
         viewModel.sortOption = .stock
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines.sorted { $0.stock < $1.stock })
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines.sorted { $0.stock < $1.stock })
         
         viewModel.sortAscending = false
         viewModel.sortOption = .none
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines.sorted { _,_ in true })
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines.sorted { _,_ in true })
         viewModel.sortOption = .name
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines.sorted { $0.name > $1.name })
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines.sorted { $0.name > $1.name })
         viewModel.sortOption = .stock
-        XCTAssertEqual(viewModel.filteredMedicines, FakeData().medicines.sorted { $0.stock > $1.stock })
+        XCTAssertEqual(viewModel.filteredMedicines(from: FakeData().medicines), FakeData().medicines.sorted { $0.stock > $1.stock })
     }
     
     @MainActor
