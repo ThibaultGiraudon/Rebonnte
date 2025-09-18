@@ -90,7 +90,7 @@ final class AislesVMTests: XCTestCase {
 
         await viewModel.remove(FakeData().medicine, from: "Aisle 33")
         
-        XCTAssertEqual(viewModel.error, "removing medicine to aisle")
+        XCTAssertEqual(viewModel.error, "removing medicine from aisle")
     }
     
     func testRemoveShouldFailed() async {
@@ -101,7 +101,7 @@ final class AislesVMTests: XCTestCase {
 
         await viewModel.remove(FakeData().medicine, from: "Aisle 33")
         
-        XCTAssertEqual(viewModel.error, "removing medicine to aisle")
+        XCTAssertEqual(viewModel.error, "removing medicine from aisle")
     }
     
     func testFilteredAisles() {

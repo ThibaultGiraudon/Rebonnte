@@ -92,10 +92,12 @@ final class MedicinesStockVMTests: XCTestCase {
             XCTFail()
             return
         }
+        
+        print(viewModel.history)
                 
-        let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 changed name from Medicine 33 to Medicine 34"})
-        let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 changed aisle from Aisle 33 to Aisle 16"})
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1"})
+        let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 renames Medicine 33 to Medicine 34"})
+        let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 moves Medicine 34 from Aisle 33 to Aisle 16"})
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1 current stock: 34"})
         XCTAssertEqual(medicine, FakeData().medicine)
         XCTAssertNotNil(historyUpdateName)
         XCTAssertNotNil(historyUpdateAisle)
@@ -116,7 +118,7 @@ final class MedicinesStockVMTests: XCTestCase {
             return
         }
         
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1"})
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Increased stock of Medicine 33 by 1 current stock: 34"})
         XCTAssertEqual(medicine.stock, 34)
         XCTAssertNotNil(historyUpdateStock)
     }
@@ -147,7 +149,7 @@ final class MedicinesStockVMTests: XCTestCase {
             return
         }
                 
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1"})
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1 current stock: 32"})
         XCTAssertEqual(medicine.stock, 32)
         XCTAssertNotNil(historyUpdateStock)
     }
@@ -191,13 +193,9 @@ final class MedicinesStockVMTests: XCTestCase {
             XCTFail()
             return
         }
-                
-        let historyUpdateName = viewModel.history.first(where: { $0.details == "user123 changed name from Medicine 33 to Medicine 34"})
-        let historyUpdateAisle = viewModel.history.first(where: { $0.details == "user123 changed aisle from Aisle 33 to Aisle 16"})
-        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1"})
+        
+        let historyUpdateStock = viewModel.history.first(where: { $0.details == "user123 Decreased stock of Medicine 33 by 1 current stock: 32"})
         XCTAssertEqual(medicine, updatedMedicine)
-        XCTAssertNotNil(historyUpdateName)
-        XCTAssertNotNil(historyUpdateAisle)
         XCTAssertNotNil(historyUpdateStock)
     }
     

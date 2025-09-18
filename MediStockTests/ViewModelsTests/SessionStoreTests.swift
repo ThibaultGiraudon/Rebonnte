@@ -107,7 +107,7 @@ final class SessionStoreTests: XCTestCase {
         
         await session.signIn(email: "user@test.app", password: "12345678")
         
-        XCTAssertEqual(session.error, "fetching user's personnal information")
+        XCTAssertEqual(session.error, "fetching user's personal information")
     }
     
     @MainActor
@@ -189,7 +189,7 @@ final class SessionStoreTests: XCTestCase {
         
         await session.updateUser(fullname: "Charles Leclerc")
         
-        XCTAssertEqual(session.error, "updating user's personnal information")
+        XCTAssertEqual(session.error, "updating user's personal information")
     }
     
     @MainActor
