@@ -17,6 +17,7 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
     var historyError: Error?
     var userError: Error?
     var aisleError: Error?
+    var aisleUpdateError: Error?
     
     func fetchMedicines(sortedBy sort: MediStock.SortOption, matching name: String, nextItems: Bool) async throws -> [MediStock.Medicine] {
         if let medicineError {
@@ -108,8 +109,8 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
     }
     
     func updateAisle(_ aisle: MediStock.Aisle) async throws {
-        if let aisleError {
-            throw aisleError
+        if let aisleUpdateError {
+            throw aisleUpdateError
         }
     }
     

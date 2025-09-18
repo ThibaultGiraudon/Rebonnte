@@ -37,6 +37,7 @@ class AislesViewModel: ObservableObject {
         do {
             await self.fetchAisles()
             guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
+                self.error = "adding medicine to aisle"
                 return
             }
             var aisle = self.aisles[index]
@@ -52,6 +53,7 @@ class AislesViewModel: ObservableObject {
         do {
             await self.fetchAisles()
             guard let index = self.aisles.firstIndex(where: { $0.name == aisleName}) else {
+                self.error = "removing medicine to aisle"
                 return
             }
             var aisle = self.aisles[index]
