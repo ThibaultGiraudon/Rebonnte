@@ -216,8 +216,8 @@ class MedicineStockViewModel: ObservableObject {
         guard diff != 0 else { return }
         
         let action = diff > 0
-            ? "Increased stock of \(oldMedicine.name) by \(diff)"
-            : "Decreased stock of \(oldMedicine.name) by \(-diff)"
+            ? "Increased stock of \(oldMedicine.name) by \(diff) current stock: \(newStock)"
+            : "Decreased stock of \(oldMedicine.name) by \(-diff) current stock: \(newStock)"
         
         await addHistory(
             action: action,
@@ -255,7 +255,7 @@ class MedicineStockViewModel: ObservableObject {
                     action: "Updated \(medicine.name)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "\(user) changed aisle from \(currentMedicine.aisle) to \(medicine.aisle)",
+                    details: "\(user) moves \(medicine.name) from \(currentMedicine.aisle) to \(medicine.aisle)",
                     currentStock: medicine.stock
                 )
                 await aislesVM.add(medicine, in: medicine.aisle)
@@ -267,7 +267,7 @@ class MedicineStockViewModel: ObservableObject {
                     action: "Updated \(medicine.name)",
                     user: user,
                     medicineId: medicine.id,
-                    details: "\(user) changed name from \(currentMedicine.name) to \(medicine.name)",
+                    details: "\(user) renames \(currentMedicine.name) to \(medicine.name)",
                     currentStock: medicine.stock
                 )
             }

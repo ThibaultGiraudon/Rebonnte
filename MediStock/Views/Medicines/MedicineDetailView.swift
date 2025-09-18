@@ -118,20 +118,20 @@ struct MedicineDetailView: View {
                     if isShowingHistory {
                         ForEach(medicinesVM.history.sorted(by: { $0.timestamp > $1.timestamp })) { item in
                             HStack {
-                                if item.action.contains("Add") {
+                                if item.action.contains("Created") {
                                     Image(systemName: "plus.circle.fill")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 50, height: 50)
                                         .foregroundStyle(.gray)
-                                } else if item.action.contains("Increase") {
+                                } else if item.action.contains("Increased") {
                                     Image(systemName: "arrow.up.right.circle.fill")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 50, height: 50)
                                         .foregroundStyle(.green)
-                                } else if item.action.contains("Decrease") {
-                                    Image(systemName: "arrow.down.left.circle.fill")
+                                } else if item.action.contains("Decreased") {
+                                    Image(systemName: "arrow.down.right.circle.fill")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 50, height: 50)
@@ -141,7 +141,7 @@ struct MedicineDetailView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 50, height: 50)
-                                        .foregroundStyle(.red)
+                                        .foregroundStyle(.gray)
                                 }
                                 VStack(alignment: .leading) {
                                     Text(item.user)
@@ -230,7 +230,7 @@ extension MedicineDetailView {
         return VStack(alignment: .leading) {
             
             Chart {
-                ForEach(currentHistory.sorted(by: { $0.timestamp < $1.timestamp}), id: \.id) { item in
+                ForEach(currentHistory.sorted(by: { $0.timestamp > $1.timestamp}), id: \.id) { item in
                     LineMark(
                         x: .value("Date", item.timestamp, unit: .minute),
                         y: .value("Stock", item.currentStock)

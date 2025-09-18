@@ -29,7 +29,7 @@ struct AisleListView: View {
             .foregroundStyle(.gray)
             .padding()
             
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 if aislesVM.filteredAisles.isEmpty {
                     ContentUnavailableView("No aisle found", systemImage: "xmark.bin")
                 } else {

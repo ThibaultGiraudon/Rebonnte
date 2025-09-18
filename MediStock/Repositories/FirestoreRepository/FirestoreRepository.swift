@@ -11,7 +11,7 @@ import Firebase
 class FirestoreRepository: FirestoreRepositoryInterface {
     let db = Firestore.firestore()
     var lastDocument: DocumentSnapshot?
-    var pageSize = 20
+    var pageSize = 200
     
     func fetchHistory(for medicine: Medicine) async throws -> [HistoryEntry] {
         let snapshots = db.collection("history").whereField("medicineId", isEqualTo: medicine.id)

@@ -28,9 +28,7 @@ extension FirestoreRepository {
             Medicine($0.data())
         }
         
-        if !documents.isEmpty {
-            self.lastDocument = documents.last
-        }
+        self.lastDocument = documents.last
         
         return items
     }

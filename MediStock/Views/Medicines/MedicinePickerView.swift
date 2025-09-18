@@ -36,7 +36,7 @@ struct MedicinePickerView: View {
             }
             .foregroundStyle(.gray)
             .padding(.bottom)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ForEach(filteredMedicines) { medicine in
                     MedicineRowView(medicine: medicine)
                         .onTapGesture {

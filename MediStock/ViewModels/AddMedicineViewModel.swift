@@ -120,11 +120,13 @@ class AddMedicineViewModel: ObservableObject {
         do {
             if try await repository.fetchAllMedicines(matching: name).isEmpty || tryAnyway == true {
                 try await repository.addMedicine(newMedicine)
+                let action = "Created \(name) with initial stock of \(stock)"
+                
                 await addHistory(
-                    action: "Add new medicine",
+                    action: action,
                     user: user,
                     medicineId: newMedicine.id,
-                    details: "\(user) add \(newMedicine.name) with initial stock of \(stock)",
+                    details: "\(user) \(action)",
                     currentStock: stock
                 )
                 await AislesViewModel().add(newMedicine, in: newMedicine.aisle)

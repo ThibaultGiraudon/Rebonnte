@@ -24,6 +24,7 @@ struct MedicineRowView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(medicine.name)
                     .font(.largeTitle)
+                    .multilineTextAlignment(.leading)
                 HStack {
                     Text("\(medicine.stock) in stock")
                         .foregroundStyle(.gray)
