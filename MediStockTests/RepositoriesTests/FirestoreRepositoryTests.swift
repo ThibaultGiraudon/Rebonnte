@@ -179,4 +179,49 @@ final class FirestoreRepositoryTests: XCTestCase {
         }
     }
     
+    func testAddAndFetchAisle() async {
+        let repository = FirestoreRepository()
+        
+        var aisle = FakeData().aisles[0]
+        
+        do {
+            try await repository.addAisle(aisle)
+        } catch {
+            XCTFail("Adding aisle failed: \(error)")
+        }
+        
+        do {
+            var fAisle = try await repository.fetchAllAisles()
+            
+            XCTAssertEqual(fAisle, [FakeData().aisles[0]])
+            
+            fAisle = try await repository.fetchAllAisles(matching: "failing test")
+            
+            XCTAssertTrue(fAisle.isEmpty)
+            
+            fAisle = try await repository.fetchAllAisles(matching: "Aisle 6")
+            
+            XCTAssertEqual(fAisle, [FakeData().aisles[0]])
+        } catch {
+            XCTFail("Fetching all aisles failed: \(error)")
+        }
+        
+        do {
+            try await repository.addAisle(aisle)
+            
+            let updatedAisle = Aisle(id: "6", name: "Aisle 33", icon: "pills", color: "000000")
+            
+            try await repository.updateAisle(updatedAisle)
+            
+            let fAisle = try await repository.fetchAllAisles()
+            
+            XCTAssertEqual(fAisle.count, 1)
+            XCTAssertEqual(fAisle[0].id, "6")
+            XCTAssertEqual(fAisle[0].name, "Aisle 33")
+            
+        } catch {
+            XCTFail("Updating aisle failed: \(error)")
+        }
+    }
+    
 }

@@ -34,10 +34,4 @@ extension FirestoreRepository {
     func addAisle(_ medicine: Aisle) async throws {
         try await db.collection("aisles").document(medicine.id).setData(medicine.data())
     }
-    
-    func deleteAisle(_ aisle: [Aisle]) async throws {
-        for medicine in aisle {
-            try await db.collection("aisles").document(medicine.id).delete()
-        }
-    }
 }

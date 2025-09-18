@@ -113,10 +113,4 @@ class FirestoreRepositoryFake: FirestoreRepositoryInterface {
             throw aisleUpdateError
         }
     }
-    
-    func deleteAisle(_ Aisles: [MediStock.Aisle]) async throws {
-        if let aisleError {
-            throw aisleError
-        }
-    }
 }
