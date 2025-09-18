@@ -13,16 +13,36 @@ final class AddMedicinesVMTests: XCTestCase {
     @MainActor
     func testAddMedicineShouldSucceed() async {
         let fakeRepo = FirestoreRepositoryFake()
+        let viewModel = AddMedicineViewModel(repository: fakeRepo)
+        
+        viewModel.name = "Medicine 33"
+        viewModel.aisle = "Aisle 33"
+        viewModel.stock = 33
+        viewModel.normalStock = 33
+        viewModel.warningStock = 32
+        viewModel.alertStock = 31
+        
+        await viewModel.addMedicine(user: "test123")
+        
+        XCTAssertNil(viewModel.error)
+    }
+
+    @MainActor
+    func testAddMedicineShouldTriggerAlert() async {
+        let fakeRepo = FirestoreRepositoryFake()
         fakeRepo.medicines = FakeData().medicines
         let viewModel = AddMedicineViewModel(repository: fakeRepo)
         
         viewModel.name = "Medicine 33"
         viewModel.aisle = "Aisle 33"
         viewModel.stock = 33
+        viewModel.normalStock = 33
+        viewModel.warningStock = 32
+        viewModel.alertStock = 31
         
-        await viewModel.addMedicine(user: "test123")
+        await viewModel.addMedicine(user: "test123", tryAnyway: false)
         
-        XCTAssertNil(viewModel.error)
+        XCTAssertTrue(viewModel.showAlert)
     }
     
     @MainActor
@@ -93,5 +113,43 @@ final class AddMedicinesVMTests: XCTestCase {
         XCTAssertTrue(viewModel.shouldDisabled)
         viewModel.alertStock = 31
         XCTAssertFalse(viewModel.shouldDisabled)
+    }
+    
+    @MainActor
+    func testFetchAisleShouldSucceed() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.aisles = FakeData().aisles
+        
+        let viewModel = AddMedicineViewModel(repository: fakeRepo)
+        
+        await viewModel.fetchAisles()
+        
+        XCTAssertEqual(viewModel.aisles, FakeData().aislesString)
+        XCTAssertEqual(viewModel.aisle, FakeData().aisles.first!.name)
+    }
+    
+    @MainActor
+    func testFetchAisleShouldSucceedWithName() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.aisles = FakeData().aisles
+        
+        let viewModel = AddMedicineViewModel(repository: fakeRepo, aisle: "name")
+        
+        await viewModel.fetchAisles()
+        
+        XCTAssertEqual(viewModel.aisles, FakeData().aislesString)
+        XCTAssertEqual(viewModel.aisle, "name")
+    }
+    
+    @MainActor
+    func testFetchAisleShouldFailed() async {
+        let fakeRepo = FirestoreRepositoryFake()
+        fakeRepo.aisleError = FakeData().error
+        
+        let viewModel = AddMedicineViewModel(repository: fakeRepo)
+        
+        await viewModel.fetchAisles()
+        
+        XCTAssertEqual(viewModel.error, "fetching aisle list")
     }
 }
