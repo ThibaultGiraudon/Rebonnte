@@ -83,12 +83,15 @@ The authentication logic is fully handled by the AuthRepository, accessed throug
 Users can create new aisles by providing a name, icon and color.
 The [AddAisleViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/AddAisleViewModel.swift) validates inputs and then delegates persistence to the [FirestoreRepository+aisle](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/Repositories/FirestoreRepository/FirestoreRepository%2BAisle.swift).
 
+<img src="assets/aisle-form.png" alt="aisle add form" width="200">
+
 ---
 
 ### Medicine Creation
 Users can create new aisles by providing a name, icon, color and stock levels.
 The [AddMedicineViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/AddMedicineViewModel.swift) validates inputs and then delegates persistence to the [FirestoreRepository+aisle](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/Repositories/FirestoreRepository/FirestoreRepository%2BMedicine.swift).
 
+<img src="assets/medicine-add-form.png" alt="medicine add form" width="200">
 
 ---
 
@@ -96,11 +99,15 @@ The [AddMedicineViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/mai
 Users can see aisle's detail with all medicines stored in them.
 The [AislesViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/AislesViewModel.swift) handles fetching all aisle and the [MedicineStockViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/MedicineStockViewModel.swift) handles medicines stored inside.
 
+<img src="assets/aisle-detail.png" alt="aisle detail" width="200">
+
 ---
 
 ### Medicine Details
 Users can see medicine's detail such as name, icon, stock levels and history with a chart and the list of entry.
 The [MedicineStockViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/MedicineStockViewModel.swift) fetches history for the given medicine.
+
+<img src="assets/medicine-detail.png" alt="medicine detail" width="200">
 
 ---
 
@@ -114,6 +121,8 @@ User can also find low stock or alert stock in the [HomeView](https://github.com
 
 In all cases the [MedicineStockViewModel](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/ViewModels/MedicineStockViewModel.swift) handles retrieving medicine and filter depending on user request.
 The medicines are diplayed in [MedicineListView](https://github.com/ThibaultGiraudon/Rebonnte/blob/main/MediStock/Views/Medicines/MedicineListView.swift) which request new fetch after each operation.
+
+<img src="assets/medicines-list.png" alt="medicines list" width="200"> <img src="assets/dashboard.png" alt="dashboard" width="200">
 
 ## Testing
 
