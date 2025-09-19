@@ -26,6 +26,7 @@ struct AislePickerView: View {
         VStack(alignment: .leading) {
             HStack {
                 Image(systemName: "magnifyingglass")
+                    .accessibilityHidden(true)
                 TextField("Search", text: $searchText)
                 if !searchText.isEmpty {
                     Image(systemName: "xmark.circle.fill")
@@ -51,6 +52,9 @@ struct AislePickerView: View {
                     .onTapGesture {
                         selectedAisle = aisle
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Aisle: \(aisle)")
+                    .accessibilityHint("Double-tap to select aisle")
                 }
             }
         }

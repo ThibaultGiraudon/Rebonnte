@@ -25,6 +25,8 @@ struct AisleDetailView: View {
                     Circle()
                         .fill(aisle.color.toColor().opacity(0.2))
                 }
+                .accessibilityHidden(true)
+            
             Text(aisle.name)
                 .font(.largeTitle)
                 .foregroundStyle(.primaryText)

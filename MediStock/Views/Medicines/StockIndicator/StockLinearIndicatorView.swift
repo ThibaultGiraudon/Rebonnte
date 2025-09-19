@@ -29,6 +29,9 @@ struct StockLinearIndicatorView: View {
             .frame(maxHeight: 10)
             .scrollDisabled(true)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Stock indicator")
+        .accessibilityValue("\(stock) medicines available out of \(normalStock),  warning level: \(waringStock), alert level: \(alertStock)")
     }
     
     var gradient: Gradient {

@@ -41,6 +41,7 @@ struct AisleListView: View {
                                 .foregroundStyle(.primaryText)
                                 .background(Color.customPrimary)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .accessibilityHidden(true)
                         }
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel("\(aisle.name) button")

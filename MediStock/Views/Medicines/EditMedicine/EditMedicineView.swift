@@ -42,6 +42,10 @@ struct EditMedicineView: View {
                         isPresentingAislePicker.toggle()
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Show aisle picker button")
+                .accessibilityValue("Selected aisle: \(editedMedicine.aisle)")
+                .accessibilityHint("Double-tap to show aisle picker")
                 
                 if isPresentingAislePicker {
                     AislePickerView(selectedAisle: $editedMedicine.aisle, in: medicinesVM.aisles)

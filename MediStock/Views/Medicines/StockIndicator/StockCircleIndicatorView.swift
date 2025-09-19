@@ -29,6 +29,9 @@ struct StockCircleIndicatorView: View {
                 .font(.largeTitle)
                 .foregroundStyle(gradient)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Stock indicator")
+        .accessibilityValue("\(stock) medicines available out of \(normalStock),  warning level: \(waringStock), alert level: \(alertStock)")
     }
     
     var gradient: Gradient {

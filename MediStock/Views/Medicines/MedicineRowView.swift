@@ -21,6 +21,8 @@ struct MedicineRowView: View {
                         .fill(medicine.color.toColor().opacity(0.2))
                 }
                 .foregroundStyle(medicine.color.toColor())
+                .accessibilityHidden(true)
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(medicine.name)
                     .font(.largeTitle)

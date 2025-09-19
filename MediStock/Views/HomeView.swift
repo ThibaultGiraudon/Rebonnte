@@ -54,6 +54,9 @@ struct HomeView: View {
                     Button { coordinator.goToAddMedicine() } label: {
                         customLabel("Add medicine", systemImage: "plus.circle", color: .blue)
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Add medicine button")
+                    .accessibilityHint("Double tap to add a new medicine")
                     
                     NavigationLink {
                         MedicinePickerView(medicines: medicinesVM.medicines, selectedMedicine: $selectedMedicineToUpdate)
@@ -61,6 +64,9 @@ struct HomeView: View {
                         customLabel("Update stock", systemImage: "arrow.up.arrow.down", color: .yellow)
                     }
                     .pickerStyle(.navigationLink)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Update medicine stock button")
+                    .accessibilityHint("Double tap to update medicine stock")
                     
                     NavigationLink {
                         MedicinePickerView(medicines: medicinesVM.medicines, selectedMedicine: $selectedMedicineToMove)
@@ -68,6 +74,9 @@ struct HomeView: View {
                         customLabel("Move medicine", systemImage: "arrow.left.arrow.right", color: .green)
                     }
                     .pickerStyle(.navigationLink)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Move medicine button")
+                    .accessibilityHint("Double tap to move medicine")
                 }
             }
             .sheet(item: $selectedMedicineToUpdate, onDismiss: { Task { await medicinesVM.fetchMedicines()}}) { medicine in

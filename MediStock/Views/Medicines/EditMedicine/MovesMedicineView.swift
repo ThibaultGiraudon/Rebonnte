@@ -30,10 +30,13 @@ struct MovesMedicineView: View {
                         isShowingAislePicker.toggle()
                     }
                 }
-            .font(.title)
+                .font(.title)
+                .accessibilityLabel("Show aisle picker button")
+                .accessibilityHint("Double-tap to show aisle picker")
             if isShowingAislePicker {
-                    AislePickerView(selectedAisle: $selectedAisle, in: medicinesVM.aisles)
+                AislePickerView(selectedAisle: $selectedAisle, in: medicinesVM.aisles)
             }
+            
             CustomButton(title: "Save", color: .lightBlue) {
                 Task {
                     medicine.aisle = selectedAisle
@@ -41,6 +44,9 @@ struct MovesMedicineView: View {
                     dismiss()
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Save button")
+            .accessibilityHint("Double-tap to move medicine from \(medicine.aisle) to \(selectedAisle)")
         }
         .padding()
         .onAppear {

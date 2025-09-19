@@ -21,6 +21,7 @@ struct AisleRowView: View {
                         .fill(aisle.color.toColor().opacity(0.2))
                 }
                 .foregroundStyle(aisle.color.toColor())
+            
             VStack(alignment: .leading) {
                 Text(aisle.name)
                     .font(.largeTitle)

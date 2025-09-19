@@ -37,6 +37,9 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.customPrimary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title): \(value)")
+        .accessibilityHint("Double-tap to show details")
     }
 }
 

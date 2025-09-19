@@ -47,7 +47,14 @@ struct MedicineListView: View {
                                 await medicinesVM.delete(medicine)
                             }
                         }
+                        .accessibilityLabel("Delete medicine button")
+                        .accessibilityHint("Double-tap to delete \(medicine.name)")
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Show medicine details button")
+                    .accessibilityValue("Medicine: \(medicine.name)")
+                    .accessibilityHint("Double-tap to show details of the medicine")
+                    .accessibilityHint("Long-press to show context menu to delete the medicine")
                 }
             }
         }

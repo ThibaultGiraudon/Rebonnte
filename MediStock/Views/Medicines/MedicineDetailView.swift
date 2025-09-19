@@ -110,44 +110,48 @@ struct MedicineDetailView: View {
                         Image(systemName: "chevron.right")
                             .rotationEffect(.degrees(isShowingHistory ? 90 : 0))
                     }
-                        .onTapGesture {
-                            withAnimation {
-                                isShowingHistory.toggle()
-                            }
+                    .onTapGesture {
+                        withAnimation {
+                            isShowingHistory.toggle()
                         }
+                    }
                     if isShowingHistory {
                         ForEach(medicinesVM.history.sorted(by: { $0.timestamp > $1.timestamp })) { item in
                             HStack {
-                                if item.action.contains("Created") {
-                                    Image(systemName: "plus.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .foregroundStyle(.gray)
-                                } else if item.action.contains("Increased") {
-                                    Image(systemName: "arrow.up.right.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .foregroundStyle(.green)
-                                } else if item.action.contains("Decreased") {
-                                    Image(systemName: "arrow.down.right.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .foregroundStyle(.red)
-                                } else {
-                                    Image(systemName: "minus.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                        .foregroundStyle(.gray)
+                                Group {
+                                    if item.action.contains("Created") {
+                                        Image(systemName: "plus.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .foregroundStyle(.gray)
+                                    } else if item.action.contains("Increased") {
+                                        Image(systemName: "arrow.up.right.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .foregroundStyle(.green)
+                                    } else if item.action.contains("Decreased") {
+                                        Image(systemName: "arrow.down.right.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .foregroundStyle(.red)
+                                    } else {
+                                        Image(systemName: "minus.circle.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .foregroundStyle(.gray)
+                                    }
                                 }
+                                .accessibilityHidden(true)
                                 VStack(alignment: .leading) {
                                     Text(item.user)
                                     Text(item.action)
                                     Text(item.timestamp.formatted())
                                 }
+                                .accessibilityValue("\(item.user) \(item.action) \(item.timestamp.formatted())")
                             }
                             .padding(.vertical, 5)
                         }
@@ -174,7 +178,10 @@ struct MedicineDetailView: View {
                     .background(Color.red.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
-
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Delete aisle button")
+                .accessibilityHint("Double-tap to delete aisle")
+                
             }
         }
         .padding()
@@ -189,7 +196,7 @@ struct MedicineDetailView: View {
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Edit button")
-                .accessibilityHint("Double-tap to save changes")
+                .accessibilityHint("Double-tap to edit aisle")
             }
         }
         .sheet(isPresented: $isShowingEditView, content: {

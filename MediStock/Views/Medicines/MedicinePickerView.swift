@@ -21,6 +21,7 @@ struct MedicinePickerView: View {
         VStack {
             HStack {
                 Image(systemName: "magnifyingglass")
+                    .accessibilityHidden(true)
                 TextField("Search", text: $searchText)
                 
                 if !searchText.isEmpty {
@@ -28,6 +29,8 @@ struct MedicinePickerView: View {
                         .onTapGesture {
                             searchText = ""
                         }
+                        .accessibilityLabel("Erase search button")
+                        .accessibilityHint("Double-tap to erase search")
                 }
             }
             .padding(5)

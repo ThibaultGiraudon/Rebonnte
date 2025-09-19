@@ -27,6 +27,8 @@ struct AddAisleView: View {
                     Circle()
                         .fill(addAisleVM.color.toColor().opacity(0.2))
                 }
+                .accessibilityLabel("Aisle icon")
+                .accessibilityValue("\(addAisleVM.icon) color: \(addAisleVM.color)")
             Form {
                 TextField("Aisle name", text: $addAisleVM.name)
                 
@@ -39,6 +41,9 @@ struct AddAisleView: View {
                 .onTapGesture {
                     showIconPicker.toggle()
                 }
+                .accessibilityLabel("show icon picker button")
+                .accessibilityValue("Selected icon: \(addAisleVM.icon)")
+                .accessibilityHint("Double-tap to select an icon to show picker")
                 
                 if showIconPicker {
                     IconPickerView(selectedIcon: $addAisleVM.icon)
@@ -55,6 +60,8 @@ struct AddAisleView: View {
                         dismiss()
                     }
                     .disabled(addAisleVM.isLoading)
+                    .accessibilityLabel("Cancel button")
+                    .accessibilityHint("Double-tap to cancel")
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -65,6 +72,8 @@ struct AddAisleView: View {
                         }
                     }
                     .disabled(addAisleVM.isLoading || addAisleVM.name.isEmpty)
+                    .accessibilityLabel(addAisleVM.isLoading ? "Adding..." : "Add aisle")
+                    .accessibilityHint(addAisleVM.name.isEmpty ? "Button disabled fill in all fields" : "Double-tap to add aisle")
                 }
             }
         }

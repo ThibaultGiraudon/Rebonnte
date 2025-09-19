@@ -19,12 +19,16 @@ struct IconPickerView: View {
         VStack {
             HStack {
                 Image(systemName: "magnifyingglass")
+                    .accessibilityHidden(true)
                 TextField("Search", text: $searchText)
                 if !searchText.isEmpty {
                     Image(systemName: "xmark.circle.fill")
                         .onTapGesture {
                             searchText = ""
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Erase search button")
+                        .accessibilityHint("Double tap to erase search")
                 }
             }
             .padding(5)
@@ -35,17 +39,19 @@ struct IconPickerView: View {
             
             ScrollView {
                 LazyVGrid(columns: Array(repeating: .init(), count: 7)) {
-                    ForEach(filteredIcons, id: \.self) { icon in    Image(systemName: icon)
+                    ForEach(filteredIcons, id: \.self) { icon in
+                        Image(systemName: icon)
                             .font(.title)
                             .onTapGesture {
                                 selectedIcon = icon
                             }
                             .foregroundStyle(selectedIcon == icon ? .lightBlue : .primaryText)
+                            .accessibilityHint("Double tap to select")
+                            .accessibilityLabel("\(selectedIcon == icon ? "Selected " : "") \(icon)")
                     }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
-            
         }
     }
 }
