@@ -59,6 +59,7 @@ struct MedicineDetailView: View {
                             Circle()
                                 .fill(medicine.color.toColor().opacity(0.2))
                         }
+                        .accessibilityHidden(true)
                     Text(medicine.name)
                         .font(.largeTitle)
                     Spacer()
@@ -103,6 +104,7 @@ struct MedicineDetailView: View {
                     }
                     historySection
                         .padding(.bottom)
+                        .accessibilityHidden(true)
                     HStack {
                         Text("History")
                             .font(.title.bold())
@@ -151,7 +153,8 @@ struct MedicineDetailView: View {
                                     Text(item.action)
                                     Text(item.timestamp.formatted())
                                 }
-                                .accessibilityValue("\(item.user) \(item.action) \(item.timestamp.formatted())")
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityValue("\(item.user) \(item.action)")
                             }
                             .padding(.vertical, 5)
                         }

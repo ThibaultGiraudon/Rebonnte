@@ -35,7 +35,8 @@ struct MedicineRowView: View {
                 }
             }
         }
-        
+        .accessibilityElement(children: .ignore)
+        .accessibilityValue("\(medicine.name), \(medicine.stock) in stock out of \(medicine.normalStock)")
     }
 }
 

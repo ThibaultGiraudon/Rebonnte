@@ -30,6 +30,8 @@ struct MainTabView: View {
     @State private var activeError: String?
     @State private var selectedTab: TabItem = .aisles
     
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     var body: some View {
         VStack {
             if let error = activeError {
@@ -59,7 +61,9 @@ struct MainTabView: View {
                         VStack {
                             Image(systemName: tab.icon)
                                 .font(.title)
-                            Text(tab.rawValue)
+                            if dynamicTypeSize < .xxLarge {
+                                Text(tab.rawValue)
+                            }
                         }
                         .foregroundStyle(selectedTab == tab ? .lightBlue : .primaryText)
                         .onTapGesture {
