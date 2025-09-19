@@ -66,6 +66,7 @@
 		CE8409BE2E5DB9F7000FA60A /* Repositories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Repositories; sourceTree = "<group>"; };
 		CE9B5F6A2E670A0300681B2D /* Coordinators */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Coordinators; sourceTree = "<group>"; };
 		CE9B5FD42E6758DE00681B2D /* FakeRepository */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FakeRepository; sourceTree = "<group>"; };
+		CEDCABCE2E7D8099009555BF /* assets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = assets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +100,7 @@
 		53E0D88A2C06084700DE1134 = {
 			isa = PBXGroup;
 			children = (
+				CEDCABCE2E7D8099009555BF /* assets */,
 				CE414A892E704D9F00C874FD /* docker */,
 				CE0D0C8D2E69C61200A346A7 /* MediStock.xctestplan */,
 				CE8409B72E5D9ACF000FA60A /* GoogleService-Info.plist */,
@@ -183,6 +185,7 @@
 				CE8409BB2E5DA784000FA60A /* Views */,
 				CE8409BE2E5DB9F7000FA60A /* Repositories */,
 				CE9B5F6A2E670A0300681B2D /* Coordinators */,
+				CEDCABCE2E7D8099009555BF /* assets */,
 			);
 			name = MediStock;
 			packageProductDependencies = (
