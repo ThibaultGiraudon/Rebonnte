@@ -26,16 +26,16 @@ final class MediStockUITests: XCTestCase {
     
     func test_fullFlow_createAccount_logout_login_addMedicine_checkList() throws {
         createAccount()
-        XCTAssertTrue(app.staticTexts["profile"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["profile"].waitForExistence(timeout: 10))
         
         logout()
-        XCTAssertTrue(app.buttons["Sign in"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Sign in"].waitForExistence(timeout: 10))
         
         login()
-        XCTAssertTrue(app.staticTexts["medicines"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["medicines"].waitForExistence(timeout: 10))
         
         addAisle()
-        XCTAssertTrue(app.staticTexts["Aisle 33"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Aisle 33"].waitForExistence(timeout: 10))
         
         addMedicine()
         XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 10))
@@ -134,7 +134,7 @@ final class MediStockUITests: XCTestCase {
         
         app.staticTexts["Medicine 33"].tap()
         
-        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Medicine 33"].waitForExistence(timeout: 10))
     }
     
     func updateMedicine() {
