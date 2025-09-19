@@ -107,6 +107,7 @@ struct AddMedicineView: View {
         }
         .navigationTitle("Add medicine")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
         .onAppear {
             Task {
                 await addMedicinesVM.fetchAisles()

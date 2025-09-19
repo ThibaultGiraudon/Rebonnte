@@ -93,7 +93,7 @@ final class MediStockUITests: XCTestCase {
         aisleNameField.tap()
         aisleNameField.typeText("Aisle 33")
         
-        app.navigationBars["Add aisle"].buttons["Add"].tap()
+        app.navigationBars["Add aisle"].buttons["Add aisle"].tap()
     }
     
     func addMedicine() {
