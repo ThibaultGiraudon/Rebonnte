@@ -35,6 +35,4 @@ class AuthRepositoryFake: AuthRepositoryInterface {
     func identifyError(_ error: any Error) -> String {
         return errorString
     }
-    
-    
 }

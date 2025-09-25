@@ -229,11 +229,11 @@ extension MedicineDetailView {
         var interval: ClosedRange<Date> {
             switch selectedInterval {
             case .day:
-                return Date().addingTimeInterval(-86400)...Date()
+                return Date().addingTimeInterval(-86400)...Date().addingTimeInterval(3600)
             case .week:
-                return Date().addingTimeInterval(-604800)...Date()
+                return Date().addingTimeInterval(-604800)...Date().addingTimeInterval(3600)
             case .month:
-                return Date().addingTimeInterval(-2592000)...Date()
+                return Date().addingTimeInterval(-2592000)...Date().addingTimeInterval(86400)
             }
         }
 
@@ -242,14 +242,14 @@ extension MedicineDetailView {
             Chart {
                 ForEach(currentHistory.sorted(by: { $0.timestamp > $1.timestamp}), id: \.id) { item in
                     LineMark(
-                        x: .value("Date", item.timestamp, unit: .minute),
+                        x: .value("Date", item.timestamp),
                         y: .value("Stock", item.currentStock)
                     )
                     .foregroundStyle(.blue)
                     .interpolationMethod(.monotone)
                     
                     AreaMark(
-                        x: .value("Date", item.timestamp, unit: .minute),
+                        x: .value("Date", item.timestamp),
                         y: .value("Stock", item.currentStock)
                     )
                     .interpolationMethod(.monotone)
@@ -265,7 +265,7 @@ extension MedicineDetailView {
 struct MedicineDetailView_Previews: PreviewProvider {
     static var previews: some View {
         let sampleMedicine = Medicine(
-            id: "12",
+            id: "E4E65476-0BB9-4E41-AE40-EFD78E52EC43",
             name: "Tramadol",
             stock: 10,
             aisle: "Aisle 1",

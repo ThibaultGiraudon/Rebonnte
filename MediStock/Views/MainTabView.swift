@@ -28,7 +28,7 @@ struct MainTabView: View {
     @ObservedObject var addAisleVM: AddAisleViewModel
     
     @State private var activeError: String?
-    @State private var selectedTab: TabItem = .aisles
+    @State private var selectedTab: TabItem = .home
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
