@@ -73,7 +73,7 @@ class AislesViewModel: ObservableObject {
                 return
             }
             var aisle = self.aisles[index]
-            aisle.medicines.append(medicine.name)
+            aisle.medicines.append(medicine.id)
             try await repository.updateAisle(aisle)
             self.aisles[index] = aisle
         } catch {
@@ -99,7 +99,7 @@ class AislesViewModel: ObservableObject {
                 return
             }
             var aisle = self.aisles[index]
-            aisle.medicines.removeAll { $0 == medicine.name }
+            aisle.medicines.removeAll { $0 == medicine.id }
             try await repository.updateAisle(aisle)
             self.aisles[index] = aisle
         } catch {

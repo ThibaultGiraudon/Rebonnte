@@ -44,7 +44,7 @@ final class AislesVMTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(aisle.medicines, ["Medicine 34"])
+        XCTAssertEqual(aisle.medicines, ["33"])
     }
     
     func testAddShouldFailedWithNoAisle() async {
@@ -70,7 +70,7 @@ final class AislesVMTests: XCTestCase {
     func testRemoveShouldSucceed() async {
         let fakeRepo = FirestoreRepositoryFake()
         fakeRepo.aisles = [
-            Aisle(name: "Aisle 33", icon: "pills", color: "000000", medicines: ["Medicine 34"])
+            Aisle(name: "Aisle 33", icon: "pills", color: "000000", medicines: ["33"])
         ]
         let viewModel = AislesViewModel(repository: fakeRepo)
 

@@ -156,7 +156,7 @@ class MedicineStockViewModel: ObservableObject {
             let aisles = try await repository.fetchAllAisles(matching: medicine.aisle)
             guard var aisle = aisles.first else { return }
             
-            aisle.medicines.removeAll { $0 == medicine.name }
+            aisle.medicines.removeAll { $0 == medicine.id }
             try await repository.updateAisle(aisle)
             
             await self.fetchMedicines()

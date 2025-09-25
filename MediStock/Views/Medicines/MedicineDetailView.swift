@@ -222,9 +222,13 @@ extension MedicineDetailView {
 
         let linearGradient = LinearGradient(gradient: .init(colors: [Color.lightBlue.opacity(0.8), Color.lightBlue.opacity(0)]), startPoint: .top, endPoint: .bottom)
         
-        let currentStockHistory: HistoryEntry = .init(medicineId: medicine.id, user: session.session?.email ?? "", action: "", details: "", currentStock: medicine.stock)
+        var currentHistory: [HistoryEntry] = medicinesVM.history
         
-        let currentHistory: [HistoryEntry] = medicinesVM.history + [currentStockHistory]
+        let currentStockHistory: HistoryEntry = .init(medicineId: medicine.id, user: session.session?.email ?? "", action: "", details: "", currentStock: medicine.stock)
+        if medicinesVM.history.last?.timestamp ?? Date() < Date().addingTimeInterval(-3600) {
+            currentHistory += [currentStockHistory]
+        }
+        
         
         var interval: ClosedRange<Date> {
             switch selectedInterval {
